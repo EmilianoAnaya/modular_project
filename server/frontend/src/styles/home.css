@@ -1,14 +1,17 @@
 
+/* Containers */
+
 #home-container{
     /* background-color: red; */
     width: var(--WIDTH);
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 2em auto;
 }
 
 .home-content{
-    border: 2px solid black;
+    /* border: 2px solid black; */
     display: flex;
     flex-direction: column;
     
@@ -18,9 +21,79 @@
 }
 
 #home-left-content{
-    width: 55%;
+    display: flex;
+    flex-direction: vertical;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
 }
 
 #home-right-content{
-    width: 45%;
+    width: 55%;
+    height: 28em;
+}
+
+#home-image-container{
+    height: 100%;
+    width: 85%;
+    background-color: cyan;
+}
+
+/* Text */
+
+.home-header{
+    font-family: var(--FONT-KRONA-ONE);
+    font-size: 1.6em;
+    margin: 0;
+    text-align: center;
+}
+
+.home-text{
+    font-family: var(--FONT-MULISH);
+    margin: 0.5em auto 4em;
+}
+
+#home-main-description{
+    text-align: center;
+}
+
+/* Buttons */
+
+#home-content-buttons{
+    display: flex;
+    width: 85%;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.home-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10em;
+    height: 2.2em;
+    border-radius: 0.5em;
+    text-decoration: none;
+    color: black;
+    font-family: var(--FONT-INRIA-SANS);
+    font-size: 1.2em;
+}
+
+#home-button-white{
+    background-color: #F1F5F9;
+}
+
+#home-button-green{
+    background-color: #14B8A6;
+}
+
+.home-button:hover{
+    background-color: #71ABF2 !important;
+}
+
+
+/* Images */
+#home-image{
+    width: 100%;
+    height: 100%;
 }
