@@ -2,7 +2,7 @@ import './HomeContent.css'
 import exampleImage from '../../assets/example.jpg'
 
 
-function HomeContent(){
+function HomeContent({ setCurrentView }){
     return (
         <>
             <div className='home-content' id="home-left-content">
@@ -12,8 +12,8 @@ function HomeContent(){
                     intelligence support for diagnostics and reporting.
                 </p>
                 <div id='home-content-buttons'>
-                    <a className="home-button" id="home-button-green" href="">Sign Up</a>
-                    <a className="home-button" id="home-button-white" href="">Sign In</a>
+                    <p className="home-button" id="home-button-green" onClick={() => setCurrentView("sign_up")}>Sign Up</p>
+                    <p className="home-button" id="home-button-white" onClick={() => setCurrentView("sign_in")}>Sign In</p>
                 </div>
             </div>
             <div className='home-content' id="home-right-content">

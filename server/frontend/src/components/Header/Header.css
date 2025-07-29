@@ -32,10 +32,13 @@
     font-family: var(--FONT-KOTTA-ONE);
     font-size: 36px;
     margin: 0;
+    cursor: pointer;
 }
 
 .header-text{
     font-family: var(--FONT-MULISH);
     font-size: 20px;
     margin: 0;
+    cursor: pointer;
 }
+

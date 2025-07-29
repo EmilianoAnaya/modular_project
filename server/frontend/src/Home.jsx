@@ -1,14 +1,19 @@
-// import { useState } from 'react'
+import { useState } from 'react'
+
 import './styles/Home.css'
 import Header from './components/Header/Header'
 import HomeContent from './components/Home_Content/HomeContent'
+import SignUp from './components/Sign_Up_In/SignUp'
 
 function Home() {
+  const [currentView, setCurrentView] = useState("home")
+
   return (
     <>
-      <Header />
+      <Header setCurrentView={setCurrentView}/>
       <div id="home-container">
-        <HomeContent/>
+        {currentView === 'home' &&  <HomeContent setCurrentView={setCurrentView}/>}
+        {currentView === 'sign_up' && <SignUp setCurrentView={setCurrentView}/>}
       </div>
     </>
   )
