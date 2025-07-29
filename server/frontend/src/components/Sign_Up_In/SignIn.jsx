@@ -1,7 +1,11 @@
 import './SignIn.css';
 import './SignShared.css';
 
-function SignIn({ setCurrentView }){
+import { useNavigate } from 'react-router-dom';
+
+function SignIn(){
+    const navigate = useNavigate()
+
     return(
         <>
             <div id="sig-in-cont">
@@ -17,7 +21,7 @@ function SignIn({ setCurrentView }){
                     </div>
                     
                     <div className='si-in-butt-cont'>
-                        <button className='si-up-in-buttons' onClick={() => setCurrentView('home')}>Cancel</button>
+                        <button type='button' className='si-up-in-buttons' onClick={() => navigate('/')}>Cancel</button>
                         <button className='si-up-in-buttons'>Log In</button>
                     </div>
                     <u className='si-in-font'>Forgot Your Password?</u>

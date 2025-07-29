@@ -1,4 +1,5 @@
-import { useState } from 'react'
+// import { useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './styles/Home.css'
 import Header from './components/Header/Header'
@@ -7,16 +8,17 @@ import SignUp from './components/Sign_Up_In/SignUp'
 import SignIn from './components/Sign_Up_In/SignIn'
 
 function Home() {
-  const [currentView, setCurrentView] = useState("home")
+  const navigate = useNavigate()
 
   return (
     <>
-      <Header setCurrentView={setCurrentView}/>
+      <Header setCurrentView={(view) => navigate(`/$(view)`)}/>
       <div id="home-container">
-        {currentView === 'home' &&  <HomeContent setCurrentView={setCurrentView}/>}
-        {currentView === 'sign_up' && <SignUp setCurrentView={setCurrentView}/>}
-        {currentView === 'sign_in' && <SignIn setCurrentView={setCurrentView}/>}
-
+        <Routes>
+          <Route path="/" element={<HomeContent />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/SignIn" element={<SignIn />} />
+        </Routes>
       </div>
     </>
   )
