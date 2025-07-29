@@ -1,10 +1,10 @@
-import './HomeContent.css'
+import './LandingContent.css'
 import exampleImage from '../../assets/example.jpg'
 
 import { useNavigate } from 'react-router-dom'
 
 
-function HomeContent(){
+function LandingContent(){
     const navigate = useNavigate()
 
     return (
@@ -29,4 +29,4 @@ function HomeContent(){
     )
 }
 
-export default HomeContent
+export default LandingContent
