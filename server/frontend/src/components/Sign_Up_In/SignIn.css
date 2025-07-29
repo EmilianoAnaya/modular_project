@@ -1,0 +1,41 @@
+
+/* Containers */
+#sig-in-cont{
+    width: 40%;
+    margin: 0 auto;
+    background: linear-gradient(#14B8A6, #9FC8D3);
+    text-align: center;
+    border-radius: 1em;
+    box-shadow: 1em 1em 1em rgb(0, 0, 0, 0.4);
+}
+
+#sign-in-inputs-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.si-in-butt-cont{
+    margin-top: 2em;
+    margin-bottom: 3em;
+}
+
+#si-in-cont-checkbox{
+    display: flex;
+    align-items: center;
+    width: 10em;
+    justify-content: space-between;
+}
+
+/* Inputs */
+#si-in-checkbox{
+    width: 30px;
+    height: 30px;
+    border-radius: 1em;
+}
+
+/* Text */
+.si-in-font{
+    font-family: var(--FONT-MULISH);
+}

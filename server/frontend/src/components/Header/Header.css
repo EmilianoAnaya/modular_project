@@ -18,6 +18,7 @@
     margin: 0 4em;
     align-items: center;
     justify-content: space-between;
+    user-select: none;
 }
 
 #header-options{
