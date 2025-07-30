@@ -1,0 +1,8 @@
+
+/* Containers */
+#dashboard-container{
+    background-color: #14B8A6;
+    width: var(--WIDTH);
+    height: 80em;
+    margin: 0 auto;
+}

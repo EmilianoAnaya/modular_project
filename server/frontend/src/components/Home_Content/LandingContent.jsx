@@ -1,5 +1,4 @@
 import './LandingContent.css'
-import exampleImage from '../../assets/example.jpg'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -22,7 +21,7 @@ function LandingContent(){
             </div>
             <div className='home-content' id="home-right-content">
                 <div id='home-image-container'>
-                    <img src={exampleImage} id='home-image'/>
+                    <img src='/assets/example.jpg' id='home-image'/>
                 </div>
             </div>
         </>
