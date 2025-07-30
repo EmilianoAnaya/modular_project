@@ -7,7 +7,9 @@
   --FONT-MULISH: "Mulish";
   --FONT-KOTTA-ONE: "Kotta One";
   --FONT-INRIA-SANS: "Inria Sans";
-  --FONT-INTER: "Inter"
+  --FONT-INTER: "Inter";
+
+  --COLOR-DASHBOARD: #14B8A6;
 }
 
 body{
