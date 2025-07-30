@@ -1,7 +1,11 @@
 import './SignUp.css';
 import './SignShared.css';
 
-function SignUp({ setCurrentView }) {
+import { useNavigate } from 'react-router-dom';
+
+function SignUp() {
+    const navigate = useNavigate()
+
     return (
         <>
             <div id='sign-up-content'>
@@ -18,8 +22,8 @@ function SignUp({ setCurrentView }) {
                         <input className="si-up-in-inputs" type="password" placeholder='Confirm Password'/>
                     </div>
                     <div className='si-up-butt-cont'>
-                        <button className='si-up-in-buttons' onClick={() => setCurrentView('home')}>Cancel</button>
-                        <button className='si-up-in-buttons' onClick={() => setCurrentView('sign_in')}>Register</button>
+                        <button type='button' className='si-up-in-buttons' onClick={() => navigate('/')}>Cancel</button>
+                        <button type='button' className='si-up-in-buttons' onClick={() => navigate('/SignIn')}>Register</button>
                     </div>
                 </form>
             </div>

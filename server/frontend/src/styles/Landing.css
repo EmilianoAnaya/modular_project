@@ -1,6 +1,5 @@
 
-#home-container{
-    /* background-color: red; */
+#landing-container{
     width: var(--WIDTH);
     display: flex;
     margin: 2em auto;
