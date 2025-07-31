@@ -1,13 +1,13 @@
-import "./Header.css";
+import "./MainNavbar.css";
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
 
-function Header() {
+function MainNavbar() {
     const navigate = useNavigate()
     
     const location = useLocation()
-    const inDashboard = location.pathname.startsWith("/Dashboard")
+    let inDashboard = location.pathname.startsWith("/Dashboard")
 
     return (
         <>
@@ -29,4 +29,4 @@ function Header() {
     )
 }
 
-export default Header
+export default MainNavbar

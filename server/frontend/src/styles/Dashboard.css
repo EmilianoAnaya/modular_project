@@ -6,3 +6,9 @@
     height: 80em;
     margin: 0 auto;
 }
+
+#dashboard-content{
+    margin-top: 1.5em;
+    padding: 0 1.5em;
+    height: 90%;
+}
