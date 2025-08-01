@@ -1,0 +1,19 @@
+
+.heading{
+    font-family: var(--HEADING-FONT);
+    font-weight: 400;
+    color: white;
+    margin: 0;
+    margin-bottom: .3em;
+    padding-left: .5em;
+    user-select:  none;
+}
+
+.heading-line{
+    width: 98%;
+    height: .1em;
+    background-color: white;
+    border-radius: 2em;
+    margin: 0 auto;
+    margin-bottom: .6em;
+}

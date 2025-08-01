@@ -10,6 +10,16 @@
   --FONT-INTER: "Inter";
 
   --COLOR-DASHBOARD: #14B8A6;
+
+  --HEADING-FONT: var(--FONT-MULISH)
+}
+
+.basic-container{
+  background-color: white;
+  border-radius: 2em;
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 body{

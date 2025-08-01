@@ -2,15 +2,15 @@
 import { Routes, Route } from 'react-router-dom'
 
 import './styles/Landing.css'
-import Header from './components/Header/Header'
-import HomeContent from './components/Home_Content/LandingContent'
+import MainNavbar from './components/Main_Navbar/MainNavbar'
+import HomeContent from './components/Landing_Content/LandingContent'
 import SignUp from './components/Sign_Up_In/SignUp'
 import SignIn from './components/Sign_Up_In/SignIn'
 
 function Landing() {
   return (
     <>
-      <Header />
+      <MainNavbar />
       <div id="landing-container">
         <Routes>
           <Route path="/" element={<HomeContent />} />
