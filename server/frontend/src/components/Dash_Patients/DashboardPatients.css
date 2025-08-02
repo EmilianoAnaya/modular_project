@@ -1,0 +1,17 @@
+
+/* Containers */
+#dash-search-container{
+    display: flex;
+    align-items: center;
+}
+
+.patients-cont{
+    border-radius: 0 0 2em 2em;
+    height: 20em;
+}
+
+#patients-table{
+    width: 100%;    
+}
+
+/* Table */

@@ -22,6 +22,27 @@
   box-sizing: border-box;
 }
 
+.basic-button{
+  font-family: var(--FONT-INRIA-SANS);
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #51A9E9;
+  border-color: transparent;
+  border-radius: 2em;
+  height: 2.2em;
+  padding: .2em 1.5em;
+  box-sizing: border-box;
+  box-shadow: 0 .5em .5em rgb(0, 0, 0, .4);
+}
+
+.icon-button{
+  padding: .2em .4em;
+}
+
+.basic-button:hover{
+  background-color: #D2EAFF;
+}
+
 body{
   background-color: #DAEBFF;
   margin: 0;
