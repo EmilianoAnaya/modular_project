@@ -1,0 +1,16 @@
+
+/* Containers */
+
+.separator{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.separator-line{
+    flex: 1;
+    background-color: white;
+    border-radius: 2em;
+    height: .2em;
+}
