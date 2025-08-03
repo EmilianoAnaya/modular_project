@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+    mysql:
+        image: mysql:latest
+        container_name: mysql-test
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpass
+            MYSQL_DATABASE: testdb
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+            - mysql_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+    phpmyadmin:
+        image: phpmyadmin:5.2.2-apache
+        container_name: pma_test
+        environment:
+            PMA_HOST: mysql
+            MYSQL_ROOT_PASSWORD: rootpass
+        ports:
+            - "8080:80"
+
+volumes:
+    mysql_data:
