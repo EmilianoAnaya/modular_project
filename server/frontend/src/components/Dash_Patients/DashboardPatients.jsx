@@ -16,31 +16,27 @@ function DashboardPatients(){
             </Section>
             <Separator />
             <div className='basic-container patients-cont'>
-                <table id='patients-table'>
-                    <thead>
-                        <tr>
-                            <th style={{"width" : "30%"}}>Name</th>
-                            <th style={{"width" : "20%"}}>Last time opened by you</th>
-                            <th style={{"width" : "20%"}}>Last time updated</th>
-                            <th style={{"width" : "30%"}}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gael Emiliano Anaya Garcia</td>
-                            <td>xx/xx/xxxx</td>
-                            <td>
-                                xx/xx/xxxx
-                                <button className='basic-button icon-button'>
-                                    <img src='/assets/file-check-2.svg'/>
-                                </button>
-                            </td>
-                            <td>
-                                <button className='basic-button'>Consult</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div id='patients-grid'>
+                    <div className='patients-row'>
+                        <div>Patient Name</div>
+                        <div>Last time opened by you</div>
+                        <div>Last time updated</div>
+                        <div>Actions</div>
+                    </div>
+                    <div className='patients-row patients-content'>
+                        <div className='patients-content-1st'>Patient Name</div>
+                        <div>xx/xx/xxxx</div>
+                        <div className='patients-content-3st'>
+                            <span>xx/xx/xxxx</span>
+                            <button className='basic-button icon-button table-button'>
+                                <img src='/assets/file-check-2.svg' />
+                            </button>
+                        </div>
+                        <div>
+                            <button className='basic-button table-button'>Consult</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )
