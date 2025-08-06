@@ -3,7 +3,9 @@ import './DashboardProfile.css'
 function DashboardProfile(){
     return (
         <>
-        <p>mom</p>
+            <div></div>
+            <div></div>
+            <div></div>
         </>
     )
 }

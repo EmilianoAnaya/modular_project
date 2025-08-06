@@ -7,18 +7,6 @@
     width: 35em;
 }
 
-.patients-cont{
-    border-radius: 0 0 2em 2em;
-    height: 20em;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0;
-}
-
-#patients-table{
-    width: 100%;   
-}
-
 /* Input */
 #dash-search-input{
     width: 25em;
@@ -27,25 +15,4 @@
     border-radius: 2em;
     border-color: transparent;
     font-family: var(--FONT-KOTTA-ONE);
-}
-
-
-/* Table */
-#patients-table{
-    border-collapse: collapse;
-    margin: 0;
-}
-
-#patients-table th, td{
-    border: 1px solid gray;
-}
-
-#patients-table th{
-    font-family: var(--FONT-MULISH);
-    font-weight: 600;
-}
-
-#patients-table td{
-    font-family: var(--FONT-KOTTA-ONE);
-    text-align: center;
 }

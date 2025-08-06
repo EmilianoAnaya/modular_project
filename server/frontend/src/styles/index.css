@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kotta+One&family=Krona+One&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 :root{
-  --WIDTH : 75em;
+  --WIDTH : 100em;
   
   --FONT-KRONA-ONE: "Krona One";
   --FONT-MULISH: "Mulish";
@@ -12,6 +12,12 @@
   --COLOR-DASHBOARD: #14B8A6;
 
   --HEADING-FONT: var(--FONT-MULISH)
+}
+
+@media screen and (max-width: 100em){
+    :root{
+        --WIDTH: 75em
+    }
 }
 
 .basic-container{
@@ -39,8 +45,20 @@
   padding: .2em .4em;
 }
 
+.table-button{
+    box-shadow: none;
+} 
+
 .basic-button:hover{
   background-color: #D2EAFF;
+}
+
+.input-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 6em;
+    margin-bottom: 2em;
 }
 
 body{
