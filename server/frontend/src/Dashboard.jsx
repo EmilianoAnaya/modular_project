@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import "./styles/Dashboard.css"
 import MainNavbar from './components/Main_Navbar/MainNavbar';
@@ -8,12 +8,15 @@ import DashboardProfile from './components/Dash_Profile/DashboardProfile';
 import DashboardPatients from './components/Dash_Patients/DashboardPatients';
 
 function Dashboard() {
+    const currentPage = useLocation()
+    const isProfilePage = currentPage.pathname === "/Dashboard/Profile"
+
     return (
         <>
             <MainNavbar/>
             <div id="dashboard-container">
                 <DashboardNav />
-                <div id="dashboard-content">
+                <div id="dashboard-content" className={isProfilePage ? 'dash-no-padding' : ''}>
                     <Routes>
                         <Route path="/" element={<DashboardHome />} />
                         <Route path="Profile" element={<DashboardProfile />} />

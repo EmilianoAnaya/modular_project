@@ -1,4 +1,3 @@
-import './DashboardPatients.css'
 
 function GridPatientsContent(){
     return(

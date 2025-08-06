@@ -7,18 +7,6 @@
     width: 35em;
 }
 
-#patients-table{
-    width: 100%;   
-}
-
-.patients-cont{
-    border-radius: 0 0 2em 2em;
-    height: 20em;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0;
-}
-
 /* Input */
 #dash-search-input{
     width: 25em;
@@ -27,43 +15,4 @@
     border-radius: 2em;
     border-color: transparent;
     font-family: var(--FONT-KOTTA-ONE);
-}
-
-/* Buttons */
-.table-button{
-    box-shadow: none;
-}
-
-/* Grid */
-.patients-grid{
-    display: grid;
-    grid-template-columns: 20em 15em 15em auto;
-    grid-template-rows: 2em auto;
-    width: 100%;
-}
-
-.patients-grid div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid gray;
-}
-
-.patients-grid-header{
-    font-family: var(--FONT-MULISH);
-    height: 2em;
-}
-
-.patients-grid-content{
-    font-family: var(--FONT-KOTTA-ONE);
-    height: 2.5em;
-}
-
-.patients-column-1{
-    justify-content: start !important;
-    padding-left: 1em;
-}
-
-.patients-column-3{
-    justify-content: space-evenly !important;
 }
