@@ -9,13 +9,11 @@ function AddPatient(){
                     <div className='input-container'>
                         <BasicInput label={"Name"} />
                         <BasicInput label={"Surname"}/>
-                        <BasicInput label={"Email"} inputType='email'/>
-                    </div>
-                    <div className='input-container'>
                         <BasicInput label={"Genre"}/>
                         <BasicInput label={"Date of Birth"} inputType='date'/>
                     </div>
                     <div className='input-container'>
+                        <BasicInput label={"Email"} inputType='email'/>
                         <BasicInput label={"Country"}/>
                         <BasicInput label={"City"}/>
                     </div>

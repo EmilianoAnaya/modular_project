@@ -6,6 +6,8 @@
     margin: 0 auto;
     padding-bottom: 1.8em;
     border-radius: 0 0 2em 2em;
+    margin-bottom: 3em;
+    box-shadow: 0 1em .9em rgb(0, 0, 0, .4);
 }
 
 #dashboard-content{
