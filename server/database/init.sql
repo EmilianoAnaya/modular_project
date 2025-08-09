@@ -80,7 +80,6 @@ CREATE TABLE `doctors` (
   `speciality` varchar(100) DEFAULT NULL,
   `license_number` varchar(50) DEFAULT NULL,
   `consultory_at` varchar(100) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   `country` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -155,7 +154,6 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `gender` enum('Male','Female','Other') DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
   `country` varchar(50) DEFAULT NULL,
   `status` enum('Active','Blocked','Pending') DEFAULT 'Active',
