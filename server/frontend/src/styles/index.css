@@ -56,8 +56,7 @@
 .input-container{
     width: 100%;
     display: flex;
-    justify-content: center;
-    gap: 6em;
+    justify-content: space-around;
     margin-bottom: 2em;
 }
 
