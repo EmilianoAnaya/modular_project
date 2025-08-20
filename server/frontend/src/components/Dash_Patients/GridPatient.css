@@ -32,6 +32,12 @@
 .patients-grid-content{
     font-family: var(--FONT-KOTTA-ONE);
     height: 2.5em;
+    display: flex;
+    justify-content: space-evenly !important; 
+}
+
+.patients-grid-content button{
+    min-width: 7em;
 }
 
 .patients-column-1{

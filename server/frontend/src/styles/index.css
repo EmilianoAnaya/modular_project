@@ -28,6 +28,16 @@
   box-sizing: border-box;
 }
 
+.main-container{
+    background-color: #14B8A6;
+    width: var(--WIDTH);
+    margin: 0 auto;
+    padding-bottom: 1.8em;
+    border-radius: 0 0 2em 2em;
+    margin-bottom: 3em;
+    box-shadow: 0 1em .9em rgb(0, 0, 0, .4);
+}
+
 .basic-button{
   font-family: var(--FONT-INRIA-SANS);
   font-size: 1em;
@@ -43,6 +53,7 @@
 
 .icon-button{
   padding: .2em .4em;
+  min-width: 1em !important;
 }
 
 .table-button{
@@ -54,10 +65,13 @@
 }
 
 .input-container{
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 4em;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2em;
 }
 
 body{

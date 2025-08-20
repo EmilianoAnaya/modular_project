@@ -1,5 +1,9 @@
+import { useNavigate } from "react-router-dom"
+
 
 function GridPatientsContent(){
+    const navigation = useNavigate()
+
     return(
         <>
             <div className='patients-grid-content patients-column-1'>
@@ -16,6 +20,7 @@ function GridPatientsContent(){
             </div>
             <div className='patients-grid-content'>
                 <button className='basic-button table-button'>Consult</button>
+                <button className='basic-button table-button' onClick={() => navigation("/Patient")}>View</button>
             </div>
         </>
     )

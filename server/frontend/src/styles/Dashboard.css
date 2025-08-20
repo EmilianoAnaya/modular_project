@@ -1,15 +1,5 @@
 
 /* Containers */
-#dashboard-container{
-    background-color: #14B8A6;
-    width: var(--WIDTH);
-    margin: 0 auto;
-    padding-bottom: 1.8em;
-    border-radius: 0 0 2em 2em;
-    margin-bottom: 3em;
-    box-shadow: 0 1em .9em rgb(0, 0, 0, .4);
-}
-
 #dashboard-content{
     margin-top: 1.5em;
     padding: 0 1.5em;

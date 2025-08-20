@@ -14,7 +14,7 @@ function Dashboard() {
     return (
         <>
             <MainNavbar/>
-            <div id="dashboard-container">
+            <div className="main-container">
                 <DashboardNav />
                 <div id="dashboard-content" className={isProfilePage ? 'dash-no-padding' : ''}>
                     <Routes>
