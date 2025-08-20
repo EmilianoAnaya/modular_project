@@ -1,6 +1,6 @@
-import "./MainNavbar.css";
+import "./MainNavbar.css"
 
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'
 
 
 function MainNavbar() {

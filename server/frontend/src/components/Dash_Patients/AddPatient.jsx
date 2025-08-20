@@ -11,8 +11,6 @@ function AddPatient(){
                         <BasicInput label={"Surname"}/>
                         <BasicInput label={"Genre"}/>
                         <BasicInput label={"Date of Birth"} inputType='date'/>
-                    </div>
-                    <div className='input-container'>
                         <BasicInput label={"Email"} inputType='email'/>
                         <BasicInput label={"Country"}/>
                         <BasicInput label={"City"}/>
