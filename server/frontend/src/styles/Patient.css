@@ -1,5 +1,10 @@
 
 .patient-container{
-    display: flex;
-    
+    display: grid;
+    grid-template-columns: var(--WIDTH-PATIENT-SIDEBAR) auto;
+}
+
+
+.patient-content{
+    background-color: white;
 }
