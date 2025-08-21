@@ -34,12 +34,21 @@ function PatientSidebar(){
 
                 <div className="patient-sidebar-buttons">
                     <div className="sidebar-button">
-                        <img src="/assets/file-check-2.svg"/>
+                        <img src="/assets/pen.svg"/>
                         <label>Notes</label>
                     </div>
-                    <div className="sidebar-button"></div>
-                    <div className="sidebar-button"></div>
-                    <div className="sidebar-button"></div>
+                    <div className="sidebar-button">
+                        <img src="/assets/file-user.svg"/>
+                        <label>Record</label>
+                    </div>
+                    <div className="sidebar-button">
+                        <img src="/assets/calendar-days.svg"/>
+                        <label>Agenda</label>
+                    </div>
+                    <div className="sidebar-button">
+                        <img src="/assets/chart-no-axes-combined.svg"/>
+                        <label>Tendencies</label>
+                    </div>
                 </div>
             </div>
         </>
