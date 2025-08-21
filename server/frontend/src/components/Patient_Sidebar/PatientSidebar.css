@@ -11,6 +11,25 @@
     font-size: 1.3em;
 }
 
+.patient-sidebar-buttons{
+    margin-top: 2em;
+}
+
+.sidebar-button{
+    display: flex;
+    align-items: center;
+    height: 3em;
+    column-gap: 1em;
+    padding-left: 1em;
+    font-family: var(--FONT-KOTTA-ONE);
+    font-size: 1.1em;
+    user-select: none;
+}
+
+.sidebar-button:hover{
+    background-color: #1090B4;
+}
+
 .patients-sidebar-return{
     position: absolute;
     background-color: #29D9C6;
