@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kotta+One&family=Krona+One&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 :root{
-  --WIDTH : 100em;
+  --WIDTH-MAIN: 100em;
+  --WIDTH-PATIENT-SIDEBAR: 16%;
   
   --FONT-KRONA-ONE: "Krona One";
   --FONT-MULISH: "Mulish";
@@ -16,7 +17,8 @@
 
 @media screen and (max-width: 100em){
     :root{
-        --WIDTH: 75em
+      --WIDTH-MAIN: 75em;
+      --WIDTH-PATIENT-SIDEBAR: 22%;
     }
 }
 
@@ -30,7 +32,7 @@
 
 .main-container{
     background-color: #14B8A6;
-    width: var(--WIDTH);
+    width: var(--WIDTH-MAIN);
     margin: 0 auto;
     padding-bottom: 1.8em;
     border-radius: 0 0 2em 2em;

@@ -9,7 +9,7 @@ function Patient(){
             <div className="main-container patient-container">
                 <PatientSidebar />
                 <div className="patient-content">
-
+                    hello
                 </div>
             </div>
         </>

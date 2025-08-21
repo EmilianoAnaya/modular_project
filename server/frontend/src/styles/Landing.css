@@ -1,6 +1,6 @@
 
 #landing-container{
-    width: var(--WIDTH);
+    width: var(--WIDTH-MAIN);
     display: flex;
     margin: 2em auto;
 }
