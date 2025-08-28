@@ -12,8 +12,8 @@ function AddPatient(){
                         <BasicInput label={"Genre"}/>
                         <BasicInput label={"Date of Birth"} inputType='date'/>
                         <BasicInput label={"Email"} inputType='email'/>
-                        <BasicInput label={"Country"}/>
                         <BasicInput label={"City"}/>
+                        <BasicInput label={"Country"}/>
                     </div>
                     <button className='basic-button'>Save</button>
                 </form>

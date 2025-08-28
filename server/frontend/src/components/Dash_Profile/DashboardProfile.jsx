@@ -30,8 +30,8 @@ function DashboardProfile(){
                     </div>
                     <div className='input-container'>
                         <BasicInput label={"Date of Birth"} inputType='date'/>
-                        <BasicInput label={"Country"}/>
                         <BasicInput label={"City"}/>
+                        <BasicInput label={"Country"}/>
                     </div>
                     <div className='dash-text-area-cont'>
                         <p>Description</p>
