@@ -1,0 +1,63 @@
+
+/* Containers */
+
+.patient-agenda-calendar-cont{
+    display: grid;
+    grid-template-columns: 25% auto;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 2em;
+    margin-bottom: 1em;
+    overflow: hidden;
+
+}
+
+.patient-agenda-calendar-sidebar{
+    display: grid;
+    grid-template-rows: 15% auto;
+    background-color: #33A296;
+    color: white;
+    border-radius: 2em 0 0 2em;
+    box-shadow: .5em .2em .5em rgb(0, 0, 0, .4);
+    z-index: 10;
+    user-select: none;
+}
+
+.patient-agenda-calendar-date{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 2em;
+    font-family: var(--FONT-KRONA-ONE);
+    border-bottom: 6px solid white;
+    border-radius: 2em 0 0 0;
+}
+
+.patient-agenda-calendar-months{
+    text-align: center;
+    font-family: var(--FONT-KOTTA-ONE);
+    font-size: 1.1em;
+}
+
+
+.patient-agenda-calendar-content{
+    background-color: #D4FFEC;
+    border-radius: 0 2em 2em 0;
+}
+
+/* Text */
+.patient-agenda-calendar-months p{
+    margin: 0;
+    margin-top: .8em;
+}
+
+
+/* Images */
+.patient-agenda-calendar-date img{
+    width: 1.5em;
+    border-radius: 1em;
+}
+
+.patient-agenda-calendar-date img:hover{
+    background-color: rgb(0, 0, 0, .1);
+}

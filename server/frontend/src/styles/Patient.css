@@ -2,9 +2,11 @@
 .patient-container{
     display: grid;
     grid-template-columns: var(--WIDTH-PATIENT-SIDEBAR) auto;
+    padding-bottom: 0;
 }
 
 
 .patient-content{
-    background-color: white;
+    height: 40em;
+    
 }
