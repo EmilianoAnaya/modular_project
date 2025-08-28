@@ -33,7 +33,7 @@ function PatientSidebar(){
                 </div>
 
                 <div className="patient-sidebar-buttons">
-                    <div className="sidebar-button">
+                    <div className="sidebar-button" onClick={() => navigation("/patient/notes")}>
                         <img src="/assets/pen.svg"/>
                         <label>Notes</label>
                     </div>
