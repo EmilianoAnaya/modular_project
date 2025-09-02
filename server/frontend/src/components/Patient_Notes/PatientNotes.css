@@ -1,0 +1,20 @@
+/* Background notes section */
+.notes-container {
+  background-color: var(--COLOR-DASHBOARD);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+ 
+}
+
+/* White card*/
+.notes-card {
+  background-color: white;
+  border-radius: 1.5em;
+  padding: 2em 3em;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
