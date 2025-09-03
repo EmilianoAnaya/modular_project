@@ -79,7 +79,7 @@ def register():
     try:
         data = request.get_json()
         
-        required_fields = ['first_name', 'last_name', 'email', 'password']
+        required_fields = ['first_name', 'last_name', 'email', 'gender', 'date_of_birth', 'city', 'country', 'password']
         if not all(field in data for field in required_fields):
             return jsonify({'error': 'All fields are required'}), 400
         
@@ -109,10 +109,10 @@ def register():
             create_user_query = '\n'.join(create_user_query).strip()
         
         role = data.get('role', 'Patient')  # Default role
-        
+        'first_name', 'last_name', 'email', 'gender', 'date_of_birth', 'city', 'country', 'password'
         result = db.execute_query(
             create_user_query,
-            (data['first_name'], data['last_name'], data['email'], 
+            (data['first_name'], data['last_name'], data['email'], data['gender'], data['date_of_birth'], data['city'], data['country'], 
              hashed_password.decode('utf-8'), role)
         )
         
