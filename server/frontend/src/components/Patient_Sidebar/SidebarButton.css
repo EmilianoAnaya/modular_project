@@ -1,0 +1,20 @@
+
+/* Buttons */
+.sidebar-button{
+    display: flex;
+    align-items: center;
+    height: 3em;
+    column-gap: 1em;
+    padding-left: 1em;
+    font-family: var(--FONT-KOTTA-ONE);
+    font-size: 1.1em;
+    user-select: none;
+}
+
+.sidebar-button:hover{
+    background-color: #1090B4;
+}
+
+.is-active{
+    background-color: #3CD8C7;
+}
