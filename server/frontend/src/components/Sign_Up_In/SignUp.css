@@ -18,7 +18,21 @@
     display: flex;
     flex-wrap: wrap;
     gap: 3em;
-    width: 80%;
+    width: 100%;
     justify-content: center;
     margin: 0 auto;
+}
+
+.si-up-in-select{
+    width: 20em;
+    border-radius: 1em;
+    height: auto;
+    padding: 0.6em 1em;
+    font-family: var(--FONT-KOTTA-ONE);
+    border-color: transparent;
+    box-shadow: inset .3em .3em rgba(0, 0, 0, 0.4);
+}
+
+.si-in-screen{
+    width: 18em !important;  
 }
