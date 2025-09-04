@@ -1,37 +1,36 @@
 import './PatientNav.css'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useState } from 'react'
 
 function PatientNav() {
-    const navigate = useNavigate()
-    const location = useLocation()
-
-    const currentLocation = location.pathname
-
-    const activePage = (path) => currentLocation === path ? 'active-page' : ''
+    const [activeSection, setActiveSection] = useState('Allergies')
 
     const sections = [
-        { path: '/Patient/Allergies', label: 'Allergies' },
-        { path: '/Patient/SurgicalHistory', label: 'Surgical History' },
-        { path: '/Patient/Habits', label: 'Habits and Lifestyle' },
-        { path: '/Patient/FamilyHistory', label: 'Family History' },
-        { path: '/Patient/ChronicDiseases', label: 'Chronic Diseases' }
+        { id: 'Allergies', label: 'Allergies' },
+        { id: 'SurgicalHistory', label: 'Surgical History' },
+        { id: 'Habits', label: 'Habits and Lifestyle' },
+        { id: 'FamilyHistory', label: 'Family History' },
+        { id: 'ChronicDiseases', label: 'Chronic Diseases' },
     ]
 
+    const activeClass = (id) => activeSection === id ? 'active-page' : ''
+
     return (
-        <div id='patient-nav'>
-            {sections.map((section, index) => (
-                <div key={section.path} className="patient-nav-item">
-                    <p
-                        className={`patient-nav-text ${activePage(section.path)}`}
-                        onClick={() => navigate(section.path)}
-                    >
-                        {section.label}
-                    </p>
-                    {index < sections.length - 1 && (
-                        <img src='/assets/VerticalSeparator.svg' alt="" />
-                    )}
-                </div>
-            ))}
+        <div>
+            <div id='patient-nav'>
+                {sections.map((section, index) => (
+                    <div key={section.id} className="patient-nav-item">
+                        <p
+                            className={`patient-nav-text ${activeClass(section.id)}`}
+                            onClick={() => setActiveSection(section.id)}
+                        >
+                            {section.label}
+                        </p>
+                        {index < sections.length - 1 && (
+                            <img src='/assets/VerticalSeparator.svg' alt="" />
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
