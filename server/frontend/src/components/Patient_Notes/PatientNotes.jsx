@@ -1,13 +1,16 @@
-import React from "react"
+import PatientNav from "../Patient_Navbar/PatientNav";
 import "./PatientNotes.css"
 
 function PatientNotes() {
   return (
-    <div className="notes-container">
-      <div className="notes-card">
-        <h1>Notes</h1>
-      </div>
-    </div>
+    <>
+        <PatientNav />
+        <div className="notes-container">
+          <div className="notes-card">
+            <h1>Notes</h1>
+          </div>
+        </div>
+    </>
   );
 }
 

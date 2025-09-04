@@ -1,9 +1,11 @@
+import "./styles/Patient.css"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainNavbar from "./components/Main_Navbar/MainNavbar"
+import PatientAgenda from "./components/Patient_Agenda/PatientAgenda"
 import PatientSidebar from "./components/Patient_Sidebar/PatientSidebar"
 import PatientNotes from "./components/Patient_Notes/PatientNotes"
-import PatientNav from "./components/Patient_Navbar/PatientNav"
-import "./styles/Patient.css"
+import PatientRecord from "./components/Patient_Record/PatientRecord";
+
 
 function Patient(){
     return (
@@ -12,10 +14,10 @@ function Patient(){
             <div className="main-container patient-container">
                 <PatientSidebar />
                 <div className="patient-content">
-                    <PatientNav />
                     <Routes>
-                        <Route path="notes" element={<PatientNotes />} />
-                        <Route path="/" element={<div>Bienvenido al paciente</div>} />
+                        <Route path="/" element={<PatientAgenda />} />
+                        <Route path="Notes" element={<PatientNotes />} />
+                        <Route path="Record" element={<PatientRecord />} />
                     </Routes>
                 </div>
             </div>

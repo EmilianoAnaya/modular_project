@@ -13,7 +13,7 @@ function MainNavbar() {
         <>
             <div id="header">
                 <div id="header-content">
-                    <h1 id="header-logo" onClick={() => navigate(inDashboard ? '/Dashboard' : '/')}>MediRecord</h1>
+                    <h1 id="header-logo" onClick={() => navigate(inDashboard ? '/Dashboard' : '/')}>MedTrackr</h1>
                     <div id="header-options">
                         {!inDashboard && (
                             <>

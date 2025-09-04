@@ -1,8 +1,17 @@
-import { useNavigate } from "react-router-dom"
 import "./PatientSidebar.css"
+
+import { useNavigate } from "react-router-dom"
+import SidebarButton from "./SidebarButton";
 
 function PatientSidebar(){
     const navigation = useNavigate();
+
+    const sidebarButtons = [
+        { title : "Notes", img_route : "pen.svg", navigation_route : "/Notes" },
+        { title : "Record", img_route : "file-user.svg", navigation_route : "/Record" },
+        { title : "Agenda", img_route : "calendar-days.svg", navigation_route : "" },
+        { title : "Tendencies", img_route : "chart-no-axes-combined.svg", navigation_route : "/Tendencies" },
+    ]
 
     return (
         <>
@@ -33,22 +42,14 @@ function PatientSidebar(){
                 </div>
 
                 <div className="patient-sidebar-buttons">
-                    <div className="sidebar-button" onClick={() => navigation("/patient/notes")}>
-                        <img src="/assets/pen.svg"/>
-                        <label>Notes</label>
-                    </div>
-                    <div className="sidebar-button">
-                        <img src="/assets/file-user.svg"/>
-                        <label>Record</label>
-                    </div>
-                    <div className="sidebar-button">
-                        <img src="/assets/calendar-days.svg"/>
-                        <label>Agenda</label>
-                    </div>
-                    <div className="sidebar-button">
-                        <img src="/assets/chart-no-axes-combined.svg"/>
-                        <label>Tendencies</label>
-                    </div>
+                    {sidebarButtons.map((button) => (
+                        <SidebarButton 
+                            key={button.title}
+                            title={button.title}
+                            img_route={button.img_route}
+                            navigation_route={button.navigation_route}
+                        />
+                    ))}
                 </div>
             </div>
         </>
