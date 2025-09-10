@@ -68,7 +68,7 @@ function SignUp() {
                 <form>
                     <div id='sign-up-inputs-container'>
                     <input
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type='text' 
                         placeholder='Name'
                         name='first_name'
@@ -76,15 +76,21 @@ function SignUp() {
                         onChange={handleInputChange}
                     />
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="text" 
                         placeholder='Surname'
                         name='last_name'
                         value={formData.last_name}
                         onChange={handleInputChange}
                     />
+                    <select name="Gender" defaultValue="none" className="si-up-in-select">
+                        <option value="none">-- Gender --</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">other</option>
+                    </select>
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in- si-in-screen" 
                         type="email" 
                         placeholder='Email'
                         name='email'
@@ -92,14 +98,14 @@ function SignUp() {
                         onChange={handleInputChange}
                     />
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="date"
                         name='date_of_birth'
                         value={formData.date_of_birth}
                         onChange={handleInputChange}
                     />
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="text" 
                         placeholder='Country'
                         name='country'
@@ -107,7 +113,7 @@ function SignUp() {
                         onChange={handleInputChange}
                     />
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="text" 
                         placeholder='City'
                         name='city'
@@ -115,7 +121,7 @@ function SignUp() {
                         onChange={handleInputChange}
                     />
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="password" 
                         placeholder='Password'
                         name='password'
@@ -123,7 +129,7 @@ function SignUp() {
                         onChange={handleInputChange}
                     />
                     <input 
-                        className="si-up-in-inputs" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="password" 
                         placeholder='Confirm Password'
                         name='confirm_password'
