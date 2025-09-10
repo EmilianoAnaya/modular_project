@@ -108,19 +108,44 @@ def register():
             create_user_query = [line for line in create_user_query if not line.strip().startswith('--')]
             create_user_query = '\n'.join(create_user_query).strip()
         
-        role = data.get('role', 'Patient')  # Default role
-        'first_name', 'last_name', 'email', 'gender', 'date_of_birth', 'city', 'country', 'password'
+        role = 'Doctor'
+        
         result = db.execute_query(
             create_user_query,
             (data['first_name'], data['last_name'], data['email'], data['gender'], data['date_of_birth'], data['city'], data['country'], 
              hashed_password.decode('utf-8'), role)
         )
         
-        if result:
-            return jsonify({'message': 'User created successfully'}), 201
-        else:
+        if not result:
             return jsonify({'error': 'Failed to create user'}), 500
-            
+        
+        new_user = db.execute_query(get_user_query, (data['email'],), fetch_one=True)
+        
+        if not new_user:
+            return jsonify({'error': 'Failed to retrieve created user'}), 500
+        
+        user_id = new_user['id']
+        
+        doctor_sql_path = base_path / 'database' / 'queries' / 'doctor_queries.sql'
+        with open(doctor_sql_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            create_doctor_query = queries[0].split('\n')
+            create_doctor_query = [line for line in create_doctor_query if not line.strip().startswith('--')]
+            create_doctor_query = '\n'.join(create_doctor_query).strip()
+        
+        # Insertar doctor con campos NULL por ahora
+        doctor_result = db.execute_query(create_doctor_query, (user_id,))
+        
+        if not doctor_result:
+            # Si falla crear doctor, eliminar el usuario creado (rollback manual)
+            return jsonify({'error': 'Failed to create doctor profile'}), 500
+        
+        return jsonify({
+            'message': 'Doctor registered successfully',
+            'user_id': user_id,
+            'role': role
+        }), 201
+        
     except Exception as e:
         print(f"Register error: {e}")
         return jsonify({'error': 'Internal server error'}), 500
