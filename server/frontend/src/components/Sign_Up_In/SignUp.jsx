@@ -18,12 +18,12 @@ function SignUp() {
                             <option value="none">-- Gender --</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="other">other</option>
+                            <option value="other">Other</option>
                         </select>
                         <input className="si-up-in-inputs si-in-screen" type="email" placeholder='Email'/>
                         <input className="si-up-in-inputs si-in-screen" type="date"/>
-                        <input className="si-up-in-inputs si-in-screen" type="text" placeholder='Country'/>
                         <input className="si-up-in-inputs si-in-screen" type="text" placeholder='City'/>
+                        <input className="si-up-in-inputs si-in-screen" type="text" placeholder='Country'/>
                         <input className="si-up-in-inputs si-in-screen" type="password" placeholder='Password'/>
                         <input className="si-up-in-inputs si-in-screen" type="password" placeholder='Confirm Password'/>
                     </div>
