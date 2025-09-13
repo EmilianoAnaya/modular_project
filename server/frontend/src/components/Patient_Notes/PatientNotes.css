@@ -16,7 +16,7 @@
  
 }
 
-/* White card*/
+/* White card */
 .notes-card {
   background-color: white;
   border-radius: 1.5em;
@@ -26,4 +26,38 @@
   max-height: 55vh;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   overflow-y: auto;
+}
+
+/* Editable note */
+.editable-note {
+  flex: 1;
+  margin-top: 1em;
+  padding: 0;
+  outline: none;
+  font-size: 1em;
+  font-family: var(--FONT-INRIA-SANS);
+  white-space: pre-wrap;
+  overflow-y: hidden;
+}
+
+/* Save button */
+.save-button {
+  font-family: var(--FONT-INRIA-SANS);
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #51A9E9;       
+  border-color: transparent;
+  border-radius: 2em;
+  height: 2.2em;
+  padding: 0.2em 1.5em;
+  box-sizing: border-box;
+  box-shadow: 0 0.5em 0.5em rgba(0, 0, 0, 0.4);
+
+  display: block;                  
+  margin: 1em auto 0 auto;
+  transition: 0.2s;         
+}
+
+.save-button:hover {
+  background-color: #3f8acb; 
 }
