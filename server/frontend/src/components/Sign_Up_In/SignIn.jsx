@@ -51,8 +51,8 @@ function SignIn(){
                         <button type='button' className='si-up-in-buttons' onClick={() => navigate('/')}>Cancel</button>
                         <button type='button' className='si-up-in-buttons' onClick={handleLogin}>Log In</button>
                     </div>
-                    <u className='si-in-font'>Forgot Your Password?</u>
-                    <p className='si-in-font'>Don't have an account? <b><u>Register</u></b> </p> 
+                    <u className='si-in-font' style={{cursor: 'pointer'}} onClick={() => navigate('/ForgotPassword')}>Forgot Your Password?</u>
+                    <p className='si-in-font'>Don't have an account?{' '} <b><u style={{cursor: 'pointer'}} onClick={() => navigate('/SignUp')}>Register</u></b> </p> 
                 </form>
             </div>
         </>
