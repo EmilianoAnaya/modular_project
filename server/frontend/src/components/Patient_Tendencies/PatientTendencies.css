@@ -1,0 +1,19 @@
+
+.patient-tendencies-cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+
+.patient-tend-info{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.patient-tend-cont{
+    width: 49%;
+    height: 18em;
+}

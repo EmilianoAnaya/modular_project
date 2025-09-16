@@ -1,10 +1,10 @@
 import './Section.css'
 import Heading from '../Heading/Heading'
 
-function Section({ headingText, children }){
+function Section({ headingText, textAlignment="start",  children }){
     return (
         <>
-            <Heading headingText={headingText} />
+            <Heading headingText={headingText} textAlignment={textAlignment}/>
             <div className='section-content'>
                 { children }
             </div>
