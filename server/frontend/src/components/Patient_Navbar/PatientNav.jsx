@@ -1,15 +1,13 @@
 import './PatientNav.css'
-import { useState } from 'react'
 
-function PatientNav() {
-    const [activeSection, setActiveSection] = useState('Allergies')
-
+function PatientNav({activeSection, setActiveSection}) {
+    
     const sections = [
         { id: 'Allergies', label: 'Allergies' },
-        { id: 'SurgicalHistory', label: 'Surgical History' },
+        { id: 'Surgical History', label: 'Surgical History' },
         { id: 'Habits', label: 'Habits and Lifestyle' },
-        { id: 'FamilyHistory', label: 'Family History' },
-        { id: 'ChronicDiseases', label: 'Chronic Diseases' },
+        { id: 'Family History', label: 'Family History' },
+        { id: 'Chronic Diseases', label: 'Chronic Diseases' },
     ]
 
     const activeClass = (id) => activeSection === id ? 'active-page' : ''

@@ -84,10 +84,10 @@ function SignUp() {
                         onChange={handleInputChange}
                     />
                     <select name="Gender" defaultValue="none" className="si-up-in-select">
-                        <option value="none">-- Gender --</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">other</option>
+                            <option value="none">-- Gender --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
                     </select>
                     <input 
                         className="si-up-in- si-in-screen" 
