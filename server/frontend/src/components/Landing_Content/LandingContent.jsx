@@ -21,7 +21,7 @@ function LandingContent(){
             </div>
             <div className='home-content' id="home-right-content">
                 <div id='home-image-container'>
-                    <img src='/assets/example.jpg' id='home-image'/>
+                    <img src='/assets/MedTrackrLogo.jpg' id='home-image'/>
                 </div>
             </div>
         </>
