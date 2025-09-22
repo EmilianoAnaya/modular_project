@@ -30,6 +30,9 @@
     /* background-color: cyan; */
 }
 
+#landing-container {
+    padding-top: 4em; 
+}
 /* Text */
 
 .home-header{
