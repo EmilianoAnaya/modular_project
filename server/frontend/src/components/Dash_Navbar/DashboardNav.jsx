@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './DashboardNav.css'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 function DashboardNav(){
     const navigation = useNavigate()
     const location = useLocation()
+    const [doctorName, setDoctorName] = useState("Doctor Name")
 
     const currentLocation = location.pathname
 
     const activePage = (path) => currentLocation === path ? 'active-page' : ''
 
+    useEffect(() => {
+        const firstName = localStorage.getItem('userFirstName')
+        const lastName = localStorage.getItem('userLastName')
+
+        if (firstName && lastName) {
+            setDoctorName(`${firstName} ${lastName}`)
+        } else if (firstName) {
+            setDoctorName(firstName)
+        }
+    }, [])
+
     const navSections = [
-        { path  : "/Dashboard/Profile" , name : "Doctor Name" },
+        { path  : "/Dashboard/Profile" , name : doctorName },
         { path  : "/Dashboard" , name : "Home"},
         { path  : "/Dashboard/Patients" , name : "Patients"}
     ]
