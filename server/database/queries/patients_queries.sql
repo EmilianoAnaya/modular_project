@@ -1,7 +1,7 @@
 -- Create new patient record (linked to user)
--- @param user_id: int (FK from users table)
+-- @param user_id: int (FK from users table), token: string
 INSERT INTO patients (user_id, token)
-VALUES (%s, '123');
+VALUES (%s, %s);
 
 -- Get patient by user_id
 -- @param user_id: int

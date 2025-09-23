@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from pathlib import Path
 from app.utils.database import db
+from app.utils.token_generator import generate_patient_token
 
 patients_bp = Blueprint('patients', __name__)
 
@@ -73,8 +74,11 @@ def register_patient():
             create_patient_query = [line for line in create_patient_query if not line.strip().startswith('--')]
             create_patient_query = '\n'.join(create_patient_query).strip()
 
+        # Generar token único para el paciente
+        patient_token = generate_patient_token()
+
         # Insertar patient
-        patient_result = db.execute_query(create_patient_query, (user_id,))
+        patient_result = db.execute_query(create_patient_query, (user_id, patient_token))
 
         if not patient_result:
             # Si falla crear patient, el usuario ya se creó (no hay rollback por ahora)
@@ -88,4 +92,68 @@ def register_patient():
 
     except Exception as e:
         print(f"Register patient error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@patients_bp.route('/search', methods=['GET'])
+def search_patients():
+    try:
+        search_term = request.args.get('q', '').strip()
+
+        if not search_term:
+            return jsonify({'error': 'Search term is required'}), 400
+
+        base_path = Path(__file__).parent.parent.parent.parent
+        patients_sql_path = base_path / 'database' / 'queries' / 'patients_queries.sql'
+
+        with open(patients_sql_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            # Query #3: Get all patients with user information
+            get_all_patients_query = queries[2].split('\n')
+            get_all_patients_query = [line for line in get_all_patients_query if not line.strip().startswith('--')]
+            get_all_patients_query = '\n'.join(get_all_patients_query).strip()
+
+        # Modificar la query para agregar filtro de búsqueda
+        search_query = get_all_patients_query.replace(
+            "WHERE u.status = 'Active'",
+            "WHERE u.status = 'Active' AND (u.first_name LIKE %s OR u.last_name LIKE %s OR CONCAT(u.first_name, ' ', u.last_name) LIKE %s)"
+        )
+
+        # Preparar término de búsqueda con wildcards
+        search_pattern = f"%{search_term}%"
+
+        patients = db.execute_query(
+            search_query,
+            (search_pattern, search_pattern, search_pattern),
+            fetch_all=True
+        )
+
+        if not patients:
+            return jsonify({
+                'message': 'No patients found',
+                'patients': []
+            }), 200
+
+        # Formatear respuesta
+        patients_list = []
+        for patient in patients:
+            patients_list.append({
+                'patient_id': patient['patient_id'],
+                'user_id': patient['user_id'],
+                'first_name': patient['first_name'],
+                'last_name': patient['last_name'],
+                'email': patient['email'],
+                'gender': patient['gender'],
+                'date_of_birth': patient['date_of_birth'].isoformat() if patient['date_of_birth'] else None,
+                'city': patient['city'],
+                'country': patient['country'],
+                'created_at': patient['created_at'].isoformat() if patient['created_at'] else None
+            })
+
+        return jsonify({
+            'message': 'Patients found successfully',
+            'patients': patients_list
+        }), 200
+
+    except Exception as e:
+        print(f"Search patients error: {e}")
         return jsonify({'error': 'Internal server error'}), 500
