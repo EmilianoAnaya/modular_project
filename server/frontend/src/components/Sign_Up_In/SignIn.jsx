@@ -24,6 +24,14 @@ function SignIn(){
             const data = await response.json();
 
             if (response.ok) {
+                // Guardar datos del usuario en localStorage
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('userFirstName', data.user.first_name || '');
+                localStorage.setItem('userLastName', data.user.last_name || '');
+                localStorage.setItem('userEmail', data.user.email || '');
+                localStorage.setItem('userRole', data.user.role || '');
+
                 navigate('/Dashboard');
             } else {
                 alert('Login failed: ' + data.error);

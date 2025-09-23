@@ -10,6 +10,8 @@ def create_app():
     
     # Registrar blueprints
     from app.routes.auth import auth_bp
+    from app.routes.patients import patients_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(patients_bp, url_prefix='/api/patients')
     
     return app
