@@ -65,6 +65,8 @@ def login():
             'token': token,
             'user': {
                 'id': user['id'],
+                'first_name': user['first_name'],
+                'last_name': user['last_name'],
                 'email': user['email'],
                 'role': user['role']
             }
@@ -148,4 +150,94 @@ def register():
         
     except Exception as e:
         print(f"Register error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@auth_bp.route('/profile/<int:user_id>', methods=['GET'])
+def get_user_profile(user_id):
+    try:
+        # Leer query para obtener datos del perfil
+        base_path = Path(__file__).parent.parent.parent.parent
+        sql_file_path = base_path / 'database' / 'queries' / 'user_queries.sql'
+
+        with open(sql_file_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            # Query #3: Get user profile data
+            get_profile_query = queries[2].split('\n')
+            get_profile_query = [line for line in get_profile_query if not line.strip().startswith('--')]
+            get_profile_query = '\n'.join(get_profile_query).strip()
+
+        user_profile = db.execute_query(get_profile_query, (user_id,), fetch_one=True)
+
+        if not user_profile:
+            return jsonify({'error': 'User not found'}), 404
+
+        return jsonify({
+            'message': 'Profile retrieved successfully',
+            'user': {
+                'id': user_profile['id'],
+                'first_name': user_profile['first_name'],
+                'last_name': user_profile['last_name'],
+                'email': user_profile['email'],
+                'gender': user_profile['gender'],
+                'date_of_birth': user_profile['date_of_birth'].isoformat() if user_profile['date_of_birth'] else None,
+                'city': user_profile['city'],
+                'country': user_profile['country']
+            }
+        }), 200
+
+    except Exception as e:
+        print(f"Get profile error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@auth_bp.route('/profile/<int:user_id>', methods=['PUT'])
+def update_user_profile(user_id):
+    try:
+        data = request.get_json()
+
+        # Validar que todos los campos requeridos estén presentes y no vacíos
+        required_fields = ['first_name', 'last_name', 'email', 'gender', 'date_of_birth', 'city', 'country']
+        for field in required_fields:
+            if not data.get(field) or str(data.get(field)).strip() == '':
+                return jsonify({'error': f'{field} is required and cannot be empty'}), 400
+
+        # Verificar que el email no esté siendo usado por otro usuario
+        base_path = Path(__file__).parent.parent.parent.parent
+        sql_file_path = base_path / 'database' / 'queries' / 'auth_queries.sql'
+
+        with open(sql_file_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            get_user_query = queries[1].split('\n')
+            get_user_query = [line for line in get_user_query if not line.strip().startswith('--')]
+            get_user_query = '\n'.join(get_user_query).strip()
+
+        existing_user = db.execute_query(get_user_query, (data['email'],), fetch_one=True)
+
+        # Si existe un usuario con ese email y no es el usuario actual
+        if existing_user and existing_user['id'] != user_id:
+            return jsonify({'error': 'Email already exists'}), 400
+
+        # Actualizar datos del usuario
+        user_sql_path = base_path / 'database' / 'queries' / 'user_queries.sql'
+        with open(user_sql_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            # Query #4: Update user profile data
+            update_query = queries[3].split('\n')
+            update_query = [line for line in update_query if not line.strip().startswith('--')]
+            update_query = '\n'.join(update_query).strip()
+
+        result = db.execute_query(
+            update_query,
+            (data['first_name'], data['last_name'], data['email'], data['gender'],
+             data['date_of_birth'], data['city'], data['country'], user_id)
+        )
+
+        if not result:
+            return jsonify({'error': 'Failed to update profile'}), 500
+
+        return jsonify({
+            'message': 'Profile updated successfully'
+        }), 200
+
+    except Exception as e:
+        print(f"Update profile error: {e}")
         return jsonify({'error': 'Internal server error'}), 500
