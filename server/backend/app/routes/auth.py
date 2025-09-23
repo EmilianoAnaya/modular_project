@@ -220,8 +220,8 @@ def update_user_profile(user_id):
         user_sql_path = base_path / 'database' / 'queries' / 'user_queries.sql'
         with open(user_sql_path, 'r') as file:
             queries = file.read().split('\n\n')
-            # Query #6: Update user profile data
-            update_query = queries[5].split('\n')
+            # Query #4: Update user profile data
+            update_query = queries[3].split('\n')
             update_query = [line for line in update_query if not line.strip().startswith('--')]
             update_query = '\n'.join(update_query).strip()
 
