@@ -9,18 +9,15 @@ patients_bp = Blueprint('patients', __name__)
 def register_patient():
     try:
         data = request.get_json()
-        print(f"Received data: {data}")  # Debug log
 
         required_fields = ['first_name', 'last_name', 'email', 'gender', 'date_of_birth', 'city', 'country']
         if not all(field in data for field in required_fields):
             missing_fields = [field for field in required_fields if field not in data]
-            print(f"Missing fields: {missing_fields}")  # Debug log
             return jsonify({'error': f'Missing required fields: {missing_fields}'}), 400
 
         # Validar que los campos no estén vacíos
         for field in required_fields:
             if not data.get(field) or str(data.get(field)).strip() == '':
-                print(f"Empty field detected: {field} = '{data.get(field)}'")  # Debug log
                 return jsonify({'error': f'{field} is required and cannot be empty'}), 400
 
         # Verificar si el usuario ya existe
