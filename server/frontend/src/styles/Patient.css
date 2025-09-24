@@ -5,8 +5,12 @@
     padding-bottom: 0;
 }
 
-
 .patient-content{
-    height: 40em;
-    
+    height: 50em;
+}
+
+@media screen and (max-width: 100em){
+    .patient-content{
+        height: 40em;
+    }
 }
