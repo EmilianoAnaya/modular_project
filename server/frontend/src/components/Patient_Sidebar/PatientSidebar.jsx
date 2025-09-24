@@ -32,10 +32,10 @@ function PatientSidebar(){
                     </div>
 
                     <div className="sidebar-flex">
-                        <div className="head-button h-b-left">
+                        <div className="head-button h-b-left" onClick={() => navigation("/Patient/Consult")}>
                             Consult
                         </div>
-                        <div className="head-button h-b-right">
+                        <div className="head-button h-b-right" onClick={() => navigation("/Patient/Study")}>
                             Study
                         </div>
                     </div>
