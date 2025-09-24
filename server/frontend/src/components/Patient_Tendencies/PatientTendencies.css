@@ -16,4 +16,23 @@
 .patient-tend-cont{
     width: 49%;
     height: 18em;
+    box-sizing: border-box;
+    overflow: auto;
+    overflow-y: auto;
+}
+
+.major-points{
+    box-shadow: inset -.2em .2em .1em rgb(0, 0, 0, .4);
+    border-radius: 0 2em;
+}
+
+.summary-tend{
+    box-shadow: inset .2em .2em .1em rgb(0, 0, 0, .4);
+    border-radius: 2em 0em;
+}
+
+.tendencies-info{
+    min-height: 12em;
+    height: auto;
+    text-align: justify;
 }
