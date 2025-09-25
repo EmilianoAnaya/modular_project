@@ -7,6 +7,7 @@
 
 .patient-content{
     height: 50em;
+    overflow-y: auto;
 }
 
 @media screen and (max-width: 100em){

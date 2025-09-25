@@ -1,0 +1,37 @@
+
+/* Containers */
+
+.consult-box{
+    border: 1px solid black;
+}
+
+.consult-tools{
+    width: 100%;
+    max-width: 100%;
+    height: 48%;
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: grid;
+}
+
+.patient-consult-container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2em;
+    padding: 1em;
+    height: 50em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+
+.con-tls-1{
+    grid-template-columns: 20% auto;
+    column-gap: 2em;
+}
+
+.con-tls-2{
+    grid-template-columns: 20% auto 30%;
+    column-gap: 2em;
+}
