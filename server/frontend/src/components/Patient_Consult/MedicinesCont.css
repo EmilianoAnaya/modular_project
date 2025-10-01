@@ -1,0 +1,6 @@
+
+/* Table distribution */
+
+.medicines-table{
+    grid-template-columns: 40% 20% 40%;
+}

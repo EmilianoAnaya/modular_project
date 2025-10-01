@@ -1,0 +1,6 @@
+
+/* Table distribution */
+
+.problems-table{
+    grid-template-columns: 25% 25% 15% 15% 20%;
+}
