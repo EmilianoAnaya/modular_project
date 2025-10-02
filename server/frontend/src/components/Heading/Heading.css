@@ -1,4 +1,10 @@
 
+.heading-cont{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .heading{
     font-family: var(--HEADING-FONT);
     font-weight: 400;
@@ -16,4 +22,22 @@
     border-radius: 2em;
     margin: 0 auto;
     margin-bottom: .6em;
+}
+
+/* Buttons */
+.heading-button{
+    display: flex;
+    background-color: #4598D5;
+    padding: .5em;
+    border-radius: 1em;
+    cursor: pointer;
+}
+
+.heading-button:hover{
+    background-color: #D2EAFF;
+}
+
+/* Images */
+.heading-button img{
+    size: 1em;
 }

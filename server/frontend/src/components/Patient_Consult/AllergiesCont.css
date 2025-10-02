@@ -1,0 +1,6 @@
+
+/* Table distribution */
+
+.allergies-table{
+    grid-template-columns: 50% auto;
+}
