@@ -67,6 +67,10 @@
   background-color: #D2EAFF;
 }
 
+.no_padding{
+  padding: 0 !important;
+}
+
 .input-container{
   display: flex;
   flex-wrap: wrap;
