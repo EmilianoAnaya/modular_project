@@ -1,6 +1,7 @@
+import ConsultWindow from './ConsultWindow'
 import './ProblemsCont.css'
 
-function ProblemsCont({ contents }){
+function ProblemsCont({ window }){
     return (
         <>
             <div className='basic-container consult-info-box table-info'>
@@ -30,6 +31,8 @@ function ProblemsCont({ contents }){
                     <div className='consult-cell centered'>constant</div>
                 </div>
             </div>
+
+            <ConsultWindow showWindow={window}/>
         </>
     )
 }

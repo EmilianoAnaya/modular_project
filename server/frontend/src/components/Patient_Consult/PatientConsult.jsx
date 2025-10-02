@@ -2,16 +2,20 @@ import Heading from '../Heading/Heading'
 import AllergiesCont from './AllergiesCont'
 import MedicinesCont from './MedicinesCont'
 import NotesCont from './NotesCont'
-import './PatientConsult.css'
 import ProblemsCont from './ProblemsCont'
+import './PatientConsult.css'
 
-const vitals_info = [
-    "Height (Mts)", "Weight (KG)", "Body Mass Index", 
-    "Temperature (C)", "Blood Pressure", "Pulse",
-    "Respiratory Rate"
-]
+import { useState } from 'react'
 
 function PatientConsult(){
+    const vitals_info = [
+        "Height (Mts)", "Weight (KG)", "Body Mass Index", 
+        "Temperature (C)", "Blood Pressure", "Pulse",
+        "Respiratory Rate"
+    ]
+
+    const [problemsWindow, setProblemsWindow] = useState(false)
+
     return (
         <>
             <div className='patient-consult-container'>
@@ -29,8 +33,8 @@ function PatientConsult(){
                     </div>
                     
                     <div className='consult-box con-problems'>
-                        <Heading headingText={"Problems"} trigger={"problems-window"}/>
-                        <ProblemsCont />
+                        <Heading headingText={"Problems"} trigger={[problemsWindow, setProblemsWindow]}/>
+                        <ProblemsCont window={[problemsWindow, setProblemsWindow]}/>
                     </div>
                 </div>
                 <div className='consult-tools con-tls-2'>
