@@ -12,11 +12,11 @@ function MedicinesCont({ window }){
                     
                     <div className='consult-cell centered'>Paracetamol</div>
                     <div className='consult-cell centered'>500mg</div>
-                    <div className='consult-cell centered'>1 tableta. Via oral. 2 veces al día. Por 30 días</div>
+                    <div className='consult-cell'>1 tableta. Via oral. 2 veces al día. Por 30 días</div>
                     
                     <div className='consult-cell centered'>Cefalexina (Septilisin)</div>
                     <div className='consult-cell centered'>500mg</div>
-                    <div className='consult-cell centered'>Tomar via oral 8 (uno) c/6 (seis) hs por 7/(siete) días</div>
+                    <div className='consult-cell'>Tomar via oral 8 (uno) c/6 (seis) hs por 7/(siete) días</div>
                     
                 </div>
             </div>

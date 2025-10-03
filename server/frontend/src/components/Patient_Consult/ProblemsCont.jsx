@@ -33,7 +33,10 @@ function ProblemsCont({ window }){
             </div>
 
             <ConsultWindow windowTitle={"Problems"} showWindow={window}>
-                Hello Problems!    
+                <div className='window-problems-content'>
+                    <div className='block'>hi</div>
+                    <div className='block'>hello</div>
+                </div>
             </ConsultWindow>
         </>
     )

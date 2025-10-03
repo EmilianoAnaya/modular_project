@@ -10,10 +10,10 @@ function AllergiesCont({ window }){
                     <div><h4>Reaction</h4></div>
 
                     <div className='consult-cell centered'>Paracetamol</div>
-                    <div className='consult-cell centered'>Headache</div>
+                    <div className='consult-cell'>Headache</div>
                     
                     <div className='consult-cell centered'>Ibuprofen</div>
-                    <div className='consult-cell centered'>Red skin / Salpullido</div>
+                    <div className='consult-cell'>Red skin / Salpullido</div>
                     
                 </div>
             </div>

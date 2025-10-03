@@ -1,6 +1,8 @@
 
 /* Window */
 .consult-sub-window{
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -15,6 +17,13 @@
     padding: 1em;
     overflow: hidden;
     overflow-y: scroll;
+}
+
+@media screen and (max-width : 100em){
+    .consult-sub-window{
+        top: 40%;
+        height: 70%;
+    }
 }
 
 .consult-overlay {

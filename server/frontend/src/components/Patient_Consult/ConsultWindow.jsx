@@ -13,7 +13,7 @@ function ConsultWindow({ showWindow, windowTitle, children }){
                         <div className='sub-window-return' onClick={() => setShowSubWindow(!showSubWindow)}>
                             <img src='/assets/cross.svg'/>
                         </div>
-                        <Section headingText={windowTitle} >
+                        <Section headingText={windowTitle}>
                             { children }
                         </Section>
                     </div>
