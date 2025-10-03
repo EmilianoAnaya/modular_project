@@ -101,28 +101,3 @@
 .justified{
     text-align: justify;
 }
-
-/* Windows */
-.consult-sub-window{
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: blue;
-    width: 50em;
-    height: 20em;
-    box-sizing: border-box;
-    z-index: 999;
-    border-radius: 8px;
-    padding: 1em;
-}
-
-.consult-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 998;
-}

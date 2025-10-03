@@ -32,7 +32,9 @@ function ProblemsCont({ window }){
                 </div>
             </div>
 
-            <ConsultWindow showWindow={window}/>
+            <ConsultWindow windowTitle={"Problems"} showWindow={window}>
+                Hello Problems!    
+            </ConsultWindow>
         </>
     )
 }

@@ -1,10 +1,11 @@
+import ConsultWindow from './ConsultWindow'
 import './MedicinesCont.css'
 
-function MedicinesCont({ contents }){
+function MedicinesCont({ window }){
     return (
         <>
             <div className='basic-container consult-info-box table-info'>
-                <div className='consult-table allergies-table medicines-table'>
+                <div className='consult-table medicines-table'>
                     <div><h4>Medicine</h4></div>
                     <div><h4>Quantity</h4></div>
                     <div><h4>Instructions</h4></div>
@@ -19,6 +20,10 @@ function MedicinesCont({ contents }){
                     
                 </div>
             </div>
+
+            <ConsultWindow windowTitle={"Medicines"} showWindow={window}>
+                Hello Medicines!
+            </ConsultWindow>
         </>
     )
 }

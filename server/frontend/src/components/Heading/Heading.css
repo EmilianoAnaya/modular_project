@@ -31,6 +31,7 @@
     padding: .5em;
     border-radius: 1em;
     cursor: pointer;
+    user-select: none;
 }
 
 .heading-button:hover{
@@ -40,4 +41,5 @@
 /* Images */
 .heading-button img{
     size: 1em;
+    user-select: none;
 }
