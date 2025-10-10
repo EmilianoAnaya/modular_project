@@ -90,7 +90,7 @@ function SignUp() {
                             <option value="other">Other</option>
                     </select>
                     <input 
-                        className="si-up-in- si-in-screen" 
+                        className="si-up-in-inputs si-in-screen" 
                         type="email" 
                         placeholder='Email'
                         name='email'
