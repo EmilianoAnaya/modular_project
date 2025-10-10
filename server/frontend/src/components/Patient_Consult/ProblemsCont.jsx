@@ -1,6 +1,11 @@
+import ConsultWindow from './ConsultWindow'
+import Heading from '../Heading/Heading'
+import Section from '../Section/Section'
+import BasicInput from '../Basic_Input/BasicInput'
+import BasicSelect from '../BasicSelect/BasicSelect'
 import './ProblemsCont.css'
 
-function ProblemsCont({ contents }){
+function ProblemsCont({ window }){
     return (
         <>
             <div className='basic-container consult-info-box table-info'>
@@ -30,6 +35,52 @@ function ProblemsCont({ contents }){
                     <div className='consult-cell centered'>constant</div>
                 </div>
             </div>
+
+            <ConsultWindow windowTitle={"Problems"} showWindow={window}>
+                <div className='window-problems-content'>
+                    <div className='window-problems-list'>
+                        <Heading headingText={"Problems List"} font_size='1.1em' color='black'/>
+                        <div className='problems-list-content'>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                            <p>Knee Pain</p>
+                        </div>
+                        
+                    </div>
+                    <div className='window-problems-information'>
+                        <div className='problems-information-cont'>
+                            <div className='problems-information-description'>
+                                <Section headingText={"Problems Description"} color='black' font_size='1.1em'>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus tempor urna ac sagittis. Maecenas sit amet libero vitae nibh laoreet rutrum. Vestibulum dignissim leo sed nisi bibendum, quis hendrerit felis convallis. Nam pellentesque nisi eu urna ultricies tincidunt. Proin vehicula quis dolor non scelerisque. Fusce fringilla magna non ex accumsan egestas. In hac habitasse platea dictumst. Nam aliquet pretium eros a congue. Praesent vulputate urna ac sollicitudin pharetra. In hac habitasse platea dictumst. Aenean bibendum imperdiet nisl ut mollis. Mauris efficitur risus a est rhoncus, ut maximus urna consectetur. Donec ac erat fringilla, pretium elit eu, dignissim risus. Sed at ante eget turpis porta tristique in nec neque.
+
+Phasellus rhoncus sem dapibus, cursus nunc blandit, facilisis mauris. Quisque ut odio nisl. Maecenas id neque urna. Mauris semper enim et turpis congue, in sodales mi venenatis. Phasellus imperdiet vestibulum turpis vitae finibus. Quisque sodales risus vitae luctus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam ut justo aliquet, bibendum lectus rutrum, condimentum elit. Duis commodo enim gravida sapien congue, ac vestibulum arcu dignissim. Vivamus mollis mauris in tellus volutpat molestie. Nulla erat nulla, blandit ac aliquam vitae, laoreet vitae elit. 
+                                
+                                </Section>
+                            </div>
+                            <div className='problems-information-entries'>
+                                <BasicInput label={"Onset"} inputType="date" width='12em'/>
+                                <BasicSelect label={"Severity"} options={["Mild", "Moderated", "Severe"]} width='12em'/>
+                                <BasicInput label={"Duration"} width='20em'/>
+                            </div>
+                        </div>
+                        <div className='problems-information-buttons'>
+                            <button className='basic-button'>Save & Continue</button>
+                            <button className='basic-button'>Save</button>
+                        </div>
+                    </div>
+                </div>
+            </ConsultWindow>
         </>
     )
 }

@@ -1,9 +1,9 @@
 
-.basic-input-cont{
-    box-sizing: border-box;
+.basic-select-cont{
+    box-sizing: border-box
 }
 
-.basic-input-cont p{
+.basic-select-cont p{
     margin: 0;
     font-family: var(--FONT-MULISH);
     color: white;
@@ -12,7 +12,7 @@
     user-select: none;
 }
 
-.basic-input-cont input{
+.basic-select-cont select{
     width: 100%;
     padding: .3em 1em;
     font-family: var(--FONT-INRIA-SANS);
