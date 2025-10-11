@@ -26,11 +26,11 @@ function MedicinesCont({ window }){
 
             <ConsultWindow windowTitle={"Medicines"} showWindow={window}>
                 <WindowContentDefault title_list='Medicines List' items_list={["Paracetamol"]}>
-                    <div className='medicine-name'>
+                    <div className='content-default-name'>
                         <BasicInput label={"Medicine Name"} />
                     </div>
         
-                    <div className='medicines-information-description'>
+                    <div className='default-information-description medicines-description'>
                         <Section headingText={"Medicine Instructions"} color='black' font_size='1.1em'>
                             <textarea>
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus tempor urna ac sagittis. Maecenas sit amet libero vitae nibh laoreet rutrum. Vestibulum dignissim leo sed nisi bibendum, quis hendrerit felis convallis. Nam pellentesque nisi eu urna ultricies tincidunt. Proin vehicula quis dolor non scelerisque. Fusce fringilla magna non ex accumsan egestas. In hac habitasse platea dictumst. Nam aliquet pretium eros a congue. Praesent vulputate urna ac sollicitudin pharetra. In hac habitasse platea dictumst. Aenean bibendum imperdiet nisl ut mollis. Mauris efficitur risus a est rhoncus, ut maximus urna consectetur. Donec ac erat fringilla, pretium elit eu, dignissim risus. Sed at ante eget turpis porta tristique in nec neque.
@@ -38,7 +38,7 @@ function MedicinesCont({ window }){
                             </textarea>
                         </Section>
                     </div>
-                    <div className='problems-information-entries'>
+                    <div className='default-information-entries'>
                         <BasicInput label={"Quantity"} width='12em'/>
                     </div>
                 </WindowContentDefault>

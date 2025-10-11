@@ -48,6 +48,43 @@
     box-shadow: 0 -.8em 1em rgb(0, 0, 0, .4);
 }
 
+.content-default-name{
+    margin-bottom: 1em;
+    margin-top: 1em;
+    width: 50%;
+}
+
+.default-information-description{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 1em;
+    border-radius: 2em;
+    box-sizing: border-box;
+    margin-bottom: 2em;
+}
+
+.default-information-description textarea{
+    width: 100%;
+    resize: none;  
+    line-height: 1.4;
+    font-family: var(--FONT-MULISH);
+    border: none;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.default-information-entries{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 10em;
+    row-gap: 2em;
+    margin-bottom: 4em;
+}
+
 /* Paragraphs */
 .default-list-content p{
     margin: 0;

@@ -39,11 +39,11 @@ function ProblemsCont({ window }){
 
             <ConsultWindow windowTitle={"Problems"} showWindow={window}>
                 <WindowContentDefault title_list='Problems list' items_list={["Knee Pain", "Anal Destruction :0"]}>
-                    <div className='problem-name'>
+                    <div className='content-default-name'>
                         <BasicInput label={"Problem Name"} />
                     </div>
                     
-                    <div className='problems-information-description'>
+                    <div className='default-information-description problems-description'>
                         <Section headingText={"Problems Description"} color='black' font_size='1.1em'>
                             <textarea>
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus tempor urna ac sagittis. Maecenas sit amet libero vitae nibh laoreet rutrum. Vestibulum dignissim leo sed nisi bibendum, quis hendrerit felis convallis. Nam pellentesque nisi eu urna ultricies tincidunt. Proin vehicula quis dolor non scelerisque. Fusce fringilla magna non ex accumsan egestas. In hac habitasse platea dictumst. Nam aliquet pretium eros a congue. Praesent vulputate urna ac sollicitudin pharetra. In hac habitasse platea dictumst. Aenean bibendum imperdiet nisl ut mollis. Mauris efficitur risus a est rhoncus, ut maximus urna consectetur. Donec ac erat fringilla, pretium elit eu, dignissim risus. Sed at ante eget turpis porta tristique in nec neque.
@@ -51,7 +51,7 @@ function ProblemsCont({ window }){
                             </textarea>
                         </Section>
                     </div>
-                    <div className='problems-information-entries'>
+                    <div className='default-information-entries'>
                         <BasicInput label={"Onset"} inputType="date" width='12em'/>
                         <BasicSelect label={"Severity"} options={["Mild", "Moderated", "Severe"]} width='12em'/>
                         <BasicInput label={"Duration"} width='12em'/>

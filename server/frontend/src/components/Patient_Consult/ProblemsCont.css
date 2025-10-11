@@ -6,41 +6,11 @@
 }
 
 /* Problem Window Content */
-.problems-information-description{
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    overflow: hidden;
+.problems-description{
     min-height: 10em;
     max-height: 20em;
-    padding: 1em;
-    border-radius: 2em;
-    box-sizing: border-box;
-    margin-bottom: 2em;
 }
 
-.problems-information-description textarea{
-    width: 100%;
+.problems-description textarea{
     min-height: 14em;
-    resize: none;  
-    line-height: 1.4;
-    font-family: var(--FONT-MULISH);
-    border: none;
-    overflow: hidden;
-    overflow-y: scroll;
-}
-
-.problems-information-entries{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    column-gap: 10em;
-    row-gap: 2em;
-    margin-bottom: 4em;
-}
-
-.problem-name{
-    margin-bottom: 1em;
-    margin-top: 1em;
-    width: 50%;
 }
