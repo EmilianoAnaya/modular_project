@@ -4,3 +4,35 @@
 .medicines-table{
     grid-template-columns: 40% 20% 40%;
 }
+
+/* Medicines Window Content */
+.medicines-information-description{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    overflow: hidden;
+    overflow-y: scroll;
+    min-height: 7em;
+    max-height: 20em;
+    padding: 1em;
+    border-radius: 2em;
+    box-sizing: border-box;
+    margin-bottom: 2em;
+}
+
+.medicines-information-description textarea{
+    width: 100%;
+    min-height: 12em;
+    resize: none;  
+    line-height: 1.4;
+    font-family: var(--FONT-MULISH);
+    border: none;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.medicine-name{
+    margin-bottom: 1em;
+    margin-top: 1em;
+    width: 50%;
+}

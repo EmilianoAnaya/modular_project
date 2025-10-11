@@ -27,14 +27,6 @@
     border-radius: 8px;
     padding: 1em;
     overflow: hidden;
-    overflow-y: scroll;
-}
-
-@media screen and (max-width : 100em){
-    .consult-sub-window{
-        top: 40%;
-        height: 70%;
-    }
 }
 
 /* Containers */
@@ -60,4 +52,12 @@
 .sub-window-return img{
     padding-left: .3em;
     padding-bottom: .1em;
+}
+
+/* Responsive */
+@media screen and (max-width : 100em){
+    .consult-sub-window{
+        top: 40%;
+        height: 70%;
+    }
 }

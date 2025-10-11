@@ -28,7 +28,7 @@ function PatientConsult(){
                         <Heading headingText={"Vitals"} />
                         <div className='basic-container consult-info-box vitals-info'>
                             {vitals_info.map((element) => (
-                                <div className='vitals-info-row'>
+                                <div key={element} className='vitals-info-row'>
                                     <span>{element}</span>
                                     <input></input>
                                 </div>

@@ -10,7 +10,7 @@ function BasicSelect({ label, width="17em", options=[], selectID=null}, defaultO
                 <select id={ selectID }style={{  }}>
                     <option value={defaultOption} id={defaultOption}>{defaultOption}</option>
                     {selectOptions.map(option => (
-                        <option value={option} id={option} >{option}</option>
+                        <option key={option} value={option} id={option} >{option}</option>
                     ))}
                 </select>
             </div>
