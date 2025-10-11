@@ -13,10 +13,6 @@
     grid-template-rows: auto 40%;
 }
 
-.box{
-    border: 1px solid black;
-}
-
 .notes-area-cont{
     padding: 1em;
     max-height: 246px;
