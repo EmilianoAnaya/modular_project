@@ -1,0 +1,87 @@
+
+/* Containers */
+.patient-study-container{
+    display: grid;
+    grid-template-columns: 32% auto;
+    column-gap: 4em;
+    height: 100%;
+    padding: 3em;
+    box-sizing: border-box;
+}
+
+.studies-list-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.studies-list{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    min-height: 85%;
+    border-radius: 1em;
+    overflow: hidden;
+}
+
+.studies-list-search{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: .5em;
+    background-color: #107469;
+    box-sizing: border-box;
+}
+
+.studies-list-search input{
+    background-color: transparent;
+    border: none;
+    font-family: var(--FONT-MULISH);
+    font-size: 1.2em;
+    color: white;
+}
+
+.studies-list-search div{
+    min-height: .1em;
+    border-radius: 1em;
+    background-color: white;
+}
+
+.studies-list-items{
+    max-height: 554.8px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.studies-selected-cont{
+    background-color: blue;
+}
+
+/* Lists */
+.studies-list-items ul{
+    margin: .3em 0;
+    padding-left: 2em;
+}
+
+.studies-list-items li{
+    padding: 0 1em;
+}
+
+.study-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Inputs */
+.studies-list-search input::placeholder{
+    color: white;
+}
+
+/* Responsive */
+@media screen and (max-width : 100em){
+    .studies-list-items{
+        max-height: 418.8px;
+    }
+    
+}
