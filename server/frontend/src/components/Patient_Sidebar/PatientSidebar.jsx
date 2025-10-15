@@ -1,10 +1,17 @@
 import "./PatientSidebar.css"
 
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import SidebarButton from "./SidebarButton";
 
 function PatientSidebar(){
     const navigation = useNavigate();
+    const location = useLocation();
+
+    const activeScreen = location.pathname.includes("/Consult")
+                        ? "Consult"
+                        : location.pathname.includes("/Study")
+                        ? "Study"
+                        : null;
 
     const sidebarButtons = [
         { title : "Notes", img_route : "pen.svg", navigation_route : "/Notes" },
@@ -32,10 +39,10 @@ function PatientSidebar(){
                     </div>
 
                     <div className="sidebar-flex">
-                        <div className="head-button h-b-left" onClick={() => navigation("/Patient/Consult")}>
+                        <div className={`head-button h-b-left ${activeScreen === "Consult" ? "patientActive" : ""}`} onClick={() => navigation("/Patient/Consult")}>
                             Consult
                         </div>
-                        <div className="head-button h-b-right" onClick={() => navigation("/Patient/Study")}>
+                        <div className={`head-button h-b-right ${activeScreen === "Study" ? "patientActive" : ""}`} onClick={() => navigation("/Patient/Study")}>
                             Study
                         </div>
                     </div>
