@@ -81,6 +81,7 @@
     height: 10%;
     background-color: #99EFE6;
     box-shadow: 0 .1em .4em .8em rgb(0, 0, 0, .4);
+    z-index: 10;
 }
 
 /* Lists */
