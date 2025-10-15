@@ -1,0 +1,8 @@
+
+/* Containers */
+.study-card-container{
+    width: 10em;
+    height: 18em;
+    background-color: blue;
+    border-radius: 1em;
+}

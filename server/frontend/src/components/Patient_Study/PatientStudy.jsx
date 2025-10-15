@@ -1,4 +1,5 @@
 import './PatientStudy.css'
+import StudyCard from './StudyCard'
 
 function PatientStudy(){
     return(
@@ -18,40 +19,34 @@ function PatientStudy(){
                                         <button>Add</button>
                                     </div>
                                 </li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
+                                <li>
+                                    <div className='study-item'>
+                                        <span>Diabetes</span>
+                                        <button>Add</button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className='study-item'>
+                                        <span>Electroencephalogram</span>
+                                        <button>Add</button>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div className='studies-selected-cont'></div>
+                <div className='studies-selected-cont'>
+                    <div className='selected-studies'>
+                        <StudyCard />
+                        <StudyCard></StudyCard>
+                        <StudyCard></StudyCard>
+                        <StudyCard></StudyCard>
+                        <StudyCard></StudyCard>
+                    </div>
+                    <div className='selected-studies-footer'>
+                        <button className='basic-button'>Save Studies</button>
+                    </div>
+                </div>
             </div>
         </>
     )

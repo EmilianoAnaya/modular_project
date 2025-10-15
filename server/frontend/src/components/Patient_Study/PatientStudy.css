@@ -54,7 +54,33 @@
 }
 
 .studies-selected-cont{
-    background-color: blue;
+    display: flex;
+    flex-direction: column;
+    background-color: #D4FFEC;
+    border-radius: 2em;
+    overflow: hidden;
+}
+
+.selected-studies{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 2.5em;
+    row-gap: 2em;
+    justify-content: center;
+    padding: 1em;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.selected-studies-footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+    background-color: #99EFE6;
+    box-shadow: 0 .1em .4em .8em rgb(0, 0, 0, .4);
 }
 
 /* Lists */
@@ -64,13 +90,43 @@
 }
 
 .studies-list-items li{
+    margin: .8em 0;
     padding: 0 1em;
+    transition: background-color ease-in 70ms;
 }
 
 .study-item{
-    display: flex;
+    display: grid;
+    grid-template-columns: 70% 30%;
     align-items: center;
-    justify-content: space-between;
+    cursor: pointer;
+}
+
+.studies-list-items li:hover{
+    background-color: #CFCFCF;
+}
+
+/* Buttons */
+.study-item button{
+    background-color: transparent;
+    border: none;
+    font-size: 1.1em;
+    border-radius: 2em;
+    padding: .1em .6em;
+    cursor: pointer;
+}
+
+.study-item button:hover{
+    background-color: rgb(105, 224, 141);
+}
+
+/* Text labels */
+.study-item span{
+    font-family: var(--FONT-INRIA-SANS);
+    font-size: 1.3em;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Inputs */
