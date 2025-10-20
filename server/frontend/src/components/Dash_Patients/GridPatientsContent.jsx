@@ -10,6 +10,16 @@ function GridPatientsContent({ patient }){
         return date.toLocaleDateString()
     }
 
+    // Función para manejar el clic en View
+    const handleViewClick = () => {
+        if (patient && patient.patient_id) {
+            // Guardar el patient_id en sessionStorage
+            sessionStorage.setItem('selectedPatientId', patient.patient_id)
+            // Navegar a la página de Notes del paciente
+            navigation("/Patient/Notes")
+        }
+    }
+
     // Si no hay paciente, mostrar placeholder
     if (!patient) {
         return (
@@ -50,7 +60,7 @@ function GridPatientsContent({ patient }){
             </div>
             <div className='patients-grid-content'>
                 <button className='basic-button table-button'>Consult</button>
-                <button className='basic-button table-button' onClick={() => navigation("/Patient")}>View</button>
+                <button className='basic-button table-button' onClick={handleViewClick}>View</button>
             </div>
         </>
     )
