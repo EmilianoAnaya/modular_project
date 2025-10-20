@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from pathlib import Path
+from datetime import datetime
 from app.utils.database import db
 from app.utils.token_generator import generate_patient_token
 
@@ -153,4 +154,52 @@ def search_patients():
 
     except Exception as e:
         print(f"Search patients error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+    
+
+@patients_bp.route('/<int:patient_id>', methods=['GET'])
+def get_patient_by_id(patient_id):
+    try:
+        base_path = Path(__file__).parent.parent.parent.parent
+        patients_sql_path = base_path / 'database' / 'queries' / 'patients_queries.sql'
+
+        with open(patients_sql_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            # Query #4: Get patient by patient_id with user information
+            get_patient_query = queries[3].split('\n')
+            get_patient_query = [line for line in get_patient_query if not line.strip().startswith('--')]
+            get_patient_query = '\n'.join(get_patient_query).strip()
+
+        patient = db.execute_query(get_patient_query, (patient_id,), fetch_one=True)
+
+        if not patient:
+            return jsonify({'error': 'Patient not found'}), 404
+
+        # Calcular edad
+        age = None
+        if patient['date_of_birth']:
+            today = datetime.now().date()
+            birth_date = patient['date_of_birth']
+            age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+
+        return jsonify({
+            'message': 'Patient found successfully',
+            'patient': {
+                'patient_id': patient['patient_id'],
+                'user_id': patient['user_id'],
+                'first_name': patient['first_name'],
+                'last_name': patient['last_name'],
+                'full_name': f"{patient['first_name']} {patient['last_name']}",
+                'email': patient['email'],
+                'gender': patient['gender'],
+                'date_of_birth': patient['date_of_birth'].isoformat() if patient['date_of_birth'] else None,
+                'age': age,
+                'city': patient['city'],
+                'country': patient['country'],
+                'created_at': patient['created_at'].isoformat() if patient['created_at'] else None
+            }
+        }), 200
+
+    except Exception as e:
+        print(f"Get patient error: {e}")
         return jsonify({'error': 'Internal server error'}), 500

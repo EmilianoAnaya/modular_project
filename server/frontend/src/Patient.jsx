@@ -1,5 +1,5 @@
 import "./styles/Patient.css"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainNavbar from "./components/Main_Navbar/MainNavbar"
 import PatientAgenda from "./components/Patient_Agenda/PatientAgenda"
 import PatientSidebar from "./components/Patient_Sidebar/PatientSidebar"
@@ -8,11 +8,12 @@ import PatientRecord from "./components/Patient_Record/PatientRecord";
 import PatientTendencies from "./components/Patient_Tendencies/PatientTendencies";
 import PatientConsult from "./components/Patient_Consult/PatientConsult";
 import PatientStudy from "./components/Patient_Study/PatientStudy";
+import { PatientProvider } from "./context/PatientProvider";
 
 
 function Patient(){
     return (
-        <>
+        <PatientProvider>
             <MainNavbar />
             <div className="main-container patient-container">
                 <PatientSidebar />
@@ -27,7 +28,7 @@ function Patient(){
                     </Routes>
                 </div>
             </div>
-        </>
+        </PatientProvider>
     )
 }
 

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './AddPatient.css'
 import BasicInput from '../Basic_Input/BasicInput'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
 
 function AddPatient(){
     const [firstName, setFirstName] = useState('')
@@ -15,7 +17,6 @@ function AddPatient(){
         e.preventDefault()
 
         try {
-            // Validar que todos los campos estén llenos
             if (!firstName.trim() || !lastName.trim() || !gender.trim() ||
                 !dateOfBirth.trim() || !email.trim() || !city.trim() || !country.trim()) {
                 alert('All fields are required and cannot be empty')
@@ -32,19 +33,22 @@ function AddPatient(){
                 country: country.trim()
             }
 
-            const response = await fetch('http://localhost:5000/api/patients/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(patientData)
-            })
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.PATIENTS}/register`),
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(patientData)
+                }
+            )
 
             const data = await response.json()
 
             if (response.ok) {
                 alert('Patient registered successfully!')
-                // Limpiar formulario después del éxito
+                // Limpiar formulario
                 setFirstName('')
                 setLastName('')
                 setGender('')
@@ -61,23 +65,57 @@ function AddPatient(){
         }
     }
 
-    return(
-        <>
-            <div className="basic-container add-patient-cont">
-                <form onSubmit={handleSavePatient}>
-                    <div className='input-container'>
-                        <BasicInput label={"Name"} value={firstName} onChange={setFirstName} />
-                        <BasicInput label={"Surname"} value={lastName} onChange={setLastName} />
-                        <BasicInput label={"Genre"} value={gender} onChange={setGender} />
-                        <BasicInput label={"Date of Birth"} inputType='date' value={dateOfBirth} onChange={setDateOfBirth} />
-                        <BasicInput label={"Email"} inputType='email' value={email} onChange={setEmail} />
-                        <BasicInput label={"City"} value={city} onChange={setCity} />
-                        <BasicInput label={"Country"} value={country} onChange={setCountry} />
-                    </div>
-                    <button type="submit" className='basic-button'>Save</button>
-                </form>
-            </div>
-        </>
+    return (
+        <div className='add-patient-container'>
+            <form onSubmit={handleSavePatient}>
+                <div className='add-patient-inputs'>
+                    <BasicInput 
+                        label={"First Name"} 
+                        value={firstName} 
+                        onChange={setFirstName}
+                    />
+                    <BasicInput 
+                        label={"Last Name"} 
+                        value={lastName} 
+                        onChange={setLastName}
+                    />
+                    <BasicInput 
+                        label={"Gender"} 
+                        value={gender} 
+                        onChange={setGender}
+                    />
+                </div>
+                <div className='add-patient-inputs'>
+                    <BasicInput 
+                        label={"Date of Birth"} 
+                        inputType="date"
+                        value={dateOfBirth} 
+                        onChange={setDateOfBirth}
+                    />
+                    <BasicInput 
+                        label={"Email"} 
+                        inputType="email"
+                        value={email} 
+                        onChange={setEmail}
+                    />
+                </div>
+                <div className='add-patient-inputs'>
+                    <BasicInput 
+                        label={"City"} 
+                        value={city} 
+                        onChange={setCity}
+                    />
+                    <BasicInput 
+                        label={"Country"} 
+                        value={country} 
+                        onChange={setCountry}
+                    />
+                </div>
+                <button type="submit" className='basic-button' style={{marginTop: '1em'}}>
+                    Save Patient
+                </button>
+            </form>
+        </div>
     )
 }
 

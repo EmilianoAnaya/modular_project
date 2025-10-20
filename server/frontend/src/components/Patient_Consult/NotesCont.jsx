@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './NotesCont.css'
 
-function NotesCont(){
+function NotesCont({ notesData, setNotesData }){
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -9,18 +9,24 @@ function NotesCont(){
             <div className='basic-container consult-info-box no_padding'>
                 <div className={`consult-notes-container ${expanded ? "expanded" : ""}`}>
                     <div className="notes-area-cont">
-                        <div className='notes-area-item'>
-                            <img src='/assets/chevron-right.svg' />
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non malesuada diam, at venenatis mi. Sed sit amet est et ex malesuada fringilla. Aenean accumsan arcu eu vestibulum vestibulum. Nam vestibulum lectus id ligula aliquam egestas. Donec diam metus, cursus vitae lobortis sed, accumsan nec odio. Aenean ornare libero nec lacus elementum iaculis. Nunc mollis gravida finibus. Suspendisse ac turpis ullamcorper, gravida eros eget, dapibus erat. Maecenas hendrerit pretium sapien, in congue lacus rutrum in. </span>
-                        </div>
-                        <div className='notes-area-item'>
-                            <img src='/assets/chevron-right.svg' />
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non malesuada diam, at venenatis mi. Sed sit amet est et ex malesuada fringilla. Aenean accumsan arcu eu vestibulum vestibulum. Nam vestibulum lectus id ligula aliquam egestas. Donec diam metus, cursus vitae lobortis sed, accumsan nec odio. Aenean ornare libero nec lacus elementum iaculis. Nunc mollis gravida finibus. Suspendisse ac turpis ullamcorper, gravida eros eget, dapibus erat. Maecenas hendrerit pretium sapien, in congue lacus rutrum in. </span>
-                        </div>
+                        {notesData && notesData.trim() !== '' ? (
+                            <div className='notes-area-item'>
+                                <img src='/assets/chevron-right.svg' />
+                                <span>{notesData}</span>
+                            </div>
+                        ) : (
+                            <div className='notes-area-item' style={{fontStyle: 'italic', color: '#666'}}>
+                                <span>No notes yet. Write your notes below.</span>
+                            </div>
+                        )}
                     </div>
 
-                    <div className='notes-input-cont' onBlur={() => setExpanded(!expanded)} onFocus={() => setExpanded(!expanded)}>
-                        <textarea />
+                    <div className='notes-input-cont' onBlur={() => setExpanded(false)} onFocus={() => setExpanded(true)}>
+                        <textarea 
+                            value={notesData || ''}
+                            onChange={(e) => setNotesData(e.target.value)}
+                            placeholder="Write additional notes here..."
+                        />
                         <img src='/assets/plus.svg' />
                     </div>
                 </div>

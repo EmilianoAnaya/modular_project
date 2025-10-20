@@ -3,8 +3,64 @@ import WindowContentDefault from './WindowContentDefault'
 import BasicInput from '../Basic_Input/BasicInput'
 import './AllergiesCont.css'
 import Section from '../Section/Section'
+import { useState } from 'react'
 
-function AllergiesCont({ window }){
+function AllergiesCont({ window, allergiesData, setAllergiesData }){
+    const [currentAllergy, setCurrentAllergy] = useState({
+        allergen: '',
+        reaction: ''
+    })
+
+    const [selectedIndex, setSelectedIndex] = useState(null)
+
+    const handleNew = () => {
+        setCurrentAllergy({
+            allergen: '',
+            reaction: ''
+        })
+        setSelectedIndex(null)
+    }
+
+    const handleSelectAllergy = (index) => {
+        setSelectedIndex(index)
+        setCurrentAllergy({...allergiesData[index]})
+    }
+
+    const handleSaveContinue = () => {
+        if (!currentAllergy.allergen.trim()) {
+            alert('Allergen name is required')
+            return
+        }
+
+        if (selectedIndex !== null) {
+            // Editar existente
+            const newAllergies = [...allergiesData]
+            newAllergies[selectedIndex] = currentAllergy
+            setAllergiesData(newAllergies)
+        } else {
+            // Agregar nuevo
+            setAllergiesData([...allergiesData, currentAllergy])
+        }
+        
+        // Limpiar formulario
+        handleNew()
+    }
+
+    const handleSaveExit = () => {
+        handleSaveContinue()
+        window[1](false)
+    }
+
+    const handleDelete = () => {
+        if (selectedIndex !== null) {
+            if (confirm('¿Estás seguro de eliminar esta alergia?')) {
+                const newAllergies = allergiesData.filter((_, i) => i !== selectedIndex)
+                setAllergiesData(newAllergies)
+                handleNew()
+            }
+        }
+    }
+
     return (
         <>
             <div className='basic-container consult-info-box table-info'>
@@ -12,27 +68,47 @@ function AllergiesCont({ window }){
                     <div><h4>Allergen</h4></div>
                     <div><h4>Reaction</h4></div>
 
-                    <div className='consult-cell centered'>Paracetamol</div>
-                    <div className='consult-cell'>Headache</div>
-                    
-                    <div className='consult-cell centered'>Ibuprofen</div>
-                    <div className='consult-cell'>Red skin / Salpullido</div>
-                    
+                    {allergiesData.length === 0 ? (
+                        <div className='consult-cell centered' style={{gridColumn: '1 / -1', fontStyle: 'italic', color: '#666'}}>
+                            No allergies added yet. Click the edit button to add.
+                        </div>
+                    ) : (
+                        allergiesData.map((allergy, index) => (
+                            <>
+                                <div key={`allergy-${index}-allergen`} className='consult-cell centered'>{allergy.allergen}</div>
+                                <div key={`allergy-${index}-reaction`} className='consult-cell'>{allergy.reaction || 'N/A'}</div>
+                            </>
+                        ))
+                    )}
                 </div>
             </div>
 
             <ConsultWindow windowTitle={"Allergies"} showWindow={window}>
-                <WindowContentDefault title_list='Allergens List' items_list={["Paracetamol","Ibuprofen"]}>
+                <WindowContentDefault 
+                    title_list='Allergens List' 
+                    items_list={allergiesData.map(a => a.allergen)}
+                    selectedIndex={selectedIndex}
+                    onNew={handleNew}
+                    onSaveContinue={handleSaveContinue}
+                    onSaveExit={handleSaveExit}
+                    onDelete={handleDelete}
+                    onSelectItem={handleSelectAllergy}
+                >
                     <div className='content-default-name'>
-                        <BasicInput label={"Allergen"} />
+                        <BasicInput 
+                            label={"Allergen"} 
+                            value={currentAllergy.allergen}
+                            onChange={(value) => setCurrentAllergy({...currentAllergy, allergen: value})}
+                        />
                     </div>
 
                     <div className='default-information-description allergies-description'>
                         <Section headingText={"Reaction Description"} color='black' font_size='1.1em'>
-                            <textarea>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus tempor urna ac sagittis. Maecenas sit amet libero vitae nibh laoreet rutrum. Vestibulum dignissim leo sed nisi bibendum, quis hendrerit felis convallis. Nam pellentesque nisi eu urna ultricies tincidunt. Proin vehicula quis dolor non scelerisque. Fusce fringilla magna non ex accumsan egestas. In hac habitasse platea dictumst. Nam aliquet pretium eros a congue. Praesent vulputate urna ac sollicitudin pharetra. In hac habitasse platea dictumst. Aenean bibendum imperdiet nisl ut mollis. Mauris efficitur risus a est rhoncus, ut maximus urna consectetur. Donec ac erat fringilla, pretium elit eu, dignissim risus. Sed at ante eget turpis porta tristique in nec neque.
-                                Phasellus rhoncus sem dapibus, cursus nunc blandit, facilisis mauris. Quisque ut odio nisl. Maecenas id neque urna. Mauris semper enim et turpis congue, in sodales mi venenatis. Phasellus imperdiet vestibulum turpis vitae finibus. Quisque sodales risus vitae luctus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam ut justo aliquet, bibendum lectus rutrum, condimentum elit. Duis commodo enim gravida sapien congue, ac vestibulum arcu dignissim. Vivamus mollis mauris in tellus volutpat molestie. Nulla erat nulla, blandit ac aliquam vitae, laoreet vitae elit. 
-                            </textarea>
+                            <textarea 
+                                value={currentAllergy.reaction}
+                                onChange={(e) => setCurrentAllergy({...currentAllergy, reaction: e.target.value})}
+                                placeholder="Describe the reaction..."
+                            />
                         </Section>
                     </div>
                 </WindowContentDefault>

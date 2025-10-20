@@ -3,8 +3,66 @@ import WindowContentDefault from './WindowContentDefault'
 import Section from '../Section/Section'
 import BasicInput from '../Basic_Input/BasicInput'
 import './MedicinesCont.css'
+import { useState } from 'react'
 
-function MedicinesCont({ window }){
+function MedicinesCont({ window, medicinesData, setMedicinesData }){
+    const [currentMedicine, setCurrentMedicine] = useState({
+        medicine: '',
+        quantity: '',
+        instructions: ''
+    })
+
+    const [selectedIndex, setSelectedIndex] = useState(null)
+
+    const handleNew = () => {
+        setCurrentMedicine({
+            medicine: '',
+            quantity: '',
+            instructions: ''
+        })
+        setSelectedIndex(null)
+    }
+
+    const handleSelectMedicine = (index) => {
+        setSelectedIndex(index)
+        setCurrentMedicine({...medicinesData[index]})
+    }
+
+    const handleSaveContinue = () => {
+        if (!currentMedicine.medicine.trim()) {
+            alert('Medicine name is required')
+            return
+        }
+
+        if (selectedIndex !== null) {
+            // Editar existente
+            const newMedicines = [...medicinesData]
+            newMedicines[selectedIndex] = currentMedicine
+            setMedicinesData(newMedicines)
+        } else {
+            // Agregar nuevo
+            setMedicinesData([...medicinesData, currentMedicine])
+        }
+        
+        // Limpiar formulario
+        handleNew()
+    }
+
+    const handleSaveExit = () => {
+        handleSaveContinue()
+        window[1](false)
+    }
+
+    const handleDelete = () => {
+        if (selectedIndex !== null) {
+            if (confirm('¿Estás seguro de eliminar esta medicina?')) {
+                const newMedicines = medicinesData.filter((_, i) => i !== selectedIndex)
+                setMedicinesData(newMedicines)
+                handleNew()
+            }
+        }
+    }
+
     return (
         <>
             <div className='basic-container consult-info-box table-info'>
@@ -13,33 +71,58 @@ function MedicinesCont({ window }){
                     <div><h4>Quantity</h4></div>
                     <div><h4>Instructions</h4></div>
                     
-                    <div className='consult-cell centered'>Paracetamol</div>
-                    <div className='consult-cell centered'>500mg</div>
-                    <div className='consult-cell'>1 tableta. Via oral. 2 veces al día. Por 30 días</div>
-                    
-                    <div className='consult-cell centered'>Cefalexina (Septilisin)</div>
-                    <div className='consult-cell centered'>500mg</div>
-                    <div className='consult-cell'>Tomar via oral 8 (uno) c/6 (seis) hs por 7/(siete) días</div>
-                    
+                    {medicinesData.length === 0 ? (
+                        <div className='consult-cell centered' style={{gridColumn: '1 / -1', fontStyle: 'italic', color: '#666'}}>
+                            No medicines added yet. Click the edit button to add.
+                        </div>
+                    ) : (
+                        medicinesData.map((medicine, index) => (
+                            <>
+                                <div key={`medicine-${index}-name`} className='consult-cell centered'>{medicine.medicine}</div>
+                                <div key={`medicine-${index}-quantity`} className='consult-cell centered'>{medicine.quantity || 'N/A'}</div>
+                                <div key={`medicine-${index}-instructions`} className='consult-cell'>{medicine.instructions || 'N/A'}</div>
+                            </>
+                        ))
+                    )}
                 </div>
             </div>
 
             <ConsultWindow windowTitle={"Medicines"} showWindow={window}>
-                <WindowContentDefault title_list='Medicines List' items_list={["Paracetamol"]}>
+                <WindowContentDefault 
+                    title_list='Medicines List' 
+                    items_list={medicinesData.map(m => m.medicine)}
+                    selectedIndex={selectedIndex}
+                    onNew={handleNew}
+                    onSaveContinue={handleSaveContinue}
+                    onSaveExit={handleSaveExit}
+                    onDelete={handleDelete}
+                    onSelectItem={handleSelectMedicine}
+                >
                     <div className='content-default-name'>
-                        <BasicInput label={"Medicine Name"} />
+                        <BasicInput 
+                            label={"Medicine Name"} 
+                            value={currentMedicine.medicine}
+                            onChange={(value) => setCurrentMedicine({...currentMedicine, medicine: value})}
+                        />
                     </div>
         
                     <div className='default-information-description medicines-description'>
                         <Section headingText={"Medicine Instructions"} color='black' font_size='1.1em'>
-                            <textarea>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus tempor urna ac sagittis. Maecenas sit amet libero vitae nibh laoreet rutrum. Vestibulum dignissim leo sed nisi bibendum, quis hendrerit felis convallis. Nam pellentesque nisi eu urna ultricies tincidunt. Proin vehicula quis dolor non scelerisque. Fusce fringilla magna non ex accumsan egestas. In hac habitasse platea dictumst. Nam aliquet pretium eros a congue. Praesent vulputate urna ac sollicitudin pharetra. In hac habitasse platea dictumst. Aenean bibendum imperdiet nisl ut mollis. Mauris efficitur risus a est rhoncus, ut maximus urna consectetur. Donec ac erat fringilla, pretium elit eu, dignissim risus. Sed at ante eget turpis porta tristique in nec neque.
-                                Phasellus rhoncus sem dapibus, cursus nunc blandit, facilisis mauris. Quisque ut odio nisl. Maecenas id neque urna. Mauris semper enim et turpis congue, in sodales mi venenatis. Phasellus imperdiet vestibulum turpis vitae finibus. Quisque sodales risus vitae luctus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam ut justo aliquet, bibendum lectus rutrum, condimentum elit. Duis commodo enim gravida sapien congue, ac vestibulum arcu dignissim. Vivamus mollis mauris in tellus volutpat molestie. Nulla erat nulla, blandit ac aliquam vitae, laoreet vitae elit. 
-                            </textarea>
+                            <textarea 
+                                value={currentMedicine.instructions}
+                                onChange={(e) => setCurrentMedicine({...currentMedicine, instructions: e.target.value})}
+                                placeholder="Instructions for taking the medicine..."
+                            />
                         </Section>
                     </div>
+
                     <div className='default-information-entries'>
-                        <BasicInput label={"Quantity"} width='12em'/>
+                        <BasicInput 
+                            label={"Quantity"} 
+                            width='12em'
+                            value={currentMedicine.quantity}
+                            onChange={(value) => setCurrentMedicine({...currentMedicine, quantity: value})}
+                        />
                     </div>
                 </WindowContentDefault>
             </ConsultWindow>

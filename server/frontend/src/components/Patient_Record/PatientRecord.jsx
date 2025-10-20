@@ -1,17 +1,135 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './PatientRecord.css'
 import Heading from '../Heading/Heading'
+import { usePatient } from '../../hooks/usePatient'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
 
 function PatientRecord(){
+    const { patientData } = usePatient()
+    const [records, setRecords] = useState([])
+    const [selectedRecord, setSelectedRecord] = useState(null)
+    const [loading, setLoading] = useState(true)
 
-    const recordsPatient = [
-        { 
-            consultName : "Consult - 20/02/2025",  
-            madeBy : "David Bisbal F.",
-            category : "Document",
-            dateCreated : "03/09/2025"
+    useEffect(() => {
+        if (patientData) {
+            loadPatientRecords()
         }
-    ]
+    }, [patientData])
+
+    const loadPatientRecords = async () => {
+        try {
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_RECORDS_BY_PATIENT}/${patientData.patient_id}`)
+            )
+            const data = await response.json()
+
+            if (response.ok) {
+                setRecords(data.records)
+                if (data.records.length > 0) {
+                    setSelectedRecord(data.records[0])
+                }
+            } else {
+                console.error('Error loading records:', data.error)
+            }
+        } catch (error) {
+            console.error('Error fetching records:', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'N/A'
+        const date = new Date(dateString)
+        return date.toLocaleDateString('es-ES', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            year: 'numeric' 
+        })
+    }
+
+    const handleViewRecord = (record) => {
+        setSelectedRecord(record)
+    }
+
+    const renderConsultationData = (consultationData) => {
+        if (!consultationData) return <p>No consultation data available</p>
+
+        return (
+            <div className='consultation-details'>
+                {consultationData.vitals && Object.values(consultationData.vitals).some(v => v) && (
+                    <div className='detail-section'>
+                        <h3>Vitals</h3>
+                        <div className='detail-grid'>
+                            {consultationData.vitals.height && <p><strong>Height:</strong> {consultationData.vitals.height} m</p>}
+                            {consultationData.vitals.weight && <p><strong>Weight:</strong> {consultationData.vitals.weight} kg</p>}
+                            {consultationData.vitals.bmi && <p><strong>BMI:</strong> {consultationData.vitals.bmi}</p>}
+                            {consultationData.vitals.temperature && <p><strong>Temperature:</strong> {consultationData.vitals.temperature}°C</p>}
+                            {consultationData.vitals.blood_pressure && <p><strong>Blood Pressure:</strong> {consultationData.vitals.blood_pressure}</p>}
+                            {consultationData.vitals.pulse && <p><strong>Pulse:</strong> {consultationData.vitals.pulse} bpm</p>}
+                            {consultationData.vitals.respiratory_rate && <p><strong>Respiratory Rate:</strong> {consultationData.vitals.respiratory_rate}</p>}
+                        </div>
+                    </div>
+                )}
+
+                {consultationData.problems && consultationData.problems.length > 0 && (
+                    <div className='detail-section'>
+                        <h3>Problems</h3>
+                        {consultationData.problems.map((problem, index) => (
+                            <div key={index} className='detail-item'>
+                                <h4>{problem.problem_name}</h4>
+                                {problem.description && <p><strong>Description:</strong> {problem.description}</p>}
+                                {problem.onset && <p><strong>Onset:</strong> {formatDate(problem.onset)}</p>}
+                                {problem.severity && <p><strong>Severity:</strong> {problem.severity}</p>}
+                                {problem.duration && <p><strong>Duration:</strong> {problem.duration}</p>}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {consultationData.allergies && consultationData.allergies.length > 0 && (
+                    <div className='detail-section'>
+                        <h3>Allergies</h3>
+                        {consultationData.allergies.map((allergy, index) => (
+                            <div key={index} className='detail-item'>
+                                <h4>{allergy.allergen}</h4>
+                                {allergy.reaction && <p><strong>Reaction:</strong> {allergy.reaction}</p>}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {consultationData.medicines && consultationData.medicines.length > 0 && (
+                    <div className='detail-section'>
+                        <h3>Medicines</h3>
+                        {consultationData.medicines.map((medicine, index) => (
+                            <div key={index} className='detail-item'>
+                                <h4>{medicine.medicine}</h4>
+                                {medicine.quantity && <p><strong>Quantity:</strong> {medicine.quantity}</p>}
+                                {medicine.instructions && <p><strong>Instructions:</strong> {medicine.instructions}</p>}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {consultationData.notes && consultationData.notes.trim() !== '' && (
+                    <div className='detail-section'>
+                        <h3>Additional Notes</h3>
+                        <p style={{whiteSpace: 'pre-wrap'}}>{consultationData.notes}</p>
+                    </div>
+                )}
+            </div>
+        )
+    }
+
+    if (loading) {
+        return (
+            <div className='patient-records-container'>
+                <p>Loading records...</p>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -25,34 +143,51 @@ function PatientRecord(){
                         <p>Date Created</p>
                         <p>Actions</p>
 
-                        {recordsPatient.map((record, index) => (
-                            <React.Fragment key={index}>
-                                <p>{record.consultName}</p>
-                                <p>{record.madeBy}</p>
-                                <p>{record.category}</p>
-                                <p>{record.dateCreated}</p>
-                                <div className='patient-record-buttons'>
-                                    <button className='basic-button icon-button table-button'>
-                                        <img src='/assets/glasses.svg'/>
-                                    </button>
-                                </div>
-                            </React.Fragment>
-                        ))}
-
+                        {records.length === 0 ? (
+                            <p style={{gridColumn: '1 / -1', padding: '2em', fontStyle: 'italic', color: '#666'}}>
+                                No medical records found for this patient.
+                            </p>
+                        ) : (
+                            records.map((record) => (
+                                <React.Fragment key={record.id}>
+                                    <p>Consult - {formatDate(record.date)}</p>
+                                    <p>Doctor</p>
+                                    <p>Document</p>
+                                    <p>{formatDate(record.created_at)}</p>
+                                    <div className='patient-record-buttons'>
+                                        <button 
+                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
+                                            onClick={() => handleViewRecord(record)}
+                                            title="View consultation details"
+                                        >
+                                            <img src='/assets/glasses.svg'/>
+                                        </button>
+                                    </div>
+                                </React.Fragment>
+                            ))
+                        )}
                     </div>
                 </div>
                 <div className='patient-records-item'>
                     <Heading headingText={"Summary"} />
                     <div className='patient-record-sub-cont records-summary'>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non metus metus. Morbi nulla tortor, pulvinar ut laoreet quis, pellentesque nec nisi. Pellentesque nulla nisl, varius ac est ac, dapibus consequat erat. Aliquam fermentum lobortis nulla ac venenatis. Mauris nisi urna, vehicula at bibendum sit amet, aliquam quis elit. Vivamus ac eros ut ante dapibus suscipit. Integer congue aliquam nulla ut vehicula. Phasellus sed quam turpis. Integer sit amet nisi in sapien egestas imperdiet in vitae arcu.
-                                            
-                        Vestibulum at eros tortor. Aenean gravida pretium nibh, quis tincidunt magna placerat at. Integer semper tristique volutpat. Pellentesque tempus accumsan tincidunt. Donec cursus maximus felis, vitae faucibus libero rhoncus sit amet. Maecenas erat est, facilisis eget erat et, lacinia pellentesque velit. Praesent tempor ornare convallis. Cras tincidunt erat in eros vulputate placerat. Suspendisse est augue, ultricies ac lacinia in, commodo eu leo. Suspendisse pharetra interdum nulla, vel malesuada sem varius quis. Fusce sed rutrum felis, lacinia facilisis mauris.
-                                            
-                        In ullamcorper tempor libero a vehicula. Quisque vitae viverra neque. Sed eget turpis diam. In venenatis justo nibh, vel cursus magna fermentum sed. Aenean suscipit risus et faucibus tincidunt. Maecenas vestibulum purus mauris, id volutpat quam dignissim a. Curabitur condimentum justo eget hendrerit facilisis. Donec convallis tincidunt dolor, eu molestie mi tincidunt sit amet. Ut blandit justo tincidunt pretium posuere. Sed sodales finibus sapien, at vehicula purus pretium id. Donec sed leo arcu. Quisque semper ex mauris, id mattis neque dignissim non. Maecenas eu enim at eros fringilla aliquet. Vivamus non porta enim.
-                                            
-                        Phasellus nec lacus interdum est eleifend commodo eget a dolor. Ut pretium eget nibh vel tincidunt. Sed pulvinar hendrerit hendrerit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum interdum varius leo, eu ornare felis vestibulum scelerisque. Curabitur eu semper sapien. Morbi arcu nisi, pellentesque in pulvinar in, consequat ac sem. Donec in neque eu mauris porttitor fringilla. Mauris vel mauris et eros dictum imperdiet. Integer auctor, leo congue placerat volutpat, arcu enim tincidunt tortor, sed tincidunt augue arcu sed velit. Proin vulputate orci eu augue tristique commodo. Aenean placerat velit at odio mollis, vitae eleifend arcu ornare. Phasellus elit dolor, tincidunt sed euismod dapibus, blandit sit amet dolor. Duis mauris augue, elementum at efficitur et, bibendum nec ex. In et leo sed velit aliquam sodales sit amet in dui.
-                                            
-                        Donec vestibulum elit at pharetra iaculis. Maecenas fringilla massa a dolor malesuada, vel tempor purus egestas. Aliquam ut elit eu purus bibendum aliquet vulputate a nulla. Mauris eu porta mi, quis varius quam. Sed bibendum, lectus nec convallis placerat, arcu diam mollis tortor, sed convallis tellus felis ut ante. Aliquam erat volutpat. Nam ac dolor vel felis accumsan blandit ac vitae erat. Suspendisse vitae feugiat nisi. Ut ac est eros. Nulla non aliquam urna. Proin placerat massa ac felis aliquam fringilla. 
+                        {selectedRecord ? (
+                            <>
+                                <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
+                                    <h2 style={{margin: '0', color: '#00897b'}}>
+                                        Consultation - {formatDate(selectedRecord.date)}
+                                    </h2>
+                                    <p style={{margin: '0.5em 0', fontStyle: 'italic', color: '#666'}}>
+                                        {selectedRecord.summary}
+                                    </p>
+                                </div>
+                                {renderConsultationData(selectedRecord.consultation_data)}
+                            </>
+                        ) : (
+                            <p style={{fontStyle: 'italic', color: '#666'}}>
+                                Select a record to view details
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

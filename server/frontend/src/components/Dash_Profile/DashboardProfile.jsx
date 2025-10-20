@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-
 import './DashboardProfile.css'
 import Section from '../Section/Section'
 import BasicInput from '../Basic_Input/BasicInput'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
 
 function DashboardProfile(){
     const navigation = useNavigate()
     const [doctorName, setDoctorName] = useState("Doctor Name")
 
-    // Estados para los campos del formulario
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -30,7 +30,6 @@ function DashboardProfile(){
             setDoctorName(userFirstName)
         }
 
-        // Cargar datos del perfil
         loadUserProfile()
     }, [])
 
@@ -42,7 +41,9 @@ function DashboardProfile(){
                 return
             }
 
-            const response = await fetch(`http://localhost:5000/api/auth/profile/${userId}`)
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.PROFILE}/${userId}`)
+            )
             const data = await response.json()
 
             if (response.ok) {
@@ -67,7 +68,6 @@ function DashboardProfile(){
 
     const handleSaveProfile = async () => {
         try {
-            // Validar que todos los campos estén llenos (gender hardcodeado temporalmente)
             if (!firstName.trim() || !lastName.trim() || !email.trim() ||
                 !dateOfBirth.trim() || !city.trim() || !country.trim()) {
                 alert('All fields are required and cannot be empty')
@@ -84,29 +84,30 @@ function DashboardProfile(){
                 first_name: firstName.trim(),
                 last_name: lastName.trim(),
                 email: email.trim(),
-                gender: 'Male', // Hardcodeado temporalmente - cambié de 'M' a 'Male'
+                gender: 'Male',
                 date_of_birth: dateOfBirth.trim(),
                 city: city.trim(),
                 country: country.trim()
             }
 
-            const response = await fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(profileData)
-            })
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.PROFILE}/${userId}`), 
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(profileData)
+                }
+            )
 
             const data = await response.json()
 
             if (response.ok) {
                 alert('Profile updated successfully!')
-                // Actualizar localStorage con los nuevos nombres
                 localStorage.setItem('userFirstName', firstName)
                 localStorage.setItem('userLastName', lastName)
                 localStorage.setItem('userEmail', email)
-                // Actualizar el nombre mostrado en el header
                 setDoctorName(`${firstName} ${lastName}`)
             } else {
                 alert('Failed to update profile: ' + data.error)
