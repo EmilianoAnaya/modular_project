@@ -1,10 +1,11 @@
 import { useState } from 'react'
-
 import './DashboardPatients.css'
 import Section from '../Section/Section'
 import Separator from '../Separator/Separator'
 import GridPatient from './GridPatient'
 import AddPatient from './AddPatient'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
 
 function DashboardPatients(){
     const [currentPage, setCurrentPage] = useState("GridPatient")
@@ -24,7 +25,8 @@ function DashboardPatients(){
 
         setIsSearching(true)
         try {
-            const response = await fetch(`http://localhost:5000/api/patients/search?q=${encodeURIComponent(searchTerm.trim())}`)
+            const url = `${getApiUrl(API_CONFIG.ENDPOINTS.PATIENTS_SEARCH)}?q=${encodeURIComponent(searchTerm.trim())}`
+            const response = await fetch(url)
             const data = await response.json()
 
             if (response.ok) {

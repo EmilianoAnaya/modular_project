@@ -241,3 +241,30 @@ def update_user_profile(user_id):
     except Exception as e:
         print(f"Update profile error: {e}")
         return jsonify({'error': 'Internal server error'}), 500
+    
+@auth_bp.route('/doctor/<int:user_id>', methods=['GET'])
+def get_doctor_by_user_id(user_id):
+    try:
+        base_path = Path(__file__).parent.parent.parent.parent
+        sql_file_path = base_path / 'database' / 'queries' / 'doctor_queries.sql'
+        
+        with open(sql_file_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            # Query #2: Get doctor by user_id
+            get_doctor_query = queries[1].split('\n')
+            get_doctor_query = [line for line in get_doctor_query if not line.strip().startswith('--')]
+            get_doctor_query = '\n'.join(get_doctor_query).strip()
+        
+        doctor = db.execute_query(get_doctor_query, (user_id,), fetch_one=True)
+        
+        if not doctor:
+            return jsonify({'error': 'Doctor not found'}), 404
+        
+        return jsonify({
+            'message': 'Doctor found',
+            'doctor_id': doctor['id']
+        }), 200
+        
+    except Exception as e:
+        print(f"Get doctor error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
