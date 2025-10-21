@@ -1,0 +1,16 @@
+
+/* Table distribution */
+
+.problems-table{
+    grid-template-columns: 25% 25% 15% 15% 20%;
+}
+
+/* Problem Window Content */
+.problems-description{
+    min-height: 10em;
+    max-height: 20em;
+}
+
+.problems-description textarea{
+    min-height: 14em;
+}

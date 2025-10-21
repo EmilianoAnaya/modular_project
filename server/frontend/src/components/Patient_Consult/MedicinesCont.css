@@ -1,0 +1,16 @@
+
+/* Table distribution */
+
+.medicines-table{
+    grid-template-columns: 40% 20% 40%;
+}
+
+/* Medicines Window Content */
+.medicines-description{
+    min-height: 7em;
+    max-height: 20em;
+}
+
+.medicines-description textarea{
+    min-height: 12em;
+}

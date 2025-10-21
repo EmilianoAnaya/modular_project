@@ -1,0 +1,54 @@
+
+/* Contenedores */
+.consult-notes-container{
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 20%;
+    transition: grid-template-rows ease 0.5s;
+    overflow: hidden !important;
+
+}
+
+.consult-notes-container.expanded{
+    grid-template-rows: auto 40%;
+}
+
+.notes-area-cont{
+    padding: 1em;
+    max-height: 246px;
+    overflow: auto;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+.notes-area-item{
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.notes-input-cont{
+    display: grid;
+    grid-template-columns: 75% auto;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 10;
+    box-shadow: 0em -.4em .1em rgb(0, 0, 0, .4);
+}
+
+/* labels */
+
+.notes-area-item span{
+    font-size: .9em;
+}
+
+.notes-input-cont textarea{
+    resize: none;
+    width: 100%;
+    height: 60%;
+    margin: 0;
+    border-radius: 1em;
+    font-family: var(--FONT-MULISH);
+    font-size: .8em;
+    padding: 0 .5em;
+}

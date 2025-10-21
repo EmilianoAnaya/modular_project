@@ -2,8 +2,8 @@
 /* Containers */
 
 .patient-agenda-cont{
-    height: 100%;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     padding: 1em 1em 0 1.3em;
 }
 

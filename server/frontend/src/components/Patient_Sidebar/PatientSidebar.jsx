@@ -1,10 +1,18 @@
 import "./PatientSidebar.css"
-
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import SidebarButton from "./SidebarButton";
+import { usePatient } from "../../hooks/usePatient";
 
 function PatientSidebar(){
     const navigation = useNavigate();
+    const location = useLocation();
+    const { patientData, loading, error } = usePatient();
+
+    const activeScreen = location.pathname.includes("/Consult")
+                        ? "Consult"
+                        : location.pathname.includes("/Study")
+                        ? "Study"
+                        : null;
 
     const sidebarButtons = [
         { title : "Notes", img_route : "pen.svg", navigation_route : "/Notes" },
@@ -12,6 +20,30 @@ function PatientSidebar(){
         { title : "Agenda", img_route : "calendar-days.svg", navigation_route : "" },
         { title : "Tendencies", img_route : "chart-no-axes-combined.svg", navigation_route : "/Tendencies" },
     ]
+
+    // Manejar estados de carga y error
+    if (loading) {
+        return (
+            <div className="patient-sidebar">
+                <div className="patient-info-cont">
+                    <p>Loading patient data...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="patient-sidebar">
+                <div className="patient-info-cont">
+                    <p>Error: {error}</p>
+                    <button onClick={() => navigation("/Dashboard/Patients")}>
+                        Return to Patients
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -25,17 +57,17 @@ function PatientSidebar(){
                         <img src="/assets/user.svg" />
                     </div>
 
-                    <p>Gael Emiliano Anaya Garcia</p>
+                    <p>{patientData?.full_name || 'No name'}</p>
                     <div className="sidebar-flex patient-data">
-                        <p>Age:<br/>XX</p>
-                        <p>Genre:<br/>XX</p>
+                        <p>Age:<br/>{patientData?.age || 'N/A'}</p>
+                        <p>Genre:<br/>{patientData?.gender || 'N/A'}</p>
                     </div>
 
                     <div className="sidebar-flex">
-                        <div className="head-button h-b-left">
+                        <div className={`head-button h-b-left ${activeScreen === "Consult" ? "patientActive" : ""}`} onClick={() => navigation("/Patient/Consult")}>
                             Consult
                         </div>
-                        <div className="head-button h-b-right">
+                        <div className={`head-button h-b-right ${activeScreen === "Study" ? "patientActive" : ""}`} onClick={() => navigation("/Patient/Study")}>
                             Study
                         </div>
                     </div>

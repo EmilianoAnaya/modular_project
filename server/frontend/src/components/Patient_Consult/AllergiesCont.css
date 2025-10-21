@@ -1,0 +1,16 @@
+
+/* Table distribution */
+
+.allergies-table{
+    grid-template-columns: 50% auto;
+}
+
+.allergies-description{
+    min-height: 7em;
+    max-height: 20em;
+}
+
+.allergies-description textarea{
+    width: 100%;
+    min-height: 12em;
+}

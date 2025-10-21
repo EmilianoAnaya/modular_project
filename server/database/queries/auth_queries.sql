@@ -7,6 +7,6 @@ WHERE u.email = %s AND u.password = %s AND u.status = 'Active';
 
 -- Get user by email (para verificar si existe)
 -- @param email: string
-SELECT id, email, password, role, status 
-FROM users u 
+SELECT id, first_name, last_name, email, password, role, status
+FROM users u
 WHERE u.email = %s;

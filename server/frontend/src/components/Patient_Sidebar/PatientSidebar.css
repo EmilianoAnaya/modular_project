@@ -59,6 +59,10 @@
     background-color: #1091B4;
 }
 
+.patientActive{
+    background-color: #1CF28E;
+}
+
 .h-b-left{
     border-radius: 0 0 0 1em;
     border-right: 1px solid black;

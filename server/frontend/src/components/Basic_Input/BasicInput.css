@@ -1,7 +1,6 @@
 
 .basic-input-cont{
-    min-width: 17em;
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
 .basic-input-cont p{
