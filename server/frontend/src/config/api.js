@@ -1,6 +1,5 @@
 // Configuración de la API
 const API_CONFIG = {
-    // En desarrollo usa localhost, en producción usa la URL del servidor
     BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
     ENDPOINTS: {
         // Auth
@@ -15,7 +14,11 @@ const API_CONFIG = {
         
         // Medical Records
         MEDICAL_RECORDS: '/api/medical-records',
-        MEDICAL_RECORDS_BY_PATIENT: '/api/medical-records/patient'
+        MEDICAL_RECORDS_BY_PATIENT: '/api/medical-records/patient',
+        
+        // Medical Notes
+        MEDICAL_NOTES: '/api/medical-notes',
+        MEDICAL_NOTES_BY_PATIENT: '/api/medical-notes/patient'
     }
 };
 
