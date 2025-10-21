@@ -13,9 +13,8 @@ import API_CONFIG from '../../config/api'
 function PatientConsult(){
     const { patientData } = usePatient()
     const navigate = useNavigate()
-    
     const vitals_info = [
-        "Height (Mts)", "Weight (KG)", "Body Mass Index", 
+        "Height (Mts)", "Weight (KG)", "Body Mass Index",
         "Temperature (C)", "Blood Pressure", "Pulse",
         "Respiratory Rate"
     ]
@@ -61,7 +60,7 @@ function PatientConsult(){
         if (key === 'height' || key === 'weight') {
             const height = key === 'height' ? parseFloat(value) : parseFloat(vitalsData.height)
             const weight = key === 'weight' ? parseFloat(value) : parseFloat(vitalsData.weight)
-            
+
             if (height > 0 && weight > 0) {
                 const bmi = (weight / (height * height)).toFixed(2)
                 setVitalsData(prev => ({
@@ -74,7 +73,7 @@ function PatientConsult(){
 
     const handleSave = async () => {
         const hasVitals = Object.values(vitalsData).some(v => v !== '')
-        const hasData = hasVitals || problemsData.length > 0 || allergiesData.length > 0 || 
+        const hasData = hasVitals || problemsData.length > 0 || allergiesData.length > 0 ||
                        medicinesData.length > 0 || notesData.trim() !== ''
 
         if (!hasData) {
@@ -147,7 +146,7 @@ function PatientConsult(){
                             {vitals_info.map((element) => (
                                 <div key={element} className='vitals-info-row'>
                                     <span>{element}</span>
-                                    <input 
+                                    <input
                                         value={vitalsData[vitalsMapping[element]]}
                                         onChange={(e) => handleVitalChange(element, e.target.value)}
                                         type={element.includes("Height") || element.includes("Weight") || element.includes("Temperature") || element.includes("Pulse") || element.includes("Rate") ? "number" : "text"}
@@ -158,10 +157,10 @@ function PatientConsult(){
                             ))}
                         </div>
                     </div>
-                    
+
                     <div className='consult-box'>
                         <Heading headingText={"Problems"} trigger={[windows.problems, (value) => setWindows({...windows, problems: value})]}/>
-                        <ProblemsCont 
+                        <ProblemsCont
                             window={[windows.problems, (value) => setWindows({...windows, problems: value})]}
                             problemsData={problemsData}
                             setProblemsData={setProblemsData}
@@ -171,7 +170,7 @@ function PatientConsult(){
                 <div className='consult-tools con-tls-2'>
                     <div className='consult-box'>
                         <Heading headingText={"Allergies"} trigger={[windows.allergies, (value) => setWindows({...windows, allergies: value})]}/>
-                        <AllergiesCont 
+                        <AllergiesCont
                             window={[windows.allergies, (value) => setWindows({...windows, allergies: value})]}
                             allergiesData={allergiesData}
                             setAllergiesData={setAllergiesData}
@@ -180,7 +179,7 @@ function PatientConsult(){
 
                     <div className='consult-box'>
                         <Heading headingText={"Medicines"} trigger={[windows.medicines, (value) => setWindows({...windows, medicines: value})]}/>
-                        <MedicinesCont 
+                        <MedicinesCont
                             window={[windows.medicines, (value) => setWindows({...windows, medicines: value})]}
                             medicinesData={medicinesData}
                             setMedicinesData={setMedicinesData}
@@ -191,11 +190,11 @@ function PatientConsult(){
                         <Heading headingText={"Notes"} />
                         <NotesCont notesData={notesData} setNotesData={setNotesData} />
                     </div>
-
-                    <button className='basic-button' onClick={handleSave} style={{marginTop: '1em', width: '100%', padding: '1em', fontSize: '1.1em', fontWeight: 'bold'}}>
-                        Save
-                    </button>
                 </div>
+
+                <button className='basic-button patient-consult-button' onClick={handleSave} >
+                    Save
+                </button>
             </div>
         </>
     )
