@@ -51,7 +51,7 @@
 .vitals-info{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;   
+    justify-content: space-around;
 }
 
 .vitals-info-row{
@@ -99,4 +99,10 @@
 
 .justified{
     text-align: justify;
+}
+
+/* Buttons */
+.patient-consult-button{
+    width: 15em;
+    margin: 0 auto;
 }
