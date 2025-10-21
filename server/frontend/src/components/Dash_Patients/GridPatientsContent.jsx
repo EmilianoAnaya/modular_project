@@ -10,13 +10,19 @@ function GridPatientsContent({ patient }){
         return date.toLocaleDateString()
     }
 
-    // Función para manejar el clic en View
+    // Función para manejar clic en View
     const handleViewClick = () => {
         if (patient && patient.patient_id) {
-            // Guardar el patient_id en sessionStorage
             sessionStorage.setItem('selectedPatientId', patient.patient_id)
-            // Navegar a la página de Notes del paciente
             navigation("/Patient/Notes")
+        }
+    }
+
+    // Función para manejar clic en Consult
+    const handleConsultClick = () => {
+        if (patient && patient.patient_id) {
+            sessionStorage.setItem('selectedPatientId', patient.patient_id)
+            navigation("/Patient/Consult")
         }
     }
 
@@ -50,7 +56,7 @@ function GridPatientsContent({ patient }){
                 <span>{`${patient.first_name} ${patient.last_name}`}</span>
             </div>
             <div className='patients-grid-content'>
-                <span>N/A</span> {/* Por ahora hardcodeado, se puede implementar después */}
+                <span>N/A</span>
             </div>
             <div className='patients-grid-content patients-column-3'>
                 <span>{formatDate(patient.created_at)}</span>
@@ -59,8 +65,20 @@ function GridPatientsContent({ patient }){
                 </button>
             </div>
             <div className='patients-grid-content'>
-                <button className='basic-button table-button'>Consult</button>
-                <button className='basic-button table-button' onClick={handleViewClick}>View</button>
+                <button 
+                    className='basic-button table-button'
+                    onClick={handleConsultClick}
+                    title="Start new consultation"
+                >
+                    Consult
+                </button>
+                <button 
+                    className='basic-button table-button' 
+                    onClick={handleViewClick}
+                    title="View patient records"
+                >
+                    View
+                </button>
             </div>
         </>
     )

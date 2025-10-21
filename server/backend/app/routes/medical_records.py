@@ -63,6 +63,19 @@ def create_medical_record():
             (patient_id, doctor_id, current_date, summary, full_notes_json)
         )
         
+        # Guardar alergias en medical_notes también
+        if 'allergies' in consultation_data and consultation_data['allergies']:
+            medical_notes_sql = base_path / 'database' / 'queries' / 'medical_notes_queries.sql'
+            with open(medical_notes_sql, 'r') as file:
+                queries = file.read().split('\n\n')
+                create_note_query = queries[0].split('\n')
+                create_note_query = [line for line in create_note_query if not line.strip().startswith('--')]
+                create_note_query = '\n'.join(create_note_query).strip()
+            
+            for allergy in consultation_data['allergies']:
+                allergy_json = json.dumps(allergy, ensure_ascii=False)
+                db.execute_query(create_note_query, (patient_id, 'Allergy', allergy_json))
+        
         if not result:
             return jsonify({'error': 'Failed to create medical record'}), 500
         
