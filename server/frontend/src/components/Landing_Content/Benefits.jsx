@@ -19,7 +19,7 @@ function Benefits() {
         },
         {
             title: "Time-Saving Automation",
-            text: "Routine administrative tasks are automated, allowing doctors and staff to focus on what matters most: patient care",
+            text: "Routine administrative tasks are automated, allowing doctors and staff to focus on what matters most: patient care.",
             img: "/assets/automation.jpg", 
         },
         {
