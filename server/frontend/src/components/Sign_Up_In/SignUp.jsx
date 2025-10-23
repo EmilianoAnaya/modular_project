@@ -12,8 +12,8 @@ function SignUp() {
         email: '',
         gender: '',
         date_of_birth: '',
-        country: '',
         city: '',
+        country: '',
         password: '',
         confirm_password: ''
     });
@@ -107,17 +107,17 @@ function SignUp() {
                     <input 
                         className="si-up-in-inputs si-in-screen" 
                         type="text" 
-                        placeholder='Country'
-                        name='country'
-                        value={formData.country}
+                        placeholder='City'
+                        name='city'
+                        value={formData.city}
                         onChange={handleInputChange}
                     />
                     <input 
                         className="si-up-in-inputs si-in-screen" 
                         type="text" 
-                        placeholder='City'
-                        name='city'
-                        value={formData.city}
+                        placeholder='Country'
+                        name='country'
+                        value={formData.country}
                         onChange={handleInputChange}
                     />
                     <input 
