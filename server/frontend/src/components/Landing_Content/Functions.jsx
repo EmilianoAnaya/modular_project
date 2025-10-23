@@ -15,17 +15,17 @@ import './Functions.css'
             {
                 title: "Data Sharing & Collaboration",
                 text: "Securely share patient records with authorized healthcare professionals to improve teamwork and care quality.",
-                img: "",
+                img: "/assets/data-sharing-collaboration.jpg",
             },
             {
-                title: "Automated Reminders",
-                text: "Send ",
-                img: "",
+                title: "Patient Portal",
+                text: "Empower patiets with access to their medical records, test results, and appointment history through a secure online portal.",
+                img: "/assets/patient-portal.jpg",
             },
             {
                 title: "Analytics & Reports",
                 text: "Generate detailed analytics and medical reports instantly, supporting better research and decision-making",
-                img: "",
+                img: "/assets/analytics-reports.jpg",
             },
         ]
 
