@@ -8,6 +8,7 @@ function PatientCalendar(){
 
     const [year, setYear] = useState(new Date().getFullYear())
     const [month, setMonth] = useState(new Date().getMonth())
+    const today = new Date();
 
     const daysInMonth = new Date(year, month+1, 0).getDate()
     const firstDay = new Date(year, month, 1).getDay()
@@ -52,17 +53,26 @@ function PatientCalendar(){
                     </div>
                   ))}
 
-                  { daysArray.map((day, index) => (
-                    <div key={index}
-                      className='calendar-info calendar-day'
-                      style={{
-                        backgroundColor : day ? "#8ffff3" : "transparent",
-                        border : day ? "1px solid rgb(0, 0, 0, .2)" : "none"
-                      }}
-                    >
-                        { day }
-                    </div>
-                  )) }
+                  { daysArray.map((day, index) => {
+                    const isToday =
+                      day &&
+                      day === today.getDate() &&
+                      month === today.getMonth()
+
+                    return (
+                      <div
+                        className='calendar-info-dash calendar-day'
+                        key={index}
+                        style={{
+                          backgroundColor: isToday ? "#27847A" : "inherit",
+                          color: isToday ? "white" : "black",
+                          border: day ? "1px solid rgba(0, 0, 0, 0.2)" : "none"
+                        }}
+                      >
+                        {day}
+                      </div>
+                    )
+                  })}
                 </div>
             </div>
         </>
