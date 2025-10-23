@@ -42,10 +42,10 @@ function PatientRecord(){
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A'
         const date = new Date(dateString)
-        return date.toLocaleDateString('es-ES', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
+        return date.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
         })
     }
 
@@ -155,7 +155,7 @@ function PatientRecord(){
                                     <p>Document</p>
                                     <p>{formatDate(record.created_at)}</p>
                                     <div className='patient-record-buttons'>
-                                        <button 
+                                        <button
                                             className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
                                             onClick={() => handleViewRecord(record)}
                                             title="View consultation details"

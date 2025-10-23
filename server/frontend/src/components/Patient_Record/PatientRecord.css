@@ -5,6 +5,7 @@
     display: grid;
     grid-template-columns: 60% auto;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     column-gap: 1em;
 }
@@ -12,11 +13,13 @@
 .patient-records-item{
     display: flex;
     flex-direction: column;
+    height: 100%;
     box-sizing: border-box;
 }
 
 .records-table{
     display: grid;
+    flex: 1;
     grid-template-columns: 20% 20% 20% 20% 20%;
     grid-template-rows: 5% repeat(auto-fill, 9%);
     background-color: white;
@@ -39,6 +42,7 @@
 }
 
 .records-summary{
+    flex: 1;
     background-color: white;
     overflow-y: auto;
     scroll-behavior: smooth;
@@ -46,6 +50,7 @@
     font-family: var(--FONT-MULISH);
     padding: .4em;
     text-align: justify;
+    box-sizing: border-box;
 }
 
 .patient-record-sub-cont{

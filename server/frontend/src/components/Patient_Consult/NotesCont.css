@@ -24,7 +24,7 @@
 .notes-area-item{
     display: flex;
     align-items: start;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
 .notes-input-cont{
