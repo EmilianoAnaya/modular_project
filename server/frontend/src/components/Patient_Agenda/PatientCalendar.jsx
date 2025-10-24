@@ -1,7 +1,7 @@
 import './PatientCalendar.css'
 import { useState } from 'react'
 
-function PatientCalendar(){
+function PatientCalendar({windowVisibility,  setWindowVisibility}){
     const calendarDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     const calendarMonths = ["January","February","March","April","May","June",
                             "July","August","September","October","November","December"]
