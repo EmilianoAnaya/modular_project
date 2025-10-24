@@ -13,7 +13,7 @@
   justify-content: center;
   align-items: flex-start;
   padding: 1.5em;
- 
+  position: relative;
 }
 
 /* White card */
@@ -45,7 +45,7 @@
   font-family: var(--FONT-INRIA-SANS);
   font-size: 1em;
   cursor: pointer;
-  background-color: #51A9E9;       
+  background-color: #51A9E9;
   border-color: transparent;
   border-radius: 2em;
   height: 2.2em;
@@ -53,11 +53,11 @@
   box-sizing: border-box;
   box-shadow: 0 0.5em 0.5em rgba(0, 0, 0, 0.4);
 
-  display: block;                  
+  display: block;
   margin: 1em auto 0 auto;
-  transition: 0.2s;         
+  transition: 0.2s;
 }
 
 .save-button:hover {
-  background-color: #3f8acb; 
+  background-color: #3f8acb;
 }

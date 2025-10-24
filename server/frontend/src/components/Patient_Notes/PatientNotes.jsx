@@ -35,7 +35,7 @@ function PatientNotes() {
     return (
       <div className="notes-card">
         <h1>{activeSection}</h1>
-        
+
         <div className='editable-note' contentEditable={true} onInput={handleChange} suppressContentEditableWarning={true}>
           {notes[activeSection]}
         </div>
@@ -46,7 +46,7 @@ function PatientNotes() {
 
   return (
     <div className="notes-page">
-      <PatientNav 
+      <PatientNav
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />

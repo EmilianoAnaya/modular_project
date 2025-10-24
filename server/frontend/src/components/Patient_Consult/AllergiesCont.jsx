@@ -1,5 +1,5 @@
-import ConsultWindow from './ConsultWindow'
-import WindowContentDefault from './WindowContentDefault'
+import WindowContainer from '../Window_Container/WindowContainer'
+import WindowConsultDefault from './WindowConsultDefault'
 import BasicInput from '../Basic_Input/BasicInput'
 import './AllergiesCont.css'
 import Section from '../Section/Section'
@@ -41,7 +41,7 @@ function AllergiesCont({ window, allergiesData, setAllergiesData }){
             // Agregar nuevo
             setAllergiesData([...allergiesData, currentAllergy])
         }
-        
+
         // Limpiar formulario
         handleNew()
     }
@@ -83,9 +83,9 @@ function AllergiesCont({ window, allergiesData, setAllergiesData }){
                 </div>
             </div>
 
-            <ConsultWindow windowTitle={"Allergies"} showWindow={window}>
-                <WindowContentDefault 
-                    title_list='Allergens List' 
+            <WindowContainer windowTitle={"Allergies"} showWindow={window}>
+                <WindowConsultDefault
+                    title_list='Allergens List'
                     items_list={allergiesData.map(a => a.allergen)}
                     selectedIndex={selectedIndex}
                     onNew={handleNew}
@@ -95,8 +95,8 @@ function AllergiesCont({ window, allergiesData, setAllergiesData }){
                     onSelectItem={handleSelectAllergy}
                 >
                     <div className='content-default-name'>
-                        <BasicInput 
-                            label={"Allergen"} 
+                        <BasicInput
+                            label={"Allergen"}
                             value={currentAllergy.allergen}
                             onChange={(value) => setCurrentAllergy({...currentAllergy, allergen: value})}
                         />
@@ -104,15 +104,15 @@ function AllergiesCont({ window, allergiesData, setAllergiesData }){
 
                     <div className='default-information-description allergies-description'>
                         <Section headingText={"Reaction Description"} color='black' font_size='1.1em'>
-                            <textarea 
+                            <textarea
                                 value={currentAllergy.reaction}
                                 onChange={(e) => setCurrentAllergy({...currentAllergy, reaction: e.target.value})}
                                 placeholder="Describe the reaction..."
                             />
                         </Section>
                     </div>
-                </WindowContentDefault>
-            </ConsultWindow>
+                </WindowConsultDefault>
+            </WindowContainer>
         </>
     )
 }

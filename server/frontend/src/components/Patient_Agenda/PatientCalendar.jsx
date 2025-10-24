@@ -61,11 +61,10 @@ function PatientCalendar(){
 
                     return (
                       <div
-                        className='calendar-info-dash calendar-day'
+                        className={`calendar-info-dash calendar-day ${isToday ? "istoday" : !day ? "empty" : ""}`}
+                        onClick={ day ? () => console.log(day) : null }
                         key={index}
                         style={{
-                          backgroundColor: isToday ? "#27847A" : "inherit",
-                          color: isToday ? "white" : "black",
                           border: day ? "1px solid rgba(0, 0, 0, 0.2)" : "none"
                         }}
                       >
