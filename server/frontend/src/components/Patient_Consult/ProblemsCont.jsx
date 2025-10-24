@@ -1,9 +1,9 @@
-import ConsultWindow from './ConsultWindow'
+import WindowContainer from '../Window_Container/WindowContainer'
+import WindowConsultDefault from './WindowConsultDefault'
 import Section from '../Section/Section'
 import BasicInput from '../Basic_Input/BasicInput'
 import BasicSelect from '../BasicSelect/BasicSelect'
 import './ProblemsCont.css'
-import WindowContentDefault from './WindowContentDefault'
 import { useState } from 'react'
 
 function ProblemsCont({ window, problemsData, setProblemsData }){
@@ -48,7 +48,7 @@ function ProblemsCont({ window, problemsData, setProblemsData }){
             // Agregar nuevo
             setProblemsData([...problemsData, currentProblem])
         }
-        
+
         // Limpiar formulario
         handleNew()
     }
@@ -96,9 +96,9 @@ function ProblemsCont({ window, problemsData, setProblemsData }){
                 </div>
             </div>
 
-            <ConsultWindow windowTitle={"Problems"} showWindow={window}>
-                <WindowContentDefault 
-                    title_list='Problems List' 
+            <WindowContainer windowTitle={"Problems"} showWindow={window}>
+                <WindowConsultDefault
+                    title_list='Problems List'
                     items_list={problemsData.map(p => p.problem_name)}
                     selectedIndex={selectedIndex}
                     onNew={handleNew}
@@ -108,8 +108,8 @@ function ProblemsCont({ window, problemsData, setProblemsData }){
                     onSelectItem={handleSelectProblem}
                 >
                     <div className='content-default-name'>
-                        <BasicInput 
-                            label={"Problem Name"} 
+                        <BasicInput
+                            label={"Problem Name"}
                             value={currentProblem.problem_name}
                             onChange={(value) => setCurrentProblem({...currentProblem, problem_name: value})}
                         />
@@ -117,38 +117,38 @@ function ProblemsCont({ window, problemsData, setProblemsData }){
 
                     <div className='default-information-description problems-description'>
                         <Section headingText={"Problems Description"} color='black' font_size='1.1em'>
-                            <textarea 
+                            <textarea
                                 value={currentProblem.description}
                                 onChange={(e) => setCurrentProblem({...currentProblem, description: e.target.value})}
                                 placeholder="Describe the problem..."
                             />
                         </Section>
                     </div>
-                    
+
                     <div className='default-information-entries'>
-                        <BasicInput 
-                            label={"Onset"} 
-                            inputType="date" 
+                        <BasicInput
+                            label={"Onset"}
+                            inputType="date"
                             width='12em'
                             value={currentProblem.onset}
                             onChange={(value) => setCurrentProblem({...currentProblem, onset: value})}
                         />
-                        <BasicSelect 
-                            label={"Severity"} 
-                            options={["Mild", "Moderated", "Severe"]} 
+                        <BasicSelect
+                            label={"Severity"}
+                            options={["Mild", "Moderated", "Severe"]}
                             width='12em'
                             value={currentProblem.severity}
                             onChange={(e) => setCurrentProblem({...currentProblem, severity: e.target.value})}
                         />
-                        <BasicInput 
-                            label={"Duration"} 
+                        <BasicInput
+                            label={"Duration"}
                             width='12em'
                             value={currentProblem.duration}
                             onChange={(value) => setCurrentProblem({...currentProblem, duration: value})}
                         />
                     </div>
-                </WindowContentDefault>
-            </ConsultWindow>
+                </WindowConsultDefault>
+            </WindowContainer>
         </>
     )
 }

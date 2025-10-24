@@ -9,7 +9,6 @@
     border-radius: 2em;
     margin-bottom: 1em;
     overflow: hidden;
-
 }
 
 .patient-agenda-calendar-sidebar{
@@ -83,6 +82,25 @@
 .calendar-day{
     font-size: 1.8em;
     user-select: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.calendar-day.istoday{
+    background-color: #27847A;
+    color: white;
+}
+
+.calendar-day.empty{
+    cursor: auto;
+}
+
+.calendar-day.empty:hover{
+    background-color: transparent;
+}
+
+.calendar-day:hover{
+    background-color: rgb(0, 0, 0, 0.2);
 }
 
 

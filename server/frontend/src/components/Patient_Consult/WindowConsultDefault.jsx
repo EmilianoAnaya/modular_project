@@ -1,9 +1,9 @@
 import Heading from "../Heading/Heading"
-import "./WindowContentDefault.css"
+import "./WindowConsultDefault.css"
 
-function WindowContentDefault({ 
-    title_list="", 
-    items_list = [], 
+function WindowConsultDefault({
+    title_list="",
+    items_list = [],
     children,
     onNew,
     onSaveContinue,
@@ -30,7 +30,7 @@ function WindowContentDefault({
                             <p style={{fontStyle: 'italic', color: '#666'}}>No items yet</p>
                         ) : (
                             items.map((item, index) => (
-                                <p 
+                                <p
                                     key={index}
                                     onClick={() => handleItemClick(index)}
                                     style={{
@@ -58,7 +58,7 @@ function WindowContentDefault({
                             ))
                         )}
                     </div>
-                    
+
                 </div>
                 <div className='window-default-information'>
                     <div className='default-information-cont'>
@@ -68,9 +68,9 @@ function WindowContentDefault({
                         <button className='basic-button' onClick={onNew}>New</button>
                         <button className='basic-button' onClick={onSaveContinue}>Save & Continue</button>
                         <button className='basic-button' onClick={onSaveExit}>Save & Exit</button>
-                        <button 
-                            className='basic-button' 
-                            onClick={onDelete} 
+                        <button
+                            className='basic-button'
+                            onClick={onDelete}
                             disabled={selectedIndex === null}
                             style={{
                                 opacity: selectedIndex === null ? 0.5 : 1,
@@ -86,4 +86,4 @@ function WindowContentDefault({
     )
 }
 
-export default WindowContentDefault
+export default WindowConsultDefault

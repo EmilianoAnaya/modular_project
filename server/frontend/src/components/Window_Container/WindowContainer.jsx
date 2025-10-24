@@ -1,16 +1,16 @@
 import Section from '../Section/Section';
-import './ConsultWindow.css'
+import './WindowContainer.css'
 
-function ConsultWindow({ showWindow, windowTitle, children }){
+function WindowContainer({ showWindow, windowTitle, children }){
     const [showSubWindow, setShowSubWindow] = showWindow;
 
     return (
-        <>  
+        <>
             {showSubWindow && (
                 <>
-                    <div className="consult-overlay" onClick={() => setShowSubWindow(!showSubWindow)} />
-                    <div className="consult-sub-window">
-                        <div className='sub-window-return' onClick={() => setShowSubWindow(!showSubWindow)}>
+                    <div className="window-overlay" onClick={() => setShowSubWindow(!showSubWindow)} />
+                    <div className="window-container">
+                        <div className='window-return-button' onClick={() => setShowSubWindow(!showSubWindow)}>
                             <img src='/assets/cross.svg'/>
                         </div>
                         <Section headingText={windowTitle}>
@@ -23,4 +23,4 @@ function ConsultWindow({ showWindow, windowTitle, children }){
     )
 }
 
-export default ConsultWindow
+export default WindowContainer

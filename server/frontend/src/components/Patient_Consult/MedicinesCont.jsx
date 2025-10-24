@@ -1,5 +1,5 @@
-import ConsultWindow from './ConsultWindow'
-import WindowContentDefault from './WindowContentDefault'
+import WindowContainer from '../Window_Container/WindowContainer'
+import WindowConsultDefault from './WindowConsultDefault'
 import Section from '../Section/Section'
 import BasicInput from '../Basic_Input/BasicInput'
 import './MedicinesCont.css'
@@ -43,7 +43,7 @@ function MedicinesCont({ window, medicinesData, setMedicinesData }){
             // Agregar nuevo
             setMedicinesData([...medicinesData, currentMedicine])
         }
-        
+
         // Limpiar formulario
         handleNew()
     }
@@ -70,7 +70,7 @@ function MedicinesCont({ window, medicinesData, setMedicinesData }){
                     <div><h4>Medicine</h4></div>
                     <div><h4>Quantity</h4></div>
                     <div><h4>Instructions</h4></div>
-                    
+
                     {medicinesData.length === 0 ? (
                         <div className='consult-cell centered' style={{gridColumn: '1 / -1', fontStyle: 'italic', color: '#666'}}>
                             No medicines added yet. Click the edit button to add.
@@ -87,9 +87,9 @@ function MedicinesCont({ window, medicinesData, setMedicinesData }){
                 </div>
             </div>
 
-            <ConsultWindow windowTitle={"Medicines"} showWindow={window}>
-                <WindowContentDefault 
-                    title_list='Medicines List' 
+            <WindowContainer windowTitle={"Medicines"} showWindow={window}>
+                <WindowConsultDefault
+                    title_list='Medicines List'
                     items_list={medicinesData.map(m => m.medicine)}
                     selectedIndex={selectedIndex}
                     onNew={handleNew}
@@ -99,16 +99,16 @@ function MedicinesCont({ window, medicinesData, setMedicinesData }){
                     onSelectItem={handleSelectMedicine}
                 >
                     <div className='content-default-name'>
-                        <BasicInput 
-                            label={"Medicine Name"} 
+                        <BasicInput
+                            label={"Medicine Name"}
                             value={currentMedicine.medicine}
                             onChange={(value) => setCurrentMedicine({...currentMedicine, medicine: value})}
                         />
                     </div>
-        
+
                     <div className='default-information-description medicines-description'>
                         <Section headingText={"Medicine Instructions"} color='black' font_size='1.1em'>
-                            <textarea 
+                            <textarea
                                 value={currentMedicine.instructions}
                                 onChange={(e) => setCurrentMedicine({...currentMedicine, instructions: e.target.value})}
                                 placeholder="Instructions for taking the medicine..."
@@ -117,15 +117,15 @@ function MedicinesCont({ window, medicinesData, setMedicinesData }){
                     </div>
 
                     <div className='default-information-entries'>
-                        <BasicInput 
-                            label={"Quantity"} 
+                        <BasicInput
+                            label={"Quantity"}
                             width='12em'
                             value={currentMedicine.quantity}
                             onChange={(value) => setCurrentMedicine({...currentMedicine, quantity: value})}
                         />
                     </div>
-                </WindowContentDefault>
-            </ConsultWindow>
+                </WindowConsultDefault>
+            </WindowContainer>
         </>
     )
 }

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { usePatient } from '../../hooks/usePatient'
 import { getApiUrl } from '../../config/api'
 import API_CONFIG from '../../config/api'
-import ConsultWindow from '../Patient_Consult/ConsultWindow'
-import WindowContentDefault from '../Patient_Consult/WindowContentDefault'
+import WindowContainer from '../Window_Container/WindowContainer'
+import WindowConsultDefault from '../Patient_Consult/WindowConsultDefault'
 import BasicInput from '../Basic_Input/BasicInput'
 import Section from '../Section/Section'
 import Heading from '../Heading/Heading'
@@ -169,7 +169,7 @@ function AllergiesSection() {
                 <div className='patient-records-item'>
                     <div className="allergies-heading-with-button">
                         <Heading headingText={"Allergies"} />
-                        <button 
+                        <button
                             className="basic-button add-allergy-btn"
                             onClick={() => {
                                 handleNew()
@@ -194,7 +194,7 @@ function AllergiesSection() {
                                     <p>{allergy.note_data.allergen}</p>
                                     <p>{allergy.note_data.reaction || 'No description'}</p>
                                     <div className='patient-record-buttons'>
-                                        <button 
+                                        <button
                                             className='basic-button table-button'
                                             onClick={() => {
                                                 handleSelectAllergy(index)
@@ -211,8 +211,8 @@ function AllergiesSection() {
                 </div>
             </div>
 
-            <ConsultWindow windowTitle={"Allergy"} showWindow={[showModal, setShowModal]}>
-                <WindowContentDefault
+            <WindowContainer windowTitle={"Allergy"} showWindow={[showModal, setShowModal]}>
+                <WindowConsultDefault
                     title_list='Allergens List'
                     items_list={allergies.map(a => a.note_data.allergen)}
                     selectedIndex={selectedIndex}
@@ -241,8 +241,8 @@ function AllergiesSection() {
                             />
                         </Section>
                     </div>
-                </WindowContentDefault>
-            </ConsultWindow>
+                </WindowConsultDefault>
+            </WindowContainer>
         </>
     )
 }

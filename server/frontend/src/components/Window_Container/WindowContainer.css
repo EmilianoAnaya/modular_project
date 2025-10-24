@@ -1,6 +1,6 @@
 
 /* Overlay */
-.consult-overlay {
+.window-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
 }
 
 /* Window */
-.consult-sub-window{
+.window-container{
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -30,7 +30,7 @@
 }
 
 /* Containers */
-.sub-window-return{
+.window-return-button{
     position: absolute;
     top: 0;
     right: 0;
@@ -45,18 +45,18 @@
     box-shadow: 0em .2em .1em rgb(0, 0, 0, .4);
 }
 
-.sub-window-return:hover{
+.window-return-button:hover{
     background-color: #00FFE4;
 }
 
-.sub-window-return img{
+.window-return-button img{
     padding-left: .3em;
     padding-bottom: .1em;
 }
 
 /* Responsive */
 @media screen and (max-width : 100em){
-    .consult-sub-window{
+    .window-container{
         top: 40%;
         height: 70%;
     }
