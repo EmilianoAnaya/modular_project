@@ -8,13 +8,12 @@ def create_app():
     # Desactivar strict slashes globalmente
     app.url_map.strict_slashes = False
     
-    # Configurar CORS correctamente
+    # Configurar CORS
     CORS(app, resources={
         r"/api/*": {
             "origins": ["http://localhost:4040", "http://localhost:5173"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type"],
-            "supports_credentials": True
+            "allow_headers": ["Content-Type"]
         }
     })
     
@@ -23,10 +22,12 @@ def create_app():
     from app.routes.patients import patients_bp
     from app.routes.medical_records import medical_records_bp
     from app.routes.medical_notes import medical_notes_bp
+    from app.routes.studies import studies_bp
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(patients_bp, url_prefix='/api/patients')
     app.register_blueprint(medical_records_bp, url_prefix='/api/medical-records')
     app.register_blueprint(medical_notes_bp, url_prefix='/api/medical-notes')
+    app.register_blueprint(studies_bp, url_prefix='/api/studies')
     
     return app

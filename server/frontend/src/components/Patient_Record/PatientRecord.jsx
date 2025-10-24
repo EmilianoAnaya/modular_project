@@ -8,34 +8,83 @@ import API_CONFIG from '../../config/api'
 function PatientRecord(){
     const { patientData } = usePatient()
     const [records, setRecords] = useState([])
+    const [studies, setStudies] = useState([])
+    const [combinedRecords, setCombinedRecords] = useState([])
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [filterCategory, setFilterCategory] = useState('all') // 'all', 'document', 'study'
+    const [showFilesModal, setShowFilesModal] = useState(false)
+    const [selectedStudy, setSelectedStudy] = useState(null)
 
     useEffect(() => {
         if (patientData) {
-            loadPatientRecords()
+            loadPatientData()
         }
     }, [patientData])
 
-    const loadPatientRecords = async () => {
+    useEffect(() => {
+        combineAndSortRecords()
+    }, [records, studies, filterCategory])
+
+    const loadPatientData = async () => {
         try {
-            const response = await fetch(
+            // Cargar consultas
+            const recordsResponse = await fetch(
                 getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_RECORDS_BY_PATIENT}/${patientData.patient_id}`)
             )
-            const data = await response.json()
+            const recordsData = await recordsResponse.json()
 
-            if (response.ok) {
-                setRecords(data.records)
-                if (data.records.length > 0) {
-                    setSelectedRecord(data.records[0])
-                }
-            } else {
-                console.error('Error loading records:', data.error)
+            // Cargar estudios con archivos
+            const studiesResponse = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.STUDIES_BY_PATIENT_FILES}/${patientData.patient_id}/files`)
+            )
+            const studiesData = await studiesResponse.json()
+
+            if (recordsResponse.ok) {
+                setRecords(recordsData.records || [])
+            }
+
+            if (studiesResponse.ok) {
+                setStudies(studiesData.studies || [])
             }
         } catch (error) {
-            console.error('Error fetching records:', error)
+            console.error('Error fetching data:', error)
         } finally {
             setLoading(false)
+        }
+    }
+
+    const combineAndSortRecords = () => {
+        let combined = []
+
+        // Agregar consultas
+        if (filterCategory === 'all' || filterCategory === 'document') {
+            const consultations = records.map(record => ({
+                ...record,
+                type: 'document',
+                displayDate: record.date || record.created_at
+            }))
+            combined = [...combined, ...consultations]
+        }
+
+        // Agregar estudios
+        if (filterCategory === 'all' || filterCategory === 'study') {
+            const studiesRecords = studies.map(study => ({
+                ...study,
+                type: 'study',
+                displayDate: study.performed_at
+            }))
+            combined = [...combined, ...studiesRecords]
+        }
+
+        // Ordenar por fecha (más reciente primero)
+        combined.sort((a, b) => new Date(b.displayDate) - new Date(a.displayDate))
+
+        setCombinedRecords(combined)
+
+        // Seleccionar primer registro si hay
+        if (combined.length > 0 && !selectedRecord) {
+            setSelectedRecord(combined[0])
         }
     }
 
@@ -43,14 +92,47 @@ function PatientRecord(){
         if (!dateString) return 'N/A'
         const date = new Date(dateString)
         return date.toLocaleDateString('es-ES', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric' 
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
         })
     }
 
     const handleViewRecord = (record) => {
+        if (record.type === 'study') {
+            // Mostrar modal con archivos
+            setSelectedStudy(record)
+            setShowFilesModal(true)
+        }
         setSelectedRecord(record)
+    }
+
+    const handleCategoryFilter = () => {
+        if (filterCategory === 'all') {
+            setFilterCategory('document')
+        } else if (filterCategory === 'document') {
+            setFilterCategory('study')
+        } else {
+            setFilterCategory('all')
+        }
+    }
+
+    const handleOpenFile = (filePath) => {
+        const fileUrl = getApiUrl(`${API_CONFIG.ENDPOINTS.STUDY_FILE}/${filePath}`)
+        window.open(fileUrl, '_blank')
+    }
+
+    const getFileIcon = (fileType) => {
+        if (fileType.startsWith('image/')) return '🖼️'
+        if (fileType === 'application/pdf') return '📄'
+        return '📎'
+    }
+
+    const formatFileSize = (bytes) => {
+        if (!bytes) return 'N/A'
+        if (bytes < 1024) return bytes + ' B'
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB'
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
     }
 
     const renderConsultationData = (consultationData) => {
@@ -123,6 +205,35 @@ function PatientRecord(){
         )
     }
 
+    const renderStudyFiles = (study) => {
+        if (!study.files || study.files.length === 0) {
+            return <p style={{fontStyle: 'italic', color: '#666'}}>No files available for this study</p>
+        }
+
+        return (
+            <div className='study-files-list'>
+                <h3>Files ({study.files.length})</h3>
+                {study.files.map((file) => (
+                    <div key={file.id} className='study-file-item'>
+                        <div className='study-file-info'>
+                            <span className='study-file-icon'>{getFileIcon(file.file_type)}</span>
+                            <div className='study-file-details'>
+                                <p className='study-file-name'>{file.file_name}</p>
+                                <p className='study-file-size'>{formatFileSize(file.file_size)}</p>
+                            </div>
+                        </div>
+                        <button 
+                            className='basic-button study-file-view-btn'
+                            onClick={() => handleOpenFile(file.file_path)}
+                        >
+                            View
+                        </button>
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
     if (loading) {
         return (
             <div className='patient-records-container'>
@@ -139,28 +250,39 @@ function PatientRecord(){
                     <div className='patient-record-sub-cont records-table'>
                         <p>Name</p>
                         <p>Made by</p>
-                        <p>Category</p>
+                        <p 
+                            onClick={handleCategoryFilter}
+                            style={{cursor: 'pointer', userSelect: 'none'}}
+                            title="Click to filter"
+                        >
+                            Category {filterCategory !== 'all' && `(${filterCategory})`}
+                        </p>
                         <p>Date Created</p>
                         <p>Actions</p>
 
-                        {records.length === 0 ? (
+                        {combinedRecords.length === 0 ? (
                             <p style={{gridColumn: '1 / -1', padding: '2em', fontStyle: 'italic', color: '#666'}}>
-                                No medical records found for this patient.
+                                No records found for this patient.
                             </p>
                         ) : (
-                            records.map((record) => (
-                                <React.Fragment key={record.id}>
-                                    <p>Consult - {formatDate(record.date)}</p>
-                                    <p>Doctor</p>
-                                    <p>Document</p>
-                                    <p>{formatDate(record.created_at)}</p>
+                            combinedRecords.map((record, index) => (
+                                <React.Fragment key={`${record.type}-${record.id || index}`}>
+                                    <p>
+                                        {record.type === 'document' 
+                                            ? `Consult - ${formatDate(record.date)}`
+                                            : `Study - ${record.study_type}`
+                                        }
+                                    </p>
+                                    <p>{record.type === 'document' ? 'Doctor' : record.doctor_name || 'Doctor'}</p>
+                                    <p>{record.type === 'document' ? 'Document' : 'Study'}</p>
+                                    <p>{formatDate(record.displayDate)}</p>
                                     <div className='patient-record-buttons'>
-                                        <button 
-                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
+                                        <button
+                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id && selectedRecord?.type === record.type ? 'active-record' : ''}`}
                                             onClick={() => handleViewRecord(record)}
-                                            title="View consultation details"
+                                            title={record.type === 'study' ? 'View study files' : 'View consultation details'}
                                         >
-                                            <img src='/assets/glasses.svg'/>
+                                            <img src='/assets/glasses.svg' alt="View"/>
                                         </button>
                                     </div>
                                 </React.Fragment>
@@ -172,17 +294,34 @@ function PatientRecord(){
                     <Heading headingText={"Summary"} />
                     <div className='patient-record-sub-cont records-summary'>
                         {selectedRecord ? (
-                            <>
-                                <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
-                                    <h2 style={{margin: '0', color: '#00897b'}}>
-                                        Consultation - {formatDate(selectedRecord.date)}
-                                    </h2>
-                                    <p style={{margin: '0.5em 0', fontStyle: 'italic', color: '#666'}}>
-                                        {selectedRecord.summary}
-                                    </p>
-                                </div>
-                                {renderConsultationData(selectedRecord.consultation_data)}
-                            </>
+                            selectedRecord.type === 'document' ? (
+                                <>
+                                    <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
+                                        <h2 style={{margin: '0', color: '#00897b'}}>
+                                            Consultation - {formatDate(selectedRecord.date)}
+                                        </h2>
+                                        <p style={{margin: '0.5em 0', fontStyle: 'italic', color: '#666'}}>
+                                            {selectedRecord.summary}
+                                        </p>
+                                    </div>
+                                    {renderConsultationData(selectedRecord.consultation_data)}
+                                </>
+                            ) : (
+                                <>
+                                    <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
+                                        <h2 style={{margin: '0', color: '#00897b'}}>
+                                            Study - {selectedRecord.study_type}
+                                        </h2>
+                                        <p style={{margin: '0.5em 0', fontStyle: 'italic', color: '#666'}}>
+                                            Performed: {formatDate(selectedRecord.performed_at)}
+                                        </p>
+                                        <p style={{margin: '0.5em 0', color: '#666'}}>
+                                            Doctor: {selectedRecord.doctor_name}
+                                        </p>
+                                    </div>
+                                    {renderStudyFiles(selectedRecord)}
+                                </>
+                            )
                         ) : (
                             <p style={{fontStyle: 'italic', color: '#666'}}>
                                 Select a record to view details
@@ -191,6 +330,7 @@ function PatientRecord(){
                     </div>
                 </div>
             </div>
+
         </>
     )
 }

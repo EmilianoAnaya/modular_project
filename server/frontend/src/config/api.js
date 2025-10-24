@@ -18,7 +18,14 @@ const API_CONFIG = {
         
         // Medical Notes
         MEDICAL_NOTES: '/api/medical-notes',
-        MEDICAL_NOTES_BY_PATIENT: '/api/medical-notes/patient'
+        MEDICAL_NOTES_BY_PATIENT: '/api/medical-notes/patient',
+
+        // Studies
+        STUDIES: '/api/studies',
+        STUDIES_BY_PATIENT: '/api/studies/patient',
+
+        STUDIES_BY_PATIENT_FILES: '/api/studies/patient',
+        STUDY_FILE: '/api/studies/file'
     }
 };
 
