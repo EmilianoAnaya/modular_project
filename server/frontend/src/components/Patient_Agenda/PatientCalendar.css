@@ -3,7 +3,7 @@
 
 .patient-agenda-calendar-cont{
     display: grid;
-    grid-template-columns: 25% auto;
+    grid-template-columns: 20% auto;
     width: 100%;
     box-sizing: border-box;
     border-radius: 2em;
@@ -41,14 +41,48 @@
 
 
 .patient-agenda-calendar-content{
+    display: grid;
+    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
+    grid-template-rows: 6% repeat(6, 15.66%);
     background-color: #D4FFEC;
     border-radius: 0 2em 2em 0;
+    padding: 2em;
+    box-sizing: border-box;
+}
+
+.calendar-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar-head-box{
+    background-color: #67d6ca;
+    border: 1px solid rgb(0, 0, 0, .2);
+
 }
 
 /* Text */
-.patient-agenda-calendar-months p{
-    margin: 0;
+.month-item{
+    margin: 0 auto;
     margin-top: .8em;
+    width: 9em;
+    border-radius: 1em;
+    padding: .2em;
+}
+
+.month-item:hover{
+    background-color: #27847A;
+}
+
+.month-item.active{
+    background-color: #27847A;
+    border: 1px solid white;
+}
+
+.calendar-day{
+    font-size: 1.8em;
+    user-select: none;
 }
 
 

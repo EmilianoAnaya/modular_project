@@ -13,8 +13,8 @@ function PatientRecord(){
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [loading, setLoading] = useState(true)
     const [filterCategory, setFilterCategory] = useState('all') // 'all', 'document', 'study'
-    const [showFilesModal, setShowFilesModal] = useState(false)
-    const [selectedStudy, setSelectedStudy] = useState(null)
+    const [setShowFilesModal] = useState(false)
+    const [setSelectedStudy] = useState(null)
 
     useEffect(() => {
         if (patientData) {
@@ -91,7 +91,7 @@ function PatientRecord(){
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A'
         const date = new Date(dateString)
-        return date.toLocaleDateString('es-ES', { 
+        return date.toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
@@ -123,17 +123,11 @@ function PatientRecord(){
     }
 
     const getFileIcon = (fileType) => {
-        if (fileType.startsWith('image/')) return '🖼️'
+        if (fileType.startsWith('image/')) return ''
         if (fileType === 'application/pdf') return '📄'
         return '📎'
     }
 
-    const formatFileSize = (bytes) => {
-        if (!bytes) return 'N/A'
-        if (bytes < 1024) return bytes + ' B'
-        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB'
-        return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
-    }
 
     const renderConsultationData = (consultationData) => {
         if (!consultationData) return <p>No consultation data available</p>
@@ -219,7 +213,6 @@ function PatientRecord(){
                             <span className='study-file-icon'>{getFileIcon(file.file_type)}</span>
                             <div className='study-file-details'>
                                 <p className='study-file-name'>{file.file_name}</p>
-                                <p className='study-file-size'>{formatFileSize(file.file_size)}</p>
                             </div>
                         </div>
                         <button 
@@ -278,7 +271,7 @@ function PatientRecord(){
                                     <p>{formatDate(record.displayDate)}</p>
                                     <div className='patient-record-buttons'>
                                         <button
-                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id && selectedRecord?.type === record.type ? 'active-record' : ''}`}
+                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
                                             onClick={() => handleViewRecord(record)}
                                             title={record.type === 'study' ? 'View study files' : 'View consultation details'}
                                         >
