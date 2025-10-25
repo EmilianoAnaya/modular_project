@@ -1,12 +1,12 @@
 import './StudyCard.css'
 import { useState, useRef } from 'react'
 
-function StudyCard({ file, onFileAttach, onFileRemove, hasFile, onFileReplace }){
+function StudyCard({ file, onFileAttach, onFileRemove, hasFile, onFileReplace, selectedStudyType }){
     const [showItems, setShowItems] = useState(false)
     const fileInputRef = useRef(null)
     const replaceInputRef = useRef(null)
 
-    const studyCardBackground = '/assets/XRaysExample.jpg'
+    const studyCardBackground = '/assets/studies.jpg'
 
     const handleFileSelect = (event) => {
         const selectedFile = event.target.files[0]
@@ -91,8 +91,12 @@ function StudyCard({ file, onFileAttach, onFileRemove, hasFile, onFileReplace })
                             <img 
                                 src='/assets/paperclip.svg' 
                                 className='study-card-option'
-                                onClick={handleAttachClick}
-                                style={{ cursor: 'pointer' }}
+                                onClick={selectedStudyType ? handleAttachClick : undefined}
+                                style={{ 
+                                    cursor: selectedStudyType ? 'pointer' : 'not-allowed',
+                                    opacity: selectedStudyType ? 1 : 0.4                         
+                                }}
+                                title={selectedStudyType ? 'Attach file' : 'Select a study first'}
                             />
                         )}
                         <input 
