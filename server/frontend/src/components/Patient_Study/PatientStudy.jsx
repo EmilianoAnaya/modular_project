@@ -172,6 +172,17 @@ function PatientStudy(){
                     </div>
                 </div>
                 <div className='studies-selected-cont'>
+                    <div className='selected-study-header'>
+                        {selectedStudyType ? (
+                            <h2 className='selected-study-title'>
+                                {selectedStudyType}
+                            </h2>
+                        ) : (
+                            <p className='selected-study-placeholder'>
+                                Select a study type to attach files
+                            </p>
+                        )}
+                    </div>
                     <div className='selected-studies'>
                         {/* Mostrar cards con archivos adjuntos */}
                         {attachedFiles.map((file, index) => (
@@ -181,6 +192,7 @@ function PatientStudy(){
                                 onFileRemove={() => handleFileRemove(index)}
                                 onFileReplace={(newFile) => handleFileReplace(index, newFile)}
                                 hasFile={true}
+                                selectedStudyType={selectedStudyType}
                             />
                         ))}
                         
@@ -190,6 +202,7 @@ function PatientStudy(){
                                 key="empty-card"
                                 onFileAttach={handleFileAttach}
                                 hasFile={false}
+                                selectedStudyType={selectedStudyType}
                             />
                         )}
                     </div>
@@ -197,11 +210,18 @@ function PatientStudy(){
                         <button 
                             className='basic-button'
                             onClick={handleSaveStudies}
-                            disabled={isSaving}
+                            disabled={isSaving || !selectedStudyType || attachedFiles.length === 0} 
                             style={{
-                                opacity: isSaving ? 0.6 : 1,
-                                cursor: isSaving ? 'not-allowed' : 'pointer'
+                                opacity: (isSaving || !selectedStudyType || attachedFiles.length === 0) ? 0.6 : 1,
+                                cursor: (isSaving || !selectedStudyType || attachedFiles.length === 0) ? 'not-allowed' : 'pointer'
                             }}
+                            title={
+                                !selectedStudyType
+                                    ? 'Select a study type first'
+                                    : attachedFiles.length === 0
+                                    ? 'Attach at least one file'
+                                    : 'Save studies'
+                            }
                         >
                             {isSaving ? 'Saving...' : 'Save Studies'}
                         </button>
