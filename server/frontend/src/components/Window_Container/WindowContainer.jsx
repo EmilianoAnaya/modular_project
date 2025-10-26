@@ -1,15 +1,16 @@
 import Section from '../Section/Section';
 import './WindowContainer.css'
 
-function WindowContainer({ showWindow, windowTitle, children }){
+function WindowContainer({ styleContainer="window-container-default", showWindow, windowTitle, children }){
     const [showSubWindow, setShowSubWindow] = showWindow;
+
 
     return (
         <>
             {showSubWindow && (
                 <>
                     <div className="window-overlay" onClick={() => setShowSubWindow(!showSubWindow)} />
-                    <div className="window-container">
+                    <div className={`window-container ${styleContainer}`}>
                         <div className='window-return-button' onClick={() => setShowSubWindow(!showSubWindow)}>
                             <img src='/assets/cross.svg'/>
                         </div>

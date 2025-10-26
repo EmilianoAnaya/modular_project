@@ -1,14 +1,13 @@
 import './PatientCalendar.css'
 import { useState } from 'react'
 
-function PatientCalendar({windowVisibility,  setWindowVisibility}){
+function PatientCalendar({windowVisibility,  setWindowVisibility, selectedDate, setSelectedDate}){
     const calendarDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     const calendarMonths = ["January","February","March","April","May","June",
                             "July","August","September","October","November","December"]
 
-    const [year, setYear] = useState(new Date().getFullYear())
-    const [month, setMonth] = useState(new Date().getMonth())
     const today = new Date();
+    const {year, month} = selectedDate
 
     const daysInMonth = new Date(year, month+1, 0).getDate()
     const firstDay = new Date(year, month, 1).getDay()
@@ -21,8 +20,12 @@ function PatientCalendar({windowVisibility,  setWindowVisibility}){
       daysArray.push(day)
     }
 
-    const handleYear = (param) => setYear(prev => prev + param)
-    const handleMonth = (index) => setMonth(index)
+    const handleYear = (param) => setSelectedDate(prev => ({...prev, year : prev.year + param}))
+    const handleMonth = (index) => setSelectedDate(prev => ({...prev, month : index}))
+    const showWindow = (day) => {
+      setSelectedDate(prev => ({...prev, day  }))
+      setWindowVisibility(true)
+    }
 
     return (
         <>
@@ -57,12 +60,13 @@ function PatientCalendar({windowVisibility,  setWindowVisibility}){
                     const isToday =
                       day &&
                       day === today.getDate() &&
-                      month === today.getMonth()
+                      month === today.getMonth() &&
+                      year === today.getFullYear()
 
                     return (
                       <div
                         className={`calendar-info-dash calendar-day ${isToday ? "istoday" : !day ? "empty" : ""}`}
-                        onClick={ day ? () => console.log(day) : null }
+                        onClick={ day ? () => showWindow(day) : null }
                         key={index}
                         style={{
                           border: day ? "1px solid rgba(0, 0, 0, 0.2)" : "none"
