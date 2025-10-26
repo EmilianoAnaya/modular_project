@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './PatientRecord.css'
 import Heading from '../Heading/Heading'
 import { usePatient } from '../../hooks/usePatient'
@@ -12,9 +12,15 @@ function PatientRecord(){
     const [combinedRecords, setCombinedRecords] = useState([])
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [filterCategory, setFilterCategory] = useState('all') // 'all', 'document', 'study'
-    const [setShowFilesModal] = useState(false)
-    const [setSelectedStudy] = useState(null)
+    const [showFilesModal, setShowFilesModal] = useState(false)
+    const [selectedStudy, setSelectedStudy] = useState(null)
+    const [dateFilter, setDateFilter] = useState('')
+    const [categoryFilter, setCategoryFilter] = useState('all')
+    const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false)
+    const dropdownRef = useRef(null)
+    const [dateDropdownOpen, setDateDropdownOpen] = useState(false);
+    const dateDropdownRef = useRef(null);
+
 
     useEffect(() => {
         if (patientData) {
@@ -24,7 +30,20 @@ function PatientRecord(){
 
     useEffect(() => {
         combineAndSortRecords()
-    }, [records, studies, filterCategory])
+    }, [records, studies, categoryFilter, dateFilter])
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setCategoryDropdownOpen(false)
+            }
+            if (dateDropdownRef.current && !dateDropdownRef.current.contains(event.target)) {
+                setDateDropdownOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
 
     const loadPatientData = async () => {
         try {
@@ -57,8 +76,8 @@ function PatientRecord(){
     const combineAndSortRecords = () => {
         let combined = []
 
-        // Agregar consultas
-        if (filterCategory === 'all' || filterCategory === 'document') {
+        // Filtrar consultas
+        if (categoryFilter === 'all' || categoryFilter === 'document') {
             const consultations = records.map(record => ({
                 ...record,
                 type: 'document',
@@ -67,14 +86,22 @@ function PatientRecord(){
             combined = [...combined, ...consultations]
         }
 
-        // Agregar estudios
-        if (filterCategory === 'all' || filterCategory === 'study') {
+        // Filtrar estudios
+        if (categoryFilter === 'all' || categoryFilter === 'study') {
             const studiesRecords = studies.map(study => ({
                 ...study,
                 type: 'study',
                 displayDate: study.performed_at
             }))
             combined = [...combined, ...studiesRecords]
+        }
+
+        // Filtrar por fecha 
+        if (dateFilter) {
+            combined = combined.filter(record => {
+                const recordDate = new Date(record.displayDate).toISOString().split('T')[0]
+                return recordDate === dateFilter
+            })
         }
 
         // Ordenar por fecha (más reciente primero)
@@ -107,15 +134,21 @@ function PatientRecord(){
         setSelectedRecord(record)
     }
 
-    const handleCategoryFilter = () => {
-        if (filterCategory === 'all') {
-            setFilterCategory('document')
-        } else if (filterCategory === 'document') {
-            setFilterCategory('study')
-        } else {
-            setFilterCategory('all')
-        }
+    const toggleCategoryDropdown = () => {
+            setCategoryDropdownOpen(!categoryDropdownOpen)
     }
+
+    useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setCategoryDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+    }, [])
 
     const handleOpenFile = (filePath) => {
         const fileUrl = getApiUrl(`${API_CONFIG.ENDPOINTS.STUDY_FILE}/${filePath}`)
@@ -244,13 +277,61 @@ function PatientRecord(){
                         <p>Name</p>
                         <p>Made by</p>
                         <p 
-                            onClick={handleCategoryFilter}
-                            style={{cursor: 'pointer', userSelect: 'none'}}
-                            title="Click to filter"
+                            style={{cursor: 'pointer', userSelect: 'none', position: 'relative'}}
+                            onClick={toggleCategoryDropdown}
                         >
-                            Category {filterCategory !== 'all' && `(${filterCategory})`}
+                            {categoryFilter === 'all' ? 'Category' : categoryFilter === 'document' ? 'Document' : 'Study'}
+                            {categoryDropdownOpen && (
+                                <div className="category-dropdown" ref={dropdownRef}>
+                                    <div 
+                                        onClick={() => { setCategoryFilter('all'); setCategoryDropdownOpen(false) }}
+                                        className={categoryFilter === 'all' ? 'selected-option' : ''}
+                                    >
+                                        All
+                                    </div>
+                                    <div 
+                                        onClick={() => { setCategoryFilter('document'); setCategoryDropdownOpen(false) }}
+                                        className={categoryFilter === 'document' ? 'selected-option' : ''}
+                                    >
+                                        Document
+                                    </div>
+                                    <div 
+                                        onClick={() => { setCategoryFilter('study'); setCategoryDropdownOpen(false) }}
+                                        className={categoryFilter === 'study' ? 'selected-option' : ''}
+                                    >
+                                        Study
+                                    </div>
+                                </div>
+                            )}
                         </p>
-                        <p>Date Created</p>
+                        <p 
+                            style={{cursor: 'pointer', userSelect: 'none', position: 'relative'}}
+                            onClick={() => setDateDropdownOpen(!dateDropdownOpen)}
+                        >
+                            {dateFilter ? formatDate(dateFilter) : 'Date Created'}
+                            {dateDropdownOpen && (
+                                <div className="category-dropdown" ref={dateDropdownRef}>
+                                    <div 
+                                        onClick={() => { setDateFilter(''); setDateDropdownOpen(false) }}
+                                        className={dateFilter === '' ? 'selected-option' : ''}
+                                    >
+                                        All
+                                    </div>
+                                    {combinedRecords.map(record => {
+                                        const recordDate = new Date(record.displayDate).toISOString().split('T')[0];
+                                        return (
+                                            <div 
+                                                key={record.id + recordDate} 
+                                                onClick={() => { setDateFilter(recordDate); setDateDropdownOpen(false) }}
+                                                className={dateFilter === recordDate ? 'selected-option' : ''}
+                                            >
+                                                {formatDate(recordDate)}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )}
+                        </p>
                         <p>Actions</p>
 
                         {combinedRecords.length === 0 ? (
