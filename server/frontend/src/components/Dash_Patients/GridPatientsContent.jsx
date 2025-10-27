@@ -65,15 +65,15 @@ function GridPatientsContent({ patient }){
                 </button>
             </div>
             <div className='patients-grid-content'>
-                <button 
+                <button
                     className='basic-button table-button'
                     onClick={handleConsultClick}
                     title="Start new consultation"
                 >
                     Consult
                 </button>
-                <button 
-                    className='basic-button table-button' 
+                <button
+                    className='basic-button table-button'
                     onClick={handleViewClick}
                     title="View patient records"
                 >
