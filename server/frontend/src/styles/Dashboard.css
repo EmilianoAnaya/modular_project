@@ -27,12 +27,57 @@
 .dashboard-window-entries{
     display: flex;
     flex-direction: column;
+    margin-top: 5em;
+    padding: 0 2em;
     height: 100%;
 }
+
+.appointment-hours-dashboard{
+    padding: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 455px;
+}
+
+.dashboard-window-patient-data{
+    margin: 2em 0;
+}
+
+.dashboard-window-buttons-cont{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* Text */
+.dashboard-window-entries span{
+    color: white;
+    margin: 0 auto;
+    user-select: none;
+    font-family: var(--FONT-MULISH);
+    font-size: 1.5em;
+}
+
+.dashboard-window-patient-data p{
+    color: white;
+    font-family: var(--FONT-MULISH);
+    font-size: 1.6em;
+    margin: 0;
+}
+
+.dashboard-window-patient-data span{
+    background-color: white;
+    font-size: 1.2em;
+    color: black;
+}
+
 
 /* Responsive */
 @media screen and (max-width : 100em){
     .appointment-dashboard-window{
         width: 70%;
+    }
+
+    .appointment-hours-dashboard{
+        max-height: 453px;
     }
 }
