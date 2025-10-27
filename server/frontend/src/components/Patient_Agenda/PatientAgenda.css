@@ -48,6 +48,33 @@
     padding: 0;
 }
 
+.appointment-hours-cont{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 511px;
+}
+
+.appointment-hour-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2em;
+    height: 3em;
+    user-select: none;
+}
+
+.appointment-hour-row.pair{
+    background-color: rgb(0, 0, 0, .1);
+}
+
+.appointment-hour-row:hover{
+    background-color: rgb(0, 0, 0, .3);
+}
+
 /* Text */
 .appointment-entries-cont span{
     display: flex;
@@ -60,10 +87,31 @@
     user-select: none;
 }
 
+.doctor-result{
+    display: flex;
+    align-items: center;
+    font-family: var(--FONT-MULISH);
+    height: 2em;
+    margin: 0;
+    padding: 0 1em;
+}
+
+.doctor-result.pair{
+    background-color: rgb(0, 0, 0, .1);
+}
+
+.appointment-hour-row p{
+    font-family: var(--FONT-MULISH);
+}
+
+.doctor-result:hover{
+    background-color: rgb(0, 0, 0, .3);
+}
+
 
 /* Buttons */
 .appointment-entries-cont button{
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 
@@ -76,5 +124,9 @@
 
     .appointment-doctor-results{
         max-height: 295px;
+    }
+
+    .appointment-hours-cont{
+        max-height: 540px;
     }
 }
