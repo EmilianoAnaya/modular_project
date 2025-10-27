@@ -25,7 +25,12 @@ const API_CONFIG = {
         STUDIES_BY_PATIENT: '/api/studies/patient',
 
         STUDIES_BY_PATIENT_FILES: '/api/studies/patient',
-        STUDY_FILE: '/api/studies/file'
+        STUDY_FILE: '/api/studies/file',
+
+        // Appointments
+        APPOINTMENTS: '/api/appointments',
+        APPOINTMENTS_BY_PATIENT: '/api/appointments/patient',
+        CANCEL_APPOINTMENT: '/api/appointments'
     }
 };
 
