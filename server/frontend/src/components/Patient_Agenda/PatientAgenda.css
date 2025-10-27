@@ -1,4 +1,12 @@
 
+/* Window */
+.appointment-window{
+    top: 40%;
+    left: 50%;
+    width: 80%;
+    height: 65%;
+}
+
 /* Containers */
 
 .patient-agenda-cont{
@@ -17,6 +25,108 @@
     border-radius: 2em;
 }
 
+.appointment-container{
+    display: grid;
+    grid-template-columns: 60% auto;
+    column-gap: 3em;
+    height: 100%;
+}
+
+.appointment-entries-cont{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.appointment-doctor-results{
+    margin: 1em auto;
+    height: 60%;
+    max-height: 276px;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 0;
+}
+
+.appointment-hours-cont{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 511px;
+}
+
+.appointment-hour-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2em;
+    height: 3em;
+    user-select: none;
+}
+
+.appointment-hour-row.pair{
+    background-color: rgb(0, 0, 0, .1);
+}
+
+.appointment-hour-row:hover{
+    background-color: rgb(0, 0, 0, .3);
+}
+
+/* Text */
+.appointment-entries-cont span{
+    display: flex;
+    font-family: var(--FONT-MULISH);
+    color: white;
+    font-size: 1.3em;
+    align-items: center;
+    column-gap: .4em;
+    margin-bottom: .5em;
+    user-select: none;
+}
+
+.doctor-result{
+    display: flex;
+    align-items: center;
+    font-family: var(--FONT-MULISH);
+    height: 2em;
+    margin: 0;
+    padding: 0 1em;
+}
+
+.doctor-result.pair{
+    background-color: rgb(0, 0, 0, .1);
+}
+
+.appointment-hour-row p{
+    font-family: var(--FONT-MULISH);
+}
+
+.doctor-result:hover{
+    background-color: rgb(0, 0, 0, .3);
+}
 
 
+/* Buttons */
+.appointment-entries-cont button{
+    margin-top: 1em;
+}
 
+
+/* Responsive */
+@media screen and (max-width : 100em){
+    .appointment-window{
+        top: 35%;
+        width: 90%;
+    }
+
+    .appointment-doctor-results{
+        max-height: 295px;
+    }
+
+    .appointment-hours-cont{
+        max-height: 540px;
+    }
+}
