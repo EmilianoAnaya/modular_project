@@ -1,46 +1,8 @@
 import './DashboardHome.css'
 import Section from '../Section/Section'
+import DashboardCalendar from './DashboardCalendar'
 
-import { useState } from 'react'
-
-function DashboardHome() {
-    const calendarDays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-    const calendarMonths = ["January","February","March","April","May","June",
-                          "July","August","September","October","November","December"]
-
-    const [year, setYear] = useState(new Date().getFullYear())
-    const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
-    const today = new Date()
-
-    const handleMonthChange = (operation) => {
-      setCurrentMonth(prev => {
-          let newMonth = prev + operation
-
-          if (newMonth > 11) {
-            newMonth = 0
-            setYear(prev => prev + 1)
-          }
-
-          if (newMonth < 0) {
-            newMonth = 11
-            setYear(prev => prev -1)
-          }
-
-          return newMonth
-        })
-    }
-
-    const daysInMonth = new Date(year, currentMonth+1, 0).getDate()
-    const firstDay = new Date(year, currentMonth, 1).getDay()
-
-    const daysArray = []
-    for (let i = 0; i < firstDay; i++){
-      daysArray.push(null)
-    }
-    for (let day = 1; day <= daysInMonth; day++){
-      daysArray.push(day)
-    }
-
+function DashboardHome({setWindowVisibility, selectedDate, setSelectedDate}) {
     return (
         <>
             <div id='dash-home'>
@@ -52,45 +14,11 @@ function DashboardHome() {
                     </Section>
                 </div>
                 <div id='dash-home-calendar'>
-                    <div className='calendar-cont'>
-                        <div className='calendar-head'>
-                          <p>{ year }</p>
-                          <div className='calendar-month-select'>
-                            <img src="/assets/chevron-left.svg" alt="left" onClick={() => handleMonthChange(-1)}/>
-                            <p>{ calendarMonths[currentMonth] }</p>
-                            <img src="/assets/chevron-right.svg" alt="right" onClick={() => handleMonthChange(1)}/>
-                          </div>
-                        </div>
-
-                        <div className='calendar-dates'>
-                          { calendarDays.map((day, index) => (
-                            <div className='calendar-info-dash calendar-head-dash' key={index}>
-                              { day }
-                            </div>
-                          )) }
-
-                          { daysArray.map((day, index) => {
-                            const isToday =
-                              day &&
-                              day === today.getDate() &&
-                              currentMonth === today.getMonth()
-
-                            return (
-                              <div
-                                className='calendar-info-dash calendar-day'
-                                key={index}
-                                style={{
-                                  backgroundColor: isToday ? "#27847A" : "inherit",
-                                  color: isToday ? "white" : "black",
-                                  border: day ? "1px solid rgba(0, 0, 0, 0.2)" : "none"
-                                }}
-                              >
-                                {day}
-                              </div>
-                            )
-                          })}
-                        </div>
-                    </div>
+                    <DashboardCalendar
+                      setWindowVisibility={setWindowVisibility}
+                      selectedDate={selectedDate}
+                      setSelectedDate={setSelectedDate}
+                    />
                 </div>
             </div>
         </>

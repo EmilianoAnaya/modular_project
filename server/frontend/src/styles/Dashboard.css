@@ -1,4 +1,12 @@
 
+/* Window */
+.appointment-dashboard-window{
+    top: 50%;
+    left: 50%;
+    height: 95%;
+    width: 60%;
+}
+
 /* Containers */
 #dashboard-content{
     margin-top: 1.5em;
@@ -7,4 +15,24 @@
 
 #dashboard-content.dash-no-padding{
     padding: 0;
+}
+
+.dashboard-window{
+    display: grid;
+    grid-template-columns: 60% auto;
+    column-gap: 3em;
+    height: 100%;
+}
+
+.dashboard-window-entries{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Responsive */
+@media screen and (max-width : 100em){
+    .appointment-dashboard-window{
+        width: 70%;
+    }
 }
