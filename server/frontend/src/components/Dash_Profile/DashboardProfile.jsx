@@ -91,7 +91,7 @@ function DashboardProfile(){
             }
 
             const response = await fetch(
-                getApiUrl(`${API_CONFIG.ENDPOINTS.PROFILE}/${userId}`), 
+                getApiUrl(`${API_CONFIG.ENDPOINTS.PROFILE}/${userId}`),
                 {
                     method: 'PUT',
                     headers: {
@@ -146,6 +146,11 @@ function DashboardProfile(){
                     </div>
                     <div className='dash-text-area-cont'>
                         <p>Description</p>
+                        <textarea maxLength={274}/>
+                    </div>
+
+                    <div className='dash-text-area-cont'>
+                        <p>Consult Location</p>
                         <textarea maxLength={274}/>
                     </div>
                     <div className='input-container'>

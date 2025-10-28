@@ -3,7 +3,7 @@
 :root{
   --WIDTH-MAIN: 110em;
   --WIDTH-PATIENT-SIDEBAR: 16%;
-  
+
   --FONT-KRONA-ONE: "Krona One";
   --FONT-MULISH: "Mulish";
   --FONT-KOTTA-ONE: "Kotta One";
@@ -31,6 +31,7 @@
 }
 
 .main-container{
+    position: relative;
     background-color: #14B8A6;
     width: var(--WIDTH-MAIN);
     margin: 0 auto;
@@ -61,7 +62,7 @@
 
 .table-button{
     box-shadow: none;
-} 
+}
 
 .basic-button:hover{
   background-color: #D2EAFF;

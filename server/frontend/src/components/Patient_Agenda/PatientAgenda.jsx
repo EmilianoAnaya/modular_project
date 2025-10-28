@@ -4,7 +4,6 @@ import Section from '../Section/Section'
 import PatientCalendar from './PatientCalendar'
 import { useState } from 'react'
 import WindowContainer from '../Window_Container/WindowContainer'
-import BasicSelect from '../BasicSelect/BasicSelect'
 import BasicInput from '../Basic_Input/BasicInput'
 
 function PatientAgenda(){
@@ -78,14 +77,13 @@ function PatientAgenda(){
                             </>
                           )}
 
-
-
                           <span style={{ margin : '.1em auto' }}>
                             Hour Selected : <b>{ hourSelected == null ? "None" : hourSelected}</b>
                           </span>
 
                           <button className='basic-button'>Save Appointment</button>
                       </div>
+
                       <div className='basic-container appointment-hours-cont'>
                         { availableHours.map((hour, index) => (
                            <div key={index}
