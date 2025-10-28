@@ -1,12 +1,41 @@
 import './PatientCalendar.css'
+import { useState, useEffect } from 'react'
+import { usePatient } from '../../hooks/usePatient'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
 
 function PatientCalendar({setWindowVisibility, selectedDate, setSelectedDate}){
+    const { patientData } = usePatient()
+    const [appointments, setAppointments] = useState([])
+    
     const calendarDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
     const calendarMonths = ["January","February","March","April","May","June",
                             "July","August","September","October","November","December"]
 
     const today = new Date();
     const {year, month} = selectedDate
+
+    // Cargar citas al montar el componente
+    useEffect(() => {
+        if (patientData) {
+            loadAppointments()
+        }
+    }, [patientData])
+
+    const loadAppointments = async () => {
+        try {
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.APPOINTMENTS_BY_PATIENT}/${patientData.patient_id}`)
+            )
+            const data = await response.json()
+
+            if (response.ok) {
+                setAppointments(data.appointments || [])
+            }
+        } catch (error) {
+            console.error('Error loading appointments:', error)
+        }
+    }
 
     const daysInMonth = new Date(year, month+1, 0).getDate()
     const firstDay = new Date(year, month, 1).getDay()
@@ -24,6 +53,19 @@ function PatientCalendar({setWindowVisibility, selectedDate, setSelectedDate}){
     const showWindow = (day) => {
       setSelectedDate(prev => ({...prev, day  }))
       setWindowVisibility(true)
+    }
+
+    // Función para verificar si un día tiene citas
+    const hasAppointment = (day) => {
+        if (!day) return false
+        
+        return appointments.some(apt => {
+            const aptDate = new Date(apt.appointment_date)
+            return aptDate.getDate() === day && 
+                   aptDate.getMonth() === month && 
+                   aptDate.getFullYear() === year &&
+                   apt.status !== 'Canceled'
+        })
     }
 
     return (
@@ -62,9 +104,11 @@ function PatientCalendar({setWindowVisibility, selectedDate, setSelectedDate}){
                       month === today.getMonth() &&
                       year === today.getFullYear()
 
+                    const hasApt = hasAppointment(day)
+
                     return (
                       <div
-                        className={`calendar-info-dash calendar-day ${isToday ? "istoday" : !day ? "empty" : ""}`}
+                        className={`calendar-info-dash calendar-day ${isToday ? "istoday" : !day ? "empty" : ""} ${hasApt ? "has-appointment" : ""}`}
                         onClick={ day ? () => showWindow(day) : null }
                         key={index}
                         style={{

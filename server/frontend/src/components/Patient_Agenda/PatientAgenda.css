@@ -130,3 +130,25 @@
         max-height: 540px;
     }
 }
+
+/* Scroll en la ventana de citas */
+.appointment-window {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.appointment-container {
+    max-height: calc(90vh - 100px);
+    overflow-y: auto;
+}
+
+/* Estilos para horarios ocupados */
+.appointment-hour-row.occupied {
+    background-color: #ffe6e6 !important;
+}
+
+.appointment-hour-row.selected {
+    background-color: #4fc3f7 !important;
+    color: white;
+    font-weight: bold;
+}

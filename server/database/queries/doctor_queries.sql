@@ -24,3 +24,18 @@ SELECT d.id as doctor_id, d.user_id, d.speciality, d.license_number, d.consultor
 FROM doctors d
 JOIN users u ON d.user_id = u.id
 WHERE d.id = %s AND u.status = 'Active';
+
+-- Search doctors by name or specialty
+-- @param search_term: string, search_term: string
+SELECT 
+    d.id as doctor_id,
+    CONCAT(u.first_name, ' ', u.last_name) as doctor_name,
+    d.speciality,
+    d.city
+FROM doctors d
+INNER JOIN users u ON d.user_id = u.id
+WHERE u.status = 'Active'
+  AND (CONCAT(u.first_name, ' ', u.last_name) LIKE CONCAT('%', %s, '%')
+   OR d.speciality LIKE CONCAT('%', %s, '%'))
+ORDER BY u.first_name ASC
+LIMIT 20;

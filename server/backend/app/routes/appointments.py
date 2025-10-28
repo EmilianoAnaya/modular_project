@@ -39,8 +39,7 @@ def create_appointment():
         
         patient_id = data.get('patient_id')
         doctor_id = data.get('doctor_id')
-        appointment_date = data.get('appointment_date')
-        appointment_time = data.get('appointment_time')
+        appointment_date = data.get('appointment_date')  # Ahora es datetime completo
         reason = data.get('reason')
         
         if not all([patient_id, doctor_id, appointment_date]):
@@ -57,7 +56,7 @@ def create_appointment():
         
         db.execute_query(
             create_appointment_query,
-            (patient_id, doctor_id, appointment_date, appointment_time, reason)
+            (patient_id, doctor_id, appointment_date, reason)
         )
         
         return jsonify({
@@ -77,8 +76,7 @@ def update_appointment(appointment_id):
     try:
         data = request.get_json()
         
-        appointment_date = data.get('appointment_date')
-        appointment_time = data.get('appointment_time')
+        appointment_date = data.get('appointment_date')  # Ahora es datetime completo
         reason = data.get('reason')
         status = data.get('status')
         
@@ -93,7 +91,7 @@ def update_appointment(appointment_id):
         
         db.execute_query(
             update_appointment_query,
-            (appointment_date, appointment_time, reason, status, appointment_id)
+            (appointment_date, reason, status, appointment_id)
         )
         
         return jsonify({
@@ -105,8 +103,8 @@ def update_appointment(appointment_id):
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'Internal server error'}), 500
-
-
+    
+    
 @appointments_bp.route('/<int:appointment_id>/cancel', methods=['PUT'])
 def cancel_appointment(appointment_id):
     """Cancelar una cita"""
@@ -128,6 +126,97 @@ def cancel_appointment(appointment_id):
         
     except Exception as e:
         print(f"Cancel appointment error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Internal server error'}), 500
+    
+    
+@appointments_bp.route('/doctors/search', methods=['GET'])
+def search_doctors():
+    """Buscar doctores por nombre o especialidad"""
+    try:
+        search_term = request.args.get('q', '')
+        
+        if not search_term:
+            return jsonify({'doctors': []}), 200
+        
+        base_path = Path(__file__).parent.parent.parent.parent
+        sql_path = base_path / 'database' / 'queries' / 'doctor_queries.sql'
+        
+        with open(sql_path, 'r') as file:
+            queries = file.read().split('\n\n')
+            # Query index 4: Search doctors (es la 5ta query, índice 4)
+            search_doctors_query = queries[4].split('\n')
+            search_doctors_query = [line for line in search_doctors_query if not line.strip().startswith('--')]
+            search_doctors_query = '\n'.join(search_doctors_query).strip()
+        
+        doctors = db.execute_query(search_doctors_query, (search_term, search_term), fetch_all=True)
+        
+        return jsonify({
+            'message': 'Doctors found',
+            'doctors': [dict(doc) for doc in doctors] if doctors else []
+        }), 200
+        
+    except Exception as e:
+        print(f"Search doctors error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Internal server error'}), 500
+    
+
+@appointments_bp.route('/available-hours', methods=['GET'])
+def get_available_hours():
+    """Obtener horarios disponibles verificando tanto doctor como paciente"""
+    try:
+        doctor_id = request.args.get('doctor_id')
+        patient_id = request.args.get('patient_id')
+        date = request.args.get('date')
+        
+        if not all([doctor_id, patient_id, date]):
+            return jsonify({'error': 'Missing required parameters'}), 400
+        
+        print(f"DEBUG - Checking availability for date: {date}, doctor: {doctor_id}, patient: {patient_id}")
+        
+        # Query para obtener horarios ocupados por el DOCTOR o el PACIENTE en la fecha específica
+        query = """
+            SELECT 
+                DATE_FORMAT(appointment_date, '%H:%i') as occupied_time,
+                appointment_date
+            FROM appointments
+            WHERE DATE(appointment_date) = %s
+              AND status != 'Canceled'
+              AND (doctor_id = %s OR patient_id = %s)
+        """
+        
+        occupied_hours = db.execute_query(query, (date, doctor_id, patient_id), fetch_all=True)
+        
+        print(f"DEBUG - Query result: {occupied_hours}")
+        
+        # Convertir a lista de strings HH:MM
+        occupied_list = []
+        if occupied_hours:
+            for row in occupied_hours:
+                time_str = row['occupied_time']
+                print(f"DEBUG - Processing time: {time_str}")
+                if time_str:
+                    # Asegurar formato HH:MM
+                    if len(time_str) == 5:  # Ya está en formato HH:MM
+                        occupied_list.append(time_str)
+                    else:  # Extraer HH:MM del datetime
+                        occupied_list.append(time_str[:5])
+        
+        # Eliminar duplicados
+        occupied_list = list(set(occupied_list))
+        
+        print(f"DEBUG - Final occupied hours: {occupied_list}")
+        
+        return jsonify({
+            'message': 'Available hours retrieved',
+            'occupied_hours': occupied_list
+        }), 200
+        
+    except Exception as e:
+        print(f"Get available hours error: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'Internal server error'}), 500
