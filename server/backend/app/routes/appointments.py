@@ -220,3 +220,71 @@ def get_available_hours():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'Internal server error'}), 500
+    
+@appointments_bp.route('/doctor/<int:doctor_id>/date/<string:date>', methods=['GET'])
+def get_doctor_appointments_by_date(doctor_id, date):
+    """Obtener citas de un doctor en una fecha específica"""
+    try:
+        query = """
+            SELECT 
+                a.id,
+                a.patient_id,
+                a.doctor_id,
+                a.appointment_date,
+                a.reason,
+                a.status,
+                CONCAT(u.first_name, ' ', u.last_name) as patient_name
+            FROM appointments a
+            INNER JOIN patients p ON a.patient_id = p.id
+            INNER JOIN users u ON p.user_id = u.id
+            WHERE a.doctor_id = %s
+              AND DATE(a.appointment_date) = %s
+            ORDER BY a.appointment_date ASC
+        """
+        
+        appointments = db.execute_query(query, (doctor_id, date), fetch_all=True)
+        
+        return jsonify({
+            'message': 'Appointments retrieved successfully',
+            'appointments': [dict(apt) for apt in appointments] if appointments else []
+        }), 200
+        
+    except Exception as e:
+        print(f"Get doctor appointments error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Internal server error'}), 500   
+
+@appointments_bp.route('/doctor/<int:doctor_id>', methods=['GET'])
+def get_all_doctor_appointments(doctor_id):
+    """Obtener todas las citas de un doctor"""
+    try:
+        query = """
+            SELECT 
+                a.id,
+                a.patient_id,
+                a.doctor_id,
+                a.appointment_date,
+                a.reason,
+                a.status,
+                CONCAT(u.first_name, ' ', u.last_name) as patient_name
+            FROM appointments a
+            INNER JOIN patients p ON a.patient_id = p.id
+            INNER JOIN users u ON p.user_id = u.id
+            WHERE a.doctor_id = %s
+            ORDER BY a.appointment_date DESC
+        """
+        
+        appointments = db.execute_query(query, (doctor_id,), fetch_all=True)
+        
+        return jsonify({
+            'message': 'Appointments retrieved successfully',
+            'appointments': [dict(apt) for apt in appointments] if appointments else []
+        }), 200
+        
+    except Exception as e:
+        print(f"Get all doctor appointments error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Internal server error'}), 500
+    

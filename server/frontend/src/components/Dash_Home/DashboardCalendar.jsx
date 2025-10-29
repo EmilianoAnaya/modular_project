@@ -1,12 +1,76 @@
 import './DashboardHome.css'
+import { useState, useEffect } from 'react'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
 
 function DashboardCalendar({setWindowVisibility, selectedDate, setSelectedDate}){
+    const [appointments, setAppointments] = useState([])
+    const [doctorId, setDoctorId] = useState(null)
+
     const calendarDays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
     const calendarMonths = ["January","February","March","April","May","June",
                           "July","August","September","October","November","December"]
 
     const today = new Date()
     const { year, month } = selectedDate
+
+    // Obtener doctor_id al cargar
+    useEffect(() => {
+        loadDoctorId()
+    }, [])
+
+    // Cargar citas cuando cambia el mes/año
+    useEffect(() => {
+        if (doctorId) {
+            loadMonthAppointments()
+        }
+    }, [doctorId, year, month])
+
+    const loadDoctorId = async () => {
+        try {
+            const userId = localStorage.getItem('userId')
+            if (!userId) return
+
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.DOCTOR}/${userId}`)
+            )
+            const data = await response.json()
+
+            if (response.ok) {
+                setDoctorId(data.doctor_id)
+            }
+        } catch (error) {
+            console.error('Error loading doctor ID:', error)
+        }
+    }
+
+    const loadMonthAppointments = async () => {
+        try {
+            // Obtener todas las citas del doctor (sin filtrar por paciente)
+            const response = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.APPOINTMENTS}/doctor/${doctorId}`)
+            )
+            const data = await response.json()
+
+            if (response.ok) {
+                setAppointments(data.appointments || [])
+            }
+        } catch (error) {
+            console.error('Error loading appointments:', error)
+        }
+    }
+
+    const hasAppointment = (day) => {
+        if (!day) return false
+        
+        return appointments.some(apt => {
+            const aptDate = new Date(apt.appointment_date)
+            return aptDate.getDate() === day && 
+                   aptDate.getMonth() === month && 
+                   aptDate.getFullYear() === year &&
+                   apt.status !== 'Canceled'
+        })
+    }
 
     const daysInMonth = new Date(year, month+1, 0).getDate()
     const firstDay = new Date(year, month, 1).getDay()
@@ -68,9 +132,11 @@ function DashboardCalendar({setWindowVisibility, selectedDate, setSelectedDate})
                 month === today.getMonth() &&
                 year === today.getFullYear()
 
+              const hasApt = hasAppointment(day)
+
               return (
                 <div
-                  className={`calendar-info-dash calendar-day ${isToday ? "istoday" : !day ? "empty" : ""}`}
+                  className={`calendar-info-dash calendar-day ${isToday ? "istoday" : !day ? "empty" : ""} ${hasApt ? "has-appointment" : ""}`}
                   onClick={ day ? () => showWindow(day) : null}
                   key={index}
                   style={{
