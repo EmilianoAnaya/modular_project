@@ -136,9 +136,26 @@ CREATE TABLE `studies` (
   `id` int(11) NOT NULL,
   `patient_id` int(11) DEFAULT NULL,
   `doctor_id` int(11) DEFAULT NULL,
-  `result` varchar(255) DEFAULT NULL,
-  `performed_at` date DEFAULT NULL,
-  `uploaded_at` date DEFAULT curdate()
+  `study_type` varchar(100) NOT NULL,
+  `result` text DEFAULT NULL,
+  `performed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `study_files`
+--
+
+CREATE TABLE `study_files` (
+  `id` int(11) NOT NULL,
+  `study_id` int(11) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_path` varchar(500) NOT NULL,
+  `file_type` varchar(50) NOT NULL,
+  `file_size` int(11) DEFAULT NULL,
+  `upload_order` int(11) DEFAULT 1,
+  `uploaded_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -249,6 +266,13 @@ ALTER TABLE `studies`
   ADD KEY `doctor_id` (`doctor_id`);
 
 --
+-- Indices de la tabla `study_files`
+--
+ALTER TABLE `study_files`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `study_id` (`study_id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -319,6 +343,12 @@ ALTER TABLE `patients`
 -- AUTO_INCREMENT de la tabla `studies`
 --
 ALTER TABLE `studies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `study_files`
+--
+ALTER TABLE `study_files`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -394,6 +424,12 @@ ALTER TABLE `patients`
 ALTER TABLE `studies`
   ADD CONSTRAINT `studies_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `studies_ibfk_2` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `study_files`
+--
+ALTER TABLE `study_files`
+  ADD CONSTRAINT `study_files_ibfk_1` FOREIGN KEY (`study_id`) REFERENCES `studies` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `user_actions`

@@ -23,11 +23,15 @@ def create_app():
     from app.routes.medical_records import medical_records_bp
     from app.routes.medical_notes import medical_notes_bp
     from app.routes.studies import studies_bp
+    from app.routes.appointments import appointments_bp
+    
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(patients_bp, url_prefix='/api/patients')
     app.register_blueprint(medical_records_bp, url_prefix='/api/medical-records')
     app.register_blueprint(medical_notes_bp, url_prefix='/api/medical-notes')
     app.register_blueprint(studies_bp, url_prefix='/api/studies')
+    app.register_blueprint(appointments_bp, url_prefix='/api/appointments')
+
     
     return app

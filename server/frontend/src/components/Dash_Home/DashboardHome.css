@@ -104,3 +104,81 @@
 .calendar-head img:hover{
     background-color: rgb(0, 0, 0, .1);;
 }
+
+/* Días con citas */
+.calendar-day.has-appointment {
+    background-color: #FFD700 !important;
+    font-weight: bold;
+}
+
+.calendar-day.has-appointment:hover {
+    background-color: #FFC700 !important;
+}
+
+.calendar-day.has-appointment.istoday {
+    background-color: #FFA500 !important;
+}
+
+/* Notification items */
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+    background-color: white;
+}
+
+.notification-item.pair {
+    background-color: #f5f5f5;
+}
+
+.notification-info {
+    flex: 1;
+}
+
+.notification-patient {
+    font-size: 1.1em;
+    margin: 0 0 0.3em 0;
+    color: #333;
+}
+
+.notification-date {
+    font-size: 0.9em;
+    margin: 0 0 0.3em 0;
+    color: #666;
+}
+
+.notification-reason {
+    font-size: 0.85em;
+    margin: 0;
+    color: #888;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 0.5em;
+}
+
+.notification-btn {
+    padding: 0.5em 1em;
+    font-size: 0.9em;
+    min-width: 80px;
+}
+
+.notification-btn.accept {
+    background-color: #4CAF50;
+}
+
+.notification-btn.accept:hover {
+    background-color: #45a049;
+}
+
+.notification-btn.reject {
+    background-color: #f44336;
+}
+
+.notification-btn.reject:hover {
+    background-color: #da190b;
+}
