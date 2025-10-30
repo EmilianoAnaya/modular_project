@@ -187,13 +187,17 @@ function AllergiesSection() {
                                         <p>{allergy.note_data.reaction || 'No description'}</p>
                                         <div className='patient-record-buttons'>
                                             <button
-                                                className='basic-button table-button'
+                                                className='basic-button table-button view-button'
                                                 onClick={() => {
                                                     handleSelectAllergy(index)
                                                     setShowModal(true)
                                                 }}
+                                                title='View details'
                                             >
-                                                View
+                                                <img 
+                                                    src="/assets/glasses.svg" 
+                                                    alt="View allergy" 
+                                                    className='view-icon'/>
                                             </button>
                                         </div>
                                     </React.Fragment>
@@ -214,6 +218,13 @@ function AllergiesSection() {
                             </button>
                         </div>
                     </div>
+                </div>
+                <div className="allergies-illustration-container">
+                    <img
+                        src="/assets/allergies.jpg"
+                        alt="Allergies illustration"
+                        className="allergies-illustration"
+                    />
                 </div>
             </div>
 
