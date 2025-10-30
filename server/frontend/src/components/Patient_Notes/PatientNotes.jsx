@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PatientNav from "../Patient_Navbar/PatientNav";
 import AllergiesSection from "./AllergiesSection";
-import SurgicalHistorySection from "./SurgicalHistorySection"; // <-- Nuevo componente
+import SurgicalHistorySection from "./SurgicalHistorySection"; 
 import "./PatientNotes.css"
 
 function PatientNotes() {
