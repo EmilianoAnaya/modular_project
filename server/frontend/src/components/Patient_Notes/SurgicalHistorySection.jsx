@@ -204,7 +204,9 @@ function SurgicalHistorySection() {
                 </div>
             </div>
 
-            <WindowContainer windowTitle="Surgery" showWindow={[showModal, setShowModal]}>
+            <WindowContainer windowTitle="Surgery" showWindow={[showModal, setShowModal]}
+              styleContainer='window-notes-section'
+            >
                 <WindowConsultDefault
                     title_list='Surgeries List'
                     items_list={surgeries.map(s => s.note_data.procedure)}

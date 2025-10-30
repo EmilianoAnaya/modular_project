@@ -194,9 +194,9 @@ function AllergiesSection() {
                                                 }}
                                                 title='View details'
                                             >
-                                                <img 
-                                                    src="/assets/glasses.svg" 
-                                                    alt="View allergy" 
+                                                <img
+                                                    src="/assets/glasses.svg"
+                                                    alt="View allergy"
                                                     className='view-icon'/>
                                             </button>
                                         </div>
@@ -228,7 +228,8 @@ function AllergiesSection() {
                 </div>
             </div>
 
-            <WindowContainer windowTitle={"Allergy"} showWindow={[showModal, setShowModal]}>
+            <WindowContainer windowTitle={"Allergy"} showWindow={[showModal, setShowModal]}
+                styleContainer='window-notes-section'>
                 <WindowConsultDefault
                     title_list='Allergens List'
                     items_list={allergies.map(a => a.note_data.allergen)}
