@@ -2,6 +2,7 @@ import "./styles/Patient.css"
 import { Routes, Route } from "react-router-dom";
 import MainNavbar from "./components/Main_Navbar/MainNavbar"
 import PatientAgenda from "./components/Patient_Agenda/PatientAgenda"
+import PatientDashboardHome from "./components/Patient_Dashboard/PatientDashboardHome"  // ← AGREGAR
 import PatientSidebar from "./components/Patient_Sidebar/PatientSidebar"
 import PatientNotes from "./components/Patient_Notes/PatientNotes"
 import PatientRecord from "./components/Patient_Record/PatientRecord";
@@ -19,7 +20,8 @@ function Patient(){
                 <PatientSidebar />
                 <div className="patient-content">
                     <Routes>
-                        <Route path="/" element={<PatientAgenda />} />
+                        <Route path="/" element={<PatientDashboardHome />} />  {/* ← CAMBIAR */}
+                        <Route path="Agenda" element={<PatientAgenda />} />    {/* ← MOVER */}
                         <Route path="Notes" element={<PatientNotes />} />
                         <Route path="Record" element={<PatientRecord />} />
                         <Route path="Tendencies" element={<PatientTendencies />} />

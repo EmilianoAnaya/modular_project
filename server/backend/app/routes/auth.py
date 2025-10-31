@@ -21,15 +21,13 @@ def login():
         email = data.get('email')
         password = data.get('password')
         
-        # Buscar usuario por email usando query SQL
+        # Buscar usuario por email
         base_path = Path(__file__).parent.parent.parent.parent
         sql_file_path = base_path / 'database' / 'queries' / 'auth_queries.sql'
         
-        # Leer y ejecutar la segunda query (get user by email)
         with open(sql_file_path, 'r') as file:
-            queries = file.read().split('\n\n')  # Separar por doble salto de línea
+            queries = file.read().split('\n\n')
             get_user_query = queries[1].split('\n')
-            # Filtrar líneas que no sean comentarios
             get_user_query = [line for line in get_user_query if not line.strip().startswith('--')]
             get_user_query = '\n'.join(get_user_query).strip()
         
@@ -38,13 +36,17 @@ def login():
         if not user:
             return jsonify({'error': 'Invalid credentials'}), 401
         
-        print(f"Password ingresado: {password}")
-        print(f"Hash en DB: {user['password']}")
-        print(f"Verificación: {bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8'))}")
+        # Verificar si es contraseña temporal (sin hash)
+        is_temp_password = user['password'] == 'temp_patient_password'
         
-        # Verificar password
-        if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-            return jsonify({'error': 'Invalid credentials'}), 401
+        # Si es temporal, verificar directamente
+        if is_temp_password:
+            if password != 'temp_patient_password':
+                return jsonify({'error': 'Invalid credentials'}), 401
+        else:
+            # Verificar password hasheado
+            if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+                return jsonify({'error': 'Invalid credentials'}), 401
         
         # Verificar que el usuario esté activo
         if user['status'] != 'Active':
@@ -63,6 +65,7 @@ def login():
         return jsonify({
             'message': 'Login successful',
             'token': token,
+            'requires_password_change': is_temp_password,  # ← FLAG NUEVO
             'user': {
                 'id': user['id'],
                 'first_name': user['first_name'],
@@ -74,7 +77,10 @@ def login():
         
     except Exception as e:
         print(f"Login error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': 'Internal server error'}), 500
+
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -267,4 +273,32 @@ def get_doctor_by_user_id(user_id):
         
     except Exception as e:
         print(f"Get doctor error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+    
+    
+@auth_bp.route('/change-password/<int:user_id>', methods=['POST'])
+def change_password(user_id):
+    """Cambiar contraseña del usuario (para primer login de pacientes)"""
+    try:
+        data = request.get_json()
+        new_password = data.get('new_password')
+        
+        if not new_password or len(new_password) < 8:
+            return jsonify({'error': 'Password must be at least 8 characters'}), 400
+        
+        # Hash de la nueva contraseña
+        hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        
+        # Actualizar contraseña
+        update_query = "UPDATE users SET password = %s WHERE id = %s"
+        db.execute_query(update_query, (hashed_password.decode('utf-8'), user_id))
+        
+        return jsonify({
+            'message': 'Password changed successfully'
+        }), 200
+        
+    except Exception as e:
+        print(f"Change password error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': 'Internal server error'}), 500
