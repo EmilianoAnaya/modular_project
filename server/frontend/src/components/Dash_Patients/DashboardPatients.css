@@ -16,3 +16,29 @@
     border-color: transparent;
     font-family: var(--FONT-KOTTA-ONE);
 }
+
+/* Token Verification Modal */
+.token-modal-content {
+    padding: 1.5em;
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.token-verification-modal {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 500px;
+    z-index: 1000 !important;
+}
+
+/* Ocultar el fondo cuando el modal está activo */
+.patients-grid-container.modal-active {
+    filter: blur(3px);
+    pointer-events: none;
+}
