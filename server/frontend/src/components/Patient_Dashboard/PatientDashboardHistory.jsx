@@ -10,9 +10,9 @@ function PatientDashboardHistory() {
             <PatientHistorySidebar />
             <div className="patient-history-content">
                 <Routes>
-                    <Route path="/" element={<PatientNotes />} />
-                    <Route path="Notes" element={<PatientNotes />} />
-                    <Route path="Record" element={<PatientRecord />} />
+                    <Route path="/" element={<PatientNotes viewPoint='notes-patient-view'/>} />
+                    <Route path="Notes" element={<PatientNotes viewPoint='notes-patient-view'/>} />
+                    <Route path="Record" element={<PatientRecord viewPoint='records-patient-view'/>} />
                 </Routes>
             </div>
         </div>

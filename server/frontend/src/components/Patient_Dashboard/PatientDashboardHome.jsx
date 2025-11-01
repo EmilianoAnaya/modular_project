@@ -74,7 +74,7 @@ function PatientDashboardHome() {
                                 {tokenVisible ? (
                                     <div className='token-display'>
                                         <code className='token-code'>{token}</code>
-                                        <button 
+                                        <button
                                             className='basic-button copy-button icon-button'
                                             onClick={copyToClipboard}
                                             title="Copy to clipboard"
@@ -90,13 +90,13 @@ function PatientDashboardHome() {
                             </div>
 
                             <div className='token-buttons'>
-                                <button 
+                                <button
                                     className='basic-button'
                                     onClick={() => setTokenVisible(!tokenVisible)}
                                 >
                                     {tokenVisible ? 'Hide Token' : 'Show Token'}
                                 </button>
-                                <button 
+                                <button
                                     className='basic-button generate-button'
                                     onClick={generateNewToken}
                                     disabled={isGenerating}
@@ -113,7 +113,7 @@ function PatientDashboardHome() {
                     </Section>
                 </div>
                 <div id='patient-dash-calendar-section'>
-                    <PatientDashboardCalendar  
+                    <PatientDashboardCalendar
                         selectedDate={selectedDate}
                         setSelectedDate={setSelectedDate}
                         setWindowVisibility={() => {}}

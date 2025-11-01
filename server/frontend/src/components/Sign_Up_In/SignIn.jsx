@@ -83,7 +83,7 @@ function SignIn(){
         } catch (error) {
             console.error('Login error:', error);
             alert('Unable to connect to server');
-        } 
+        }
     };
 
     const handleAcceptPassword = async () => {
@@ -106,10 +106,10 @@ function SignIn(){
             if (response.ok) {
                 alert(`Your new password is: ${newPassword}\n\nPlease save it securely!`);
                 setShowPasswordModal(false);
-                
+
                 // Navegar según rol
                 if (userRole === 'Patient') {
-                    navigate('/Patient');
+                    navigate('/PatientDashboard');
                 } else {
                     navigate('/Dashboard');
                 }
@@ -133,18 +133,18 @@ function SignIn(){
                 <h1 className='sig-up-in-header'>Sign In</h1>
                 <form>
                     <div id="sign-in-inputs-container">
-                        <input 
-                            className='si-up-in-inputs' 
-                            type="email" 
-                            placeholder='Email' 
-                            value={email} 
+                        <input
+                            className='si-up-in-inputs'
+                            type="email"
+                            placeholder='Email'
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <input 
-                            className='si-up-in-inputs' 
-                            type="password" 
-                            placeholder='Password' 
-                            value={password} 
+                        <input
+                            className='si-up-in-inputs'
+                            type="password"
+                            placeholder='Password'
+                            value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <div id='si-in-cont-checkbox'>
@@ -152,7 +152,7 @@ function SignIn(){
                             <span className='si-in-font'>Remember me?</span>
                         </div>
                     </div>
-                    
+
                     <div className='si-in-butt-cont'>
                         <button type='button' className='si-up-in-buttons' onClick={() => navigate('/')}>Cancel</button>
                         <button type='button' className='si-up-in-buttons' onClick={handleLogin}>Log In</button>
@@ -165,7 +165,7 @@ function SignIn(){
             {/* Modal de cambio de contraseña */}
             {showPasswordModal && (
                 <>
-                    <div 
+                    <div
                         style={{
                             position: 'fixed',
                             top: 0,
@@ -176,7 +176,7 @@ function SignIn(){
                             zIndex: 998
                         }}
                     />
-                    <div 
+                    <div
                         style={{
                             position: 'fixed',
                             top: '50%',
@@ -195,12 +195,12 @@ function SignIn(){
                         <h2 style={{color: 'white', fontFamily: 'var(--FONT-MULISH)', margin: '0 0 1em 0', textAlign: 'center'}}>
                             First Time Login
                         </h2>
-                        
+
                         <div style={{backgroundColor: 'white', borderRadius: '1em', padding: '1.5em'}}>
                             <p style={{marginBottom: '1.5em', textAlign: 'center', color: '#333'}}>
                                 Since this is your first login, we've generated a secure password for you.
                             </p>
-                            
+
                             <div style={{
                                 backgroundColor: '#f5f5f5',
                                 padding: '1em',
@@ -225,7 +225,7 @@ function SignIn(){
                                     }}>
                                         {newPassword}
                                     </code>
-                                    <button 
+                                    <button
                                         type='button'
                                         onClick={copyPassword}
                                         style={{
@@ -257,7 +257,7 @@ function SignIn(){
                                 </p>
                             </div>
 
-                            <button 
+                            <button
                                 type='button'
                                 onClick={handleAcceptPassword}
                                 style={{

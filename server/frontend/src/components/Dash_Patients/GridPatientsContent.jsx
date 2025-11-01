@@ -77,19 +77,19 @@ function GridPatientsContent({ patient }){
     if (!patient) {
         return (
             <>
-                <div className='patients-grid-content patients-column-1'>
+                <div className='grid-item patients-grid-content patients-column-1'>
                     <span>No patient data</span>
                 </div>
-                <div className='patients-grid-content'>
+                <div className='grid-item patients-grid-content'>
                     <span>N/A</span>
                 </div>
-                <div className='patients-grid-content patients-column-3'>
+                <div className='grid-item patients-grid-content patients-column-3'>
                     <span>N/A</span>
                     <button className='basic-button icon-button table-button'>
                         <img src='/assets/file-check-2.svg'/>
                     </button>
                 </div>
-                <div className='patients-grid-content'>
+                <div className='grid-item patients-grid-content'>
                     <button className='basic-button table-button'>Consult</button>
                     <button className='basic-button table-button'>View</button>
                 </div>
@@ -99,19 +99,19 @@ function GridPatientsContent({ patient }){
 
     return(
         <>
-            <div className='patients-grid-content patients-column-1'>
+            <div className='grid-item patients-grid-content patients-column-1'>
                 <span>{`${patient.first_name} ${patient.last_name}`}</span>
             </div>
-            <div className='patients-grid-content'>
+            <div className='grid-item patients-grid-content'>
                 <span>N/A</span>
             </div>
-            <div className='patients-grid-content patients-column-3'>
+            <div className='grid-item patients-grid-content patients-column-3'>
                 <span>{formatDate(patient.created_at)}</span>
                 <button className='basic-button icon-button table-button'>
                     <img src='/assets/file-check-2.svg'/>
                 </button>
             </div>
-            <div className='patients-grid-content'>
+            <div className='grid-item patients-grid-content'>
                 <button
                     className='basic-button table-button'
                     onClick={handleConsultClick}
@@ -134,16 +134,16 @@ function GridPatientsContent({ patient }){
                 showWindow={[showTokenModal, setShowTokenModal]}
                 styleContainer='token-verification-modal'
             >
-                <div className='token-modal-content'>
-                    <p style={{marginBottom: '1.5em', textAlign: 'center', color: '#666'}}>
+                <div className='token-modal-content' style={{ color : "white", fontWeight: 'bold' }}>
+                    <p style={{marginBottom: '1.5em', textAlign: 'center', fontSize: "1.1em"}}>
                         Please enter the patient's token to access their information
                     </p>
-                    
+
                     <div style={{marginBottom: '1em'}}>
-                        <label style={{display: 'block', marginBottom: '0.5em', fontWeight: 'bold'}}>
+                        <label style={{display: 'block', marginBottom: '0.5em'}}>
                             Token
                         </label>
-                        <input 
+                        <input
                             type="text"
                             value={tokenInput}
                             onChange={(e) => setTokenInput(e.target.value)}
@@ -162,7 +162,7 @@ function GridPatientsContent({ patient }){
                         />
                     </div>
 
-                    <button 
+                    <button
                         className='basic-button'
                         onClick={verifyToken}
                         disabled={isVerifying}

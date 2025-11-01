@@ -1,9 +1,30 @@
 .add-patient-cont{
-    padding: 0;
+    padding: 0 8em;
     background-color: transparent;
     text-align: center;
 }
 
 .add-patient-cont button{
     width: 9em;
+}
+
+.input-container-add-patient{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4em;
+    row-gap: 4em;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2em;
+}
+
+@media screen and (max-width: 100em){
+    .add-patient-cont{
+        padding: 0;
+    }
+
+    .input-container-add-patient{
+        column-gap: 0;
+    }
 }
