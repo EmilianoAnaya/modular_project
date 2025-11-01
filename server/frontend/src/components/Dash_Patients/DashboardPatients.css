@@ -27,14 +27,8 @@
 }
 
 .token-verification-modal {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: auto !important;
-    height: auto !important;
-    max-width: 500px;
-    z-index: 1000 !important;
+    top: 50%;
+    left: 50%;
 }
 
 /* Ocultar el fondo cuando el modal está activo */

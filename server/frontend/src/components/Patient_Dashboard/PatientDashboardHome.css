@@ -60,6 +60,12 @@
     width: 100%;
 }
 
+.token-display button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .token-code {
     flex: 1;
     background-color: white;
@@ -95,6 +101,9 @@
 
 .token-buttons button {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0.8em 1.5em;
 }
 

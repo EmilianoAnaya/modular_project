@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import PatientNav from "../Patient_Navbar/PatientNav";
 import AllergiesSection from "./AllergiesSection";
-import SurgicalHistorySection from "./SurgicalHistorySection"; 
+import SurgicalHistorySection from "./SurgicalHistorySection";
 import "./PatientNotes.css"
 
-function PatientNotes() {
+function PatientNotes({ viewPoint = "" }) {
   const [activeSection, setActiveSection] = useState('Allergies')
 
   // Notas simuladas para secciones que todavía no tienen componentes completos
@@ -40,10 +40,10 @@ function PatientNotes() {
           <div className="notes-card">
             <h1>{activeSection}</h1>
 
-            <div 
-              className='editable-note' 
-              contentEditable={true} 
-              onInput={handleChange} 
+            <div
+              className='editable-note'
+              contentEditable={true}
+              onInput={handleChange}
               suppressContentEditableWarning={true}
             >
               {notes[activeSection]}
@@ -59,6 +59,7 @@ function PatientNotes() {
   return (
     <div className="notes-page">
       <PatientNav
+        viewPoint={viewPoint}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />

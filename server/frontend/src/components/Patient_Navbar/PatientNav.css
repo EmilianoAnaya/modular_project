@@ -21,7 +21,7 @@
 /* Text */
 .patient-nav-text {
     display: flex;
-    font-family: var(--FONT-INRIA-SANS);
+    font-family: var(--FONT-KOTTA-ONE);
     font-size: 1.3em;
     margin: 0;
     min-width: 2.5em;
@@ -40,4 +40,10 @@
 
 .patient-nav-text:hover {
     background-color: aqua;
+}
+
+@media screen and (max-width: 100em){
+    .notes-patient-view p{
+        font-size: 1.2em;
+    }
 }

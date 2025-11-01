@@ -177,7 +177,7 @@ function AllergiesSection() {
                             <p>Actions</p>
 
                             {allergies.length === 0 ? (
-                                <p style={{gridColumn: '1 / -1', padding: '2em', fontStyle: 'italic', color: '#666'}}>
+                                <p style={{gridColumn: '1 / -1', padding: '1em', fontStyle: 'italic', fontSize: '.9em', color: '#666'}}>
                                     No allergies registered. Click "Add" to create one.
                                 </p>
                             ) : (

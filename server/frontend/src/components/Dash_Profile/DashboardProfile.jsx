@@ -6,7 +6,7 @@ import BasicInput from '../Basic_Input/BasicInput'
 import { getApiUrl } from '../../config/api'
 import API_CONFIG from '../../config/api'
 
-function DashboardProfile(){
+function DashboardProfile({ doctorView = true }){
     const navigation = useNavigate()
     const [doctorName, setDoctorName] = useState("Doctor Name")
 
@@ -125,7 +125,7 @@ function DashboardProfile(){
                     <img src='/assets/example.jpg'/>
                     <div>
                         <p id='dash-profile-name'>{doctorName}</p>
-                        <p id='dash-profile-description'>Doctors Description</p>
+                        <p id='dash-profile-description'>{ doctorView ? "Doctors Description" : "Patient Description" }</p>
                     </div>
                 </div>
                 <button className='icon-button basic-button' style={{"width" : "4em"}} onClick={() => navigation("/")}>
@@ -149,10 +149,13 @@ function DashboardProfile(){
                         <textarea maxLength={274}/>
                     </div>
 
-                    <div className='dash-text-area-cont'>
+                    { doctorView && (
+                      <div className='dash-text-area-cont'>
                         <p>Consult Location</p>
                         <textarea maxLength={274}/>
-                    </div>
+                      </div>
+                    ) }
+
                     <div className='input-container'>
                         <button className='basic-button' style={{"width" : "8em"}} onClick={handleSaveProfile}>Save</button>
                     </div>
