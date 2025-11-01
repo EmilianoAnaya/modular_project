@@ -23,7 +23,7 @@ function Patient(){
                         <Route path="/" element={<PatientAgenda />} />
                         <Route path="Notes" element={<PatientNotes />} />
                         <Route path="Record" element={<PatientRecord />} />
-                        <Route path="Tendencies" element={<PatientTendencies />} />
+                        {/* <Route path="Tendencies" element={<PatientTendencies />} />*/}
                         <Route path="Consult" element={<PatientConsult />} />
                         <Route path="Study" element={<PatientStudy/> } />
                     </Routes>

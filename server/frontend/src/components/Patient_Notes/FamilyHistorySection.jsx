@@ -125,14 +125,14 @@ function FamilyHistorySection({ addTrigger = true }) {
 
     return (
         <>
-            <div className='family-records-container'>
-                <div className='family-records-item'>
+            <div className='patient-records-container family-records-container'>
+                <div className='patient-records-item family-records-item'>
                     <div className="family-heading-with-button">
                         <Heading headingText="Family History" />
                     </div>
 
                     <div className="family-table-wrapper">
-                        <div className='family-record-sub-container family-records-table'>
+                        <div className='patient-record-sub-cont family-record-sub-container family-records-table'>
                             <p>Relation</p>
                             <p>Condition</p>
                             <p>Actions</p>

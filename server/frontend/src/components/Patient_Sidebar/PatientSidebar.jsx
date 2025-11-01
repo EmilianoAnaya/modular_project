@@ -18,7 +18,7 @@ function PatientSidebar(){
         { title : "Agenda", img_route : "calendar-days.svg", navigation_route : "/" },
         { title : "Notes", img_route : "pen.svg", navigation_route : "/Notes" },
         { title : "Record", img_route : "file-user.svg", navigation_route : "/Record" },
-        { title : "Tendencies", img_route : "chart-no-axes-combined.svg", navigation_route : "/Tendencies" },
+        // { title : "Tendencies", img_route : "chart-no-axes-combined.svg", navigation_route : "/Tendencies" },
     ]
 
     // Manejar estados de carga y error

@@ -6,7 +6,7 @@ import WindowContainer from '../Window_Container/WindowContainer';
 import WindowConsultDefault from '../Patient_Consult/WindowConsultDefault';
 import Section from '../Section/Section';
 import Heading from '../Heading/Heading';
-import './HabitsLifestyleSection.css'; 
+import './HabitsLifestyleSection.css';
 
 function HabitsLifestyleSection({ addTrigger = true }) {
     const { patientData } = usePatient();
@@ -23,7 +23,7 @@ function HabitsLifestyleSection({ addTrigger = true }) {
         notes: ''
     });
 
-    const [sortOrder, setSortOrder] = useState('desc'); 
+    const [sortOrder, setSortOrder] = useState('desc');
     const [showSortMenu, setShowSortMenu] = useState(false);
     const sortMenuRef = useRef(null);
 
@@ -126,17 +126,17 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
     return (
         <>
-            <div className='habits-container'>
-                <div className='habits-records-item'>
+            <div className='patient-records-container habits-container'>
+                <div className='patient-records-item habits-records-item'>
                     <Heading headingText="Habits and Lifestyle" />
 
                     <div className="habits-table-wrapper">
-                        <div className='habits-records-table'>
+                        <div className='patient-record-sub-cont habits-records-table'>
                             <div>Smoking</div>
                             <div>Alcohol</div>
                             <div>Exercise</div>
                             <div>Diet</div>
-                            
+
                             <div
                                 className="habits-date-header"
                                 ref={sortMenuRef}
@@ -146,13 +146,13 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
                                 {showSortMenu && (
                                     <div className="habits-date-sort-menu">
-                                        <div 
-                                        onClick={() => { setSortOrder('desc'); setShowSortMenu(false); }} 
+                                        <div
+                                        onClick={() => { setSortOrder('desc'); setShowSortMenu(false); }}
                                         className={sortOrder === 'desc' ? 'selected-option' : ''}>
                                             Newest → Oldest
                                         </div>
-                                        <div 
-                                        onClick={() => { setSortOrder('asc'); setShowSortMenu(false); }} 
+                                        <div
+                                        onClick={() => { setSortOrder('asc'); setShowSortMenu(false); }}
                                         className={sortOrder === 'asc' ? 'selected-option' : ''}>
                                             Oldest → Newest
                                         </div>
@@ -195,7 +195,7 @@ function HabitsLifestyleSection({ addTrigger = true }) {
                                 Add Record
                             </button>
                             )}
-                        </div>   
+                        </div>
                     </div>
                 </div>
 
@@ -221,9 +221,9 @@ function HabitsLifestyleSection({ addTrigger = true }) {
                     <div className='content-default-name'>
                         <div className="field">
                             <label>Smoking</label>
-                            <select 
+                            <select
                                 className={currentHabit.smoking ? 'active-select' : ''}
-                                value={currentHabit.smoking} 
+                                value={currentHabit.smoking}
                                 onChange={(e) => setCurrentHabit({ ...currentHabit, smoking: e.target.value })}
                                 >
                                 <option value="">Select</option>
@@ -234,9 +234,9 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
                         <div className="field">
                             <label>Alcohol</label>
-                            <select 
+                            <select
                                 className={currentHabit.alcohol ? 'active-select' : ''}
-                                value={currentHabit.alcohol} 
+                                value={currentHabit.alcohol}
                                 onChange={(e) => setCurrentHabit({ ...currentHabit, alcohol: e.target.value })}
                                 >
                                 <option value="">Select</option>
@@ -247,9 +247,9 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
                         <div className="field">
                             <label>Exercise</label>
-                            <select 
+                            <select
                                 className={currentHabit.exercise ? 'active-select' : ''}
-                                value={currentHabit.exercise} 
+                                value={currentHabit.exercise}
                                 onChange={(e) => setCurrentHabit({ ...currentHabit, exercise: e.target.value })}
                                 >
                                 <option value="">Select</option>
@@ -260,9 +260,9 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
                         <div className="field">
                             <label>Diet</label>
-                            <select 
+                            <select
                                 className={currentHabit.diet ? 'active-select' : ''}
-                                value={currentHabit.diet} 
+                                value={currentHabit.diet}
                                 onChange={(e) => setCurrentHabit({ ...currentHabit, diet: e.target.value })}
                                 >
                                 <option value="">Select</option>
@@ -273,10 +273,10 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
                         <div className="field">
                             <label>Date</label>
-                            <input 
-                                type="date" 
-                                value={currentHabit.date || ''} 
-                                onChange={(e) => setCurrentHabit({ ...currentHabit, date: e.target.value })} 
+                            <input
+                                type="date"
+                                value={currentHabit.date || ''}
+                                onChange={(e) => setCurrentHabit({ ...currentHabit, date: e.target.value })}
                                 />
                         </div>
                     </div>
