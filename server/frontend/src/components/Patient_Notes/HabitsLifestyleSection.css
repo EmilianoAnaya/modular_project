@@ -102,7 +102,7 @@
 
 .habits-illustration {
     max-width: 100%;
-    height: auto;
+    margin-top: 200PX;
     object-fit: contain;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }

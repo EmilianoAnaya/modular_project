@@ -105,7 +105,7 @@ function HabitsLifestyleSection({ addTrigger = true }) {
 
     const handleDelete = async () => {
         if (selectedIndex === null) return;
-        if (!confirm('¿Estás seguro de eliminar este registro?')) return;
+        if (!confirm('Are you sure you want to delete this record?')) return;
         try {
             const id = habits[selectedIndex].id;
             const response = await fetch(getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_NOTES}/${id}`), { method: 'DELETE' });
