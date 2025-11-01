@@ -1,18 +1,14 @@
 import { useState } from 'react'
-import PatientNav from "../Patient_Navbar/PatientNav";
-import AllergiesSection from "./AllergiesSection";
-import SurgicalHistorySection from "./SurgicalHistorySection";
-import HabitsLifestyleSection from './HabitsLifestyleSection';
-import FamilyHistorySection from './FamilyHistorySection';
+import PatientNav from "../Patient_Navbar/PatientNav"
+import AllergiesSection from "./AllergiesSection"
+import SurgicalHistorySection from "./SurgicalHistorySection"
+import HabitsLifestyleSection from './HabitsLifestyleSection'
+import FamilyHistorySection from './FamilyHistorySection'
+import ChronicDiseasesSection from './ChronicDiseasesSection'
 import "./PatientNotes.css"
 
 function PatientNotes({ viewPoint = "" }) {
   const [activeSection, setActiveSection] = useState('Allergies')
-
-  // Notas simuladas para secciones que todavía no tienen componentes completos
-  const [notes, setNotes] = useState({
-    "Chronic Diseases": "",
-  })
 
   const handleChange = (e) => {
     setNotes({
@@ -37,22 +33,7 @@ function PatientNotes({ viewPoint = "" }) {
       case 'Family History':
         return <FamilyHistorySection addTrigger={viewPoint === ""} />
       case 'Chronic Diseases':
-        // Mantener notas simples para estas secciones
-        return (
-          <div className="notes-card">
-            <h1>{activeSection}</h1>
-
-            <div 
-              className='editable-note' 
-              contentEditable={true} 
-              onInput={handleChange} 
-              suppressContentEditableWarning={true}
-            >
-              {notes[activeSection]}
-            </div>
-            <button className="save-button" onClick={handleSave}>Save</button>
-          </div>
-        )
+        return <ChronicDiseasesSection addTrigger={viewPoint === ""} />
       default:
         return null
     }
