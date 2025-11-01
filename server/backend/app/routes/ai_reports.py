@@ -42,7 +42,7 @@ def build_consultation_prompt(record_data):
     consult_date = record_data['date']
     
     # Iniciar con contexto claro: estamos DOCUMENTANDO, no diagnosticando
-    prompt = f"""Actúa como asistente administrativo médico. Tu tarea es ORGANIZAR y RESUMIR la información de esta consulta ya realizada.
+    prompt = f"""Actúa como asistente de resumenes. Tu tarea es RESUMIR la información de la información presentes sin importar el contenido.
 
 INFORMACIÓN DE LA CONSULTA:
 Paciente: {patient_name} ({gender})
@@ -115,17 +115,17 @@ DATOS REGISTRADOS EN LA CONSULTA:
     prompt += """
 TAREA: Reorganiza la información anterior en un formato estructurado y claro. NO agregues diagnósticos nuevos, solo RESUME lo que está documentado arriba.
 
-Formato requerido (máximo 100 palabras):
+Formato requerido (máximo 500 palabras):
 
-**Diagnóstico documentado:** [resume los problemas listados]
+**Diagnóstico documentado:** [resume los problemas listados sin importar el nombre]
 
-**Tratamiento prescrito:** [lista los medicamentos si hay]
+**Tratamiento prescrito:** [lista los medicamentos si hay sin importar el nombre]
 
-**Observaciones:** [resume las notas del doctor]
+**Observaciones:** [resume las notas del doctor sin importar el nombre]
 
-**Indicaciones:** [menciona seguimiento si se indica]
+**Indicaciones:** [menciona seguimiento si se indica sin importar el nombre]
 
-IMPORTANTE: Solo organiza la información proporcionada, no agregues información nueva ni recomendaciones adicionales."""
+IMPORTANTE: Solo organiza la información proporcionada, no agregues información nueva ni recomendaciones adicionales y si no puedes hacerlo, explica la razón."""
 
     return prompt
 

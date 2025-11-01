@@ -22,6 +22,8 @@ function PatientRecord({ viewPoint = "" }){
     const dateDropdownRef = useRef(null);
     const [aiSummaries, setAiSummaries] = useState({}) // Almacenar resúmenes por record_id
     const [loadingAI, setLoadingAI] = useState({})
+    const [viewMode, setViewMode] = useState('consultation') // 'consultation' o 'ai'
+
 
     useEffect(() => {
         if (patientData) {
@@ -46,7 +48,13 @@ function PatientRecord({ viewPoint = "" }){
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
-    const handleAISummary = async (recordId) => {
+    const handleAISummary = async (record) => {
+        const recordId = record.id
+
+        // Seleccionar este record y cambiar a modo IA
+        setSelectedRecord(record)
+        setViewMode('ai')
+
         // Si ya está cargando, no hacer nada
         if (loadingAI[recordId]) return
         
@@ -176,8 +184,10 @@ function PatientRecord({ viewPoint = "" }){
             // Mostrar modal con archivos
             setSelectedStudy(record)
             setShowFilesModal(true)
+        } else {
+            setSelectedRecord(record)
+            setViewMode('consultation') // ← AGREGAR ESTA LÍNEA
         }
-        setSelectedRecord(record)
     }
 
     const toggleCategoryDropdown = () => {
@@ -397,30 +407,34 @@ function PatientRecord({ viewPoint = "" }){
                                     <p>{record.type === 'document' ? 'Document' : 'Study'}</p>
                                     <p>{formatDate(record.displayDate)}</p>
                                     <div className='patient-record-buttons'>
-                                    <button
-                                        className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
-                                        onClick={() => handleViewRecord(record)}
-                                        title={record.type === 'study' ? 'View study files' : 'View consultation details'}
-                                    >
-                                        <img src='/assets/glasses.svg' alt="View"/>
-                                    </button>
-                                    
-                                    {/* Botón de IA solo para consultas (documents) */}
-                                    {record.type === 'document' && (
                                         <button
-                                            className='basic-button icon-button table-button'
-                                            onClick={() => handleAISummary(record.id)}
-                                            title='Generate AI Summary'
-                                            disabled={loadingAI[record.id]}
+                                            className={`basic-button icon-button table-button ${
+                                                selectedRecord?.id === record.id && viewMode === 'consultation' ? 'active-record' : ''
+                                            }`}
+                                            onClick={() => handleViewRecord(record)}
+                                            title={record.type === 'study' ? 'View study files' : 'View consultation details'}
                                         >
-                                            {loadingAI[record.id] ? (
-                                                <span style={{fontSize: '0.8em'}}>...</span>
-                                            ) : (
-                                                <img src='/assets/glasses.svg' alt="AI" style={{filter: 'hue-rotate(180deg)'}} />
-                                            )}
+                                            <img src='/assets/glasses.svg' alt="View"/>
                                         </button>
-                                    )}
-                                </div>
+                                        
+                                        {/* Botón de IA solo para consultas (documents) */}
+                                        {record.type === 'document' && (
+                                            <button
+                                                className={`basic-button icon-button table-button ${
+                                                    selectedRecord?.id === record.id && viewMode === 'ai' ? 'active-record' : ''
+                                                }`}
+                                                onClick={() => handleAISummary(record)}
+                                                title='AI Summary'
+                                                disabled={loadingAI[record.id]}
+                                            >
+                                                {loadingAI[record.id] ? (
+                                                    <span style={{fontSize: '0.8em'}}>...</span>
+                                                ) : (
+                                                    <img src='/assets/glasses.svg' alt="AI" style={{filter: 'hue-rotate(180deg)'}} />
+                                                )}
+                                            </button>
+                                        )}
+                                    </div>
                                 </React.Fragment>
                             ))
                         )}
@@ -430,32 +444,45 @@ function PatientRecord({ viewPoint = "" }){
                     <Heading headingText={"Summary"} />
                     <div className={`patient-record-sub-cont records-summary ${viewPoint}`}>
                         {selectedRecord ? (
-                            selectedRecord.type === 'document' ? (
-                                <>
-                                    {/* Mostrar resumen IA si existe */}
-                                    {aiSummaries[selectedRecord.id] && (
-                                        <div style={{
-                                            marginBottom: '1.5em',
-                                            padding: '1em',
-                                            backgroundColor: '#e3f2fd',
-                                            borderRadius: '8px',
-                                            borderLeft: '4px solid #2196f3'
-                                        }}>
-                                            <h3 style={{
-                                                margin: '0 0 0.5em 0',
-                                                color: '#1976d2',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.5em'
-                                            }}>
-                                                🤖 AI Summary
-                                            </h3>
-                                            <div style={{whiteSpace: 'pre-wrap', color: '#333', lineHeight: '1.6'}}>
-                                                {aiSummaries[selectedRecord.id]}
-                                            </div>
-                                        </div>
-                                    )}
+                            viewMode === 'ai' ? (
+                                // ========== VISTA DE IA ==========
+                                <div style={{padding: '1em'}}>
+                                    <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #2196f3'}}>
+                                        <h2 style={{margin: '0', color: '#1976d2', display: 'flex', alignItems: 'center', gap: '0.5em'}}>
+                                            🤖 AI Summary - {selectedRecord.type === 'document' ? formatDate(selectedRecord.date) : selectedRecord.study_type}
+                                        </h2>
+                                    </div>
                                     
+                                    {loadingAI[selectedRecord.id] ? (
+                                        <div style={{
+                                            padding: '2em',
+                                            textAlign: 'center',
+                                            fontStyle: 'italic',
+                                            color: '#666'
+                                        }}>
+                                            <p>Generating AI summary...</p>
+                                            <p style={{fontSize: '0.9em'}}>This may take 1-3 minutes</p>
+                                        </div>
+                                    ) : aiSummaries[selectedRecord.id] ? (
+                                        <div style={{
+                                            padding: '1.5em',
+                                            backgroundColor: '#f5f5f5',
+                                            borderRadius: '8px',
+                                            whiteSpace: 'pre-wrap',
+                                            lineHeight: '1.8',
+                                            color: '#333'
+                                        }}>
+                                            {aiSummaries[selectedRecord.id]}
+                                        </div>
+                                    ) : (
+                                        <p style={{fontStyle: 'italic', color: '#666', padding: '1em'}}>
+                                            Click the AI button to generate a summary
+                                        </p>
+                                    )}
+                                </div>
+                            ) : selectedRecord.type === 'document' ? (
+                                // ========== VISTA DE CONSULTA (ORIGINAL) ==========
+                                <>
                                     <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
                                         <h2 style={{margin: '0', color: '#00897b'}}>
                                             Consultation - {formatDate(selectedRecord.date)}
@@ -467,6 +494,7 @@ function PatientRecord({ viewPoint = "" }){
                                     {renderConsultationData(selectedRecord.consultation_data)}
                                 </>
                             ) : (
+                                // ========== VISTA DE ESTUDIO (ORIGINAL) ==========
                                 <>
                                     <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
                                         <h2 style={{margin: '0', color: '#00897b'}}>
