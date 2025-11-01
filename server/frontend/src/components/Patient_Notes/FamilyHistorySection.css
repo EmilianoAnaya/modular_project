@@ -1,22 +1,22 @@
-.patient-records-container {
+.family-records-container {
     width: 100%;
     max-width: 100%;
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: 70% auto; /* tabla + imagen */
+    grid-template-columns: 70% auto; 
     column-gap: 1em;
     box-sizing: border-box;
 }
 
-.patient-records-item {
+.family-records-item {
     width: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
 }
 
-.surgery-heading-with-button {
+.family-heading-with-button {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,18 +24,19 @@
     margin-bottom: 1em;
 }
 
-.surgeries-records-table {
+.family-records-table {
     display: grid;
     grid-template-columns: 40% 40% 20%;
-    grid-template-rows: 5% repeat(auto-fill, 9%);
+    grid-template-rows: 5% repeat(auto-fill, 40px);
     background-color: white;
     box-sizing: border-box;
     max-height: 420px;
     overflow-y: auto;
     border: 1px solid #ccc;
+    width: 100%;
 }
 
-.surgeries-records-table > p:nth-child(-n+3) {
+.family-records-table > p:nth-child(-n+3) {
     font-weight: bold;
     background-color: #e0e0e0;
     display: flex;
@@ -43,7 +44,7 @@
     justify-content: center;
 }
 
-.surgeries-records-table p {
+.family-records-table p {
     font-family: var(--FONT-MULISH);
     text-align: center;
     border: 1px solid black;
@@ -51,7 +52,18 @@
     overflow: hidden;
 }
 
-.surgery-table-wrapper {
+.family-records-table > div,
+.family-records-table > p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid black; 
+    margin: 0;
+    padding: 0.4em 0;
+}
+
+.family-table-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -59,7 +71,7 @@
     margin-bottom: 1em;
 }
 
-.add-surgery-btn {
+.add-family-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,17 +86,17 @@
     transition: background-color 0.2s ease;
 }
 
-.add-surgery-btn:hover {
+.add-family-btn:hover {
     background-color: #039be5;
 }
 
-.add-surgery-btn .add-icon {
+.add-family-btn .add-icon {
     width: 16px;
     height: 16px;
     filter: invert(1);
 }
 
-.add-surgery-container {
+.add-family-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -92,20 +104,20 @@
     margin-left: 1em;
 }
 
-.surgery-illustration-container {
+.family-illustration-container {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 1.5em 0;
 }
 
-.surgery-illustration {
+.family-illustration {
     width: 90%;
     max-width: 800px;
-    
+    transition: transform 0.3s ease;
 }
 
-.surgery-illustration:hover {
+.family-illustration:hover {
     transform: scale(1.05);
     opacity: 1;
     transition: none;
@@ -135,7 +147,7 @@
     transition: filter 0.2s ease;
 }
 
-.date-header {
+.family-date-header {
     position: relative;
     background-color: #e0e0e0;
     border: 1px solid black;
@@ -148,11 +160,11 @@
     transition: background-color 0.2s ease;
 }
 
-.date-header:hover {
+.family-date-header:hover {
     background-color: #d0d0d0;
 }
 
-.date-sort-menu {
+.family-date-sort-menu {
     position: absolute;
     top: 100%;
     left: 50%;
@@ -167,7 +179,7 @@
     padding: 0.2em 0;
 }
 
-.date-sort-menu div {
+.family-date-sort-menu div {
     padding: 0.6em 1em;
     cursor: pointer;
     font-family: var(--FONT-MULISH);
@@ -176,11 +188,11 @@
     transition: background-color 0.2s ease;
 }
 
-.date-sort-menu div:hover {
+.family-date-sort-menu div:hover {
     background-color: #f0f0f0;
 }
 
-.date-sort-menu div.selected-option {
+.family-date-sort-menu div.selected-option {
     background-color: #99EFE6;
     color: white;
     font-weight: 600;
@@ -189,4 +201,48 @@
 @keyframes fadeIn {
     from { opacity: 0; transform: translate(-50%, -5px); }
     to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.content-family-default { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 0.5em 1em; 
+    margin-bottom: 1em; 
+    font-family: var(--FONT-MULISH); 
+} 
+    
+.content-family-default .field { 
+    display: flex; 
+    flex-direction: column;
+     gap: 0.25em; 
+} 
+
+.content-family-default label { 
+    font-weight: 600; 
+    color: #333; 
+    font-size: 0.9em; 
+} 
+
+.content-family-default input, 
+.content-family-default select, 
+.content-family-default textarea { 
+    width: 100%; 
+    padding: 0.35em 0.5em; 
+    border: 1px solid #ccc; 
+    border-radius: 0.3em; 
+    font-size: 0.9em; 
+    background-color: #fff; 
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+} 
+
+.content-family-default input:focus, 
+.content-family-default select:focus, 
+.content-family-default textarea:focus { 
+    border-color: #4fc3f7; 
+    box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2); 
+    outline: none; 
+} 
+
+.default-information-description.family-description { 
+    margin-top: 1em; 
 }

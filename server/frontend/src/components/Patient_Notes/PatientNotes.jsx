@@ -3,6 +3,7 @@ import PatientNav from "../Patient_Navbar/PatientNav";
 import AllergiesSection from "./AllergiesSection";
 import SurgicalHistorySection from "./SurgicalHistorySection";
 import HabitsLifestyleSection from './HabitsLifestyleSection';
+import FamilyHistorySection from './FamilyHistorySection';
 import "./PatientNotes.css"
 
 function PatientNotes({ viewPoint = "" }) {
@@ -10,7 +11,6 @@ function PatientNotes({ viewPoint = "" }) {
 
   // Notas simuladas para secciones que todavía no tienen componentes completos
   const [notes, setNotes] = useState({
-    "Family History": "",
     "Chronic Diseases": "",
   })
 
@@ -35,6 +35,7 @@ function PatientNotes({ viewPoint = "" }) {
       case 'Habits':
         return <HabitsLifestyleSection addTrigger={viewPoint === ""} />
       case 'Family History':
+        return <FamilyHistorySection addTrigger={viewPoint === ""} />
       case 'Chronic Diseases':
         // Mantener notas simples para estas secciones
         return (
