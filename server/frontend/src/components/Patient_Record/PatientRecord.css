@@ -8,6 +8,7 @@
     height: 100%;
     box-sizing: border-box;
     column-gap: 1em;
+    background-color: #14B8A6;
 }
 
 .patient-records-item{
@@ -57,8 +58,10 @@
     width: 97%;
     margin: 0 auto;
     height: 33em;
+    max-height: 708px;
+    overflow: hidden;
+    overflow-y: scroll;
     border-radius: 0 0 2em 2em;
-    
 }
 
 .patient-record-buttons{
@@ -69,8 +72,8 @@
 }
 
 .category-dropdown {
-    position: absolute;  
-    top: 100%;           
+    position: absolute;
+    top: 100%;
     left: 0;
     background-color: white;
     border: 1px solid #ccc;
@@ -91,6 +94,27 @@
 }
 
 .category-dropdown div.selected-option {
-    background-color: #99EFE6; 
+    background-color: #99EFE6;
     color: white;
+}
+
+.records-patient-view{
+    min-height: 30em;
+    max-height: 30em;
+}
+
+/* Responsive */
+@media screen and (max-width: 100em){
+    .patient-record-sub-cont{
+        max-height: 548px;
+    }
+
+    .records-patient-view{
+        min-height: 25em;
+        max-height: 25em;
+    }
+
+    .records-patient-view p{
+        font-size: .8em;
+    }
 }

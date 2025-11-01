@@ -2,6 +2,7 @@ import "./styles/Patient.css"
 import { Routes, Route } from "react-router-dom";
 import MainNavbar from "./components/Main_Navbar/MainNavbar"
 import PatientAgenda from "./components/Patient_Agenda/PatientAgenda"
+import PatientDashboardHome from "./components/Patient_Dashboard/PatientDashboardHome"  // ← AGREGAR
 import PatientSidebar from "./components/Patient_Sidebar/PatientSidebar"
 import PatientNotes from "./components/Patient_Notes/PatientNotes"
 import PatientRecord from "./components/Patient_Record/PatientRecord";

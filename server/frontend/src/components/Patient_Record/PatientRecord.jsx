@@ -5,7 +5,7 @@ import { usePatient } from '../../hooks/usePatient'
 import { getApiUrl } from '../../config/api'
 import API_CONFIG from '../../config/api'
 
-function PatientRecord(){
+function PatientRecord({ viewPoint = "" }){
     const { patientData } = usePatient()
     const [records, setRecords] = useState([])
     const [studies, setStudies] = useState([])
@@ -96,7 +96,7 @@ function PatientRecord(){
             combined = [...combined, ...studiesRecords]
         }
 
-        // Filtrar por fecha 
+        // Filtrar por fecha
         if (dateFilter) {
             combined = combined.filter(record => {
                 const recordDate = new Date(record.displayDate).toISOString().split('T')[0]
@@ -248,7 +248,7 @@ function PatientRecord(){
                                 <p className='study-file-name'>{file.file_name}</p>
                             </div>
                         </div>
-                        <button 
+                        <button
                             className='basic-button study-file-view-btn'
                             onClick={() => handleOpenFile(file.file_path)}
                         >
@@ -273,29 +273,29 @@ function PatientRecord(){
             <div className='patient-records-container'>
                 <div className='patient-records-item'>
                     <Heading headingText={"Record"} />
-                    <div className='patient-record-sub-cont records-table'>
+                    <div className={`patient-record-sub-cont records-table ${viewPoint}`}>
                         <p>Name</p>
                         <p>Made by</p>
-                        <p 
+                        <p
                             style={{cursor: 'pointer', userSelect: 'none', position: 'relative'}}
                             onClick={toggleCategoryDropdown}
                         >
                             {categoryFilter === 'all' ? 'Category' : categoryFilter === 'document' ? 'Document' : 'Study'}
                             {categoryDropdownOpen && (
                                 <div className="category-dropdown" ref={dropdownRef}>
-                                    <div 
+                                    <div
                                         onClick={() => { setCategoryFilter('all'); setCategoryDropdownOpen(false) }}
                                         className={categoryFilter === 'all' ? 'selected-option' : ''}
                                     >
                                         All
                                     </div>
-                                    <div 
+                                    <div
                                         onClick={() => { setCategoryFilter('document'); setCategoryDropdownOpen(false) }}
                                         className={categoryFilter === 'document' ? 'selected-option' : ''}
                                     >
                                         Document
                                     </div>
-                                    <div 
+                                    <div
                                         onClick={() => { setCategoryFilter('study'); setCategoryDropdownOpen(false) }}
                                         className={categoryFilter === 'study' ? 'selected-option' : ''}
                                     >
@@ -304,14 +304,14 @@ function PatientRecord(){
                                 </div>
                             )}
                         </p>
-                        <p 
+                        <p
                             style={{cursor: 'pointer', userSelect: 'none', position: 'relative'}}
                             onClick={() => setDateDropdownOpen(!dateDropdownOpen)}
                         >
                             {dateFilter ? formatDate(dateFilter) : 'Date Created'}
                             {dateDropdownOpen && (
                                 <div className="category-dropdown" ref={dateDropdownRef}>
-                                    <div 
+                                    <div
                                         onClick={() => { setDateFilter(''); setDateDropdownOpen(false) }}
                                         className={dateFilter === '' ? 'selected-option' : ''}
                                     >
@@ -320,8 +320,8 @@ function PatientRecord(){
                                     {combinedRecords.map(record => {
                                         const recordDate = new Date(record.displayDate).toISOString().split('T')[0];
                                         return (
-                                            <div 
-                                                key={record.id + recordDate} 
+                                            <div
+                                                key={record.id + recordDate}
                                                 onClick={() => { setDateFilter(recordDate); setDateDropdownOpen(false) }}
                                                 className={dateFilter === recordDate ? 'selected-option' : ''}
                                             >
@@ -342,7 +342,7 @@ function PatientRecord(){
                             combinedRecords.map((record, index) => (
                                 <React.Fragment key={`${record.type}-${record.id || index}`}>
                                     <p>
-                                        {record.type === 'document' 
+                                        {record.type === 'document'
                                             ? `Consult - ${formatDate(record.date)}`
                                             : `Study - ${record.study_type}`
                                         }
@@ -366,7 +366,7 @@ function PatientRecord(){
                 </div>
                 <div className='patient-records-item'>
                     <Heading headingText={"Summary"} />
-                    <div className='patient-record-sub-cont records-summary'>
+                    <div className={`patient-record-sub-cont records-summary ${viewPoint}`}>
                         {selectedRecord ? (
                             selectedRecord.type === 'document' ? (
                                 <>

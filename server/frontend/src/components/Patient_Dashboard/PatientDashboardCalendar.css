@@ -1,0 +1,100 @@
+/* COPIADO EXACTAMENTE DE DashboardHome.css - Sección del calendario */
+
+.calendar-cont {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 1em 0 0 1em;
+    box-shadow: -.7em 0 .5em rgb(0, 0, 0, .4);
+}
+
+.calendar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2em;
+    height: 12%;
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.calendar-month-select {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 45%;
+}
+
+.calendar-head-dash {
+    border: 1px solid rgb(0, 0, 0, .2);
+}
+
+.calendar-info-dash {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar-dates {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
+    grid-template-rows: 6% repeat(6, 15.66%);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.calendar-day {
+    font-size: 1.8em;
+    user-select: none;
+}
+
+/* Texts */
+.calendar-head p {
+    color: white;
+    font-family: var(--FONT-KRONA-ONE);
+    font-size: 1.3em;
+    user-select: none;
+}
+
+/* Images */
+.calendar-head img {
+    border-radius: 1em;
+    width: 2em;
+    cursor: pointer;
+}
+
+.calendar-head img:hover {
+    background-color: rgb(0, 0, 0, .1);
+}
+
+/* Estados especiales del día */
+.calendar-day.istoday {
+    background-color: #27847A;
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-day.empty {
+    cursor: default;
+    background-color: transparent;
+}
+
+.calendar-day:not(.empty):hover {
+    background-color: rgb(0, 0, 0, 0.1);
+}
+
+/* Días con citas */
+.calendar-day.has-appointment {
+    background-color: #FFD700 !important;
+    font-weight: bold;
+}
+
+.calendar-day.has-appointment:hover {
+    background-color: #FFC700 !important;
+}
+
+.calendar-day.has-appointment.istoday {
+    background-color: #FFA500 !important;
+}

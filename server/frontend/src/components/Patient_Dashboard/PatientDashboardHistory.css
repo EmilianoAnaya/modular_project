@@ -1,0 +1,52 @@
+.patient-history-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 2em;
+    padding: 2em;
+    box-sizing: border-box;
+}
+
+.patient-history-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 200px;
+    background-color: white;
+    border-radius: 1em;
+    padding: 1em;
+    box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.history-sidebar-button {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.history-sidebar-button:hover {
+    background-color: #f0f0f0;
+}
+
+.history-sidebar-button.active {
+    background-color: #14B8A6;
+    color: white;
+}
+
+.history-sidebar-button img {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.patient-history-content {
+    flex: 1;
+    background-color: white;
+    border-radius: 1em;
+    padding: 2em;
+    box-shadow: 0 0.3em 0.5em rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}

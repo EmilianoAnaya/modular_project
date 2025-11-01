@@ -7,6 +7,7 @@ const API_CONFIG = {
         REGISTER: '/api/auth/register',
         PROFILE: '/api/auth/profile',
         DOCTOR: '/api/auth/doctor',
+        CHANGE_PASSWORD: '/api/auth/change-password',
         
         // Patients
         PATIENTS: '/api/patients',

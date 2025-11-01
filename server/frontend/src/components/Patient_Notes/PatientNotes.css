@@ -2,7 +2,7 @@
 .notes-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
   background-color: var(--COLOR-DASHBOARD);
 }
 
@@ -60,4 +60,12 @@
 
 .save-button:hover {
   background-color: #3f8acb;
+}
+
+/* Window */
+.window-notes-section{
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 95%;
 }

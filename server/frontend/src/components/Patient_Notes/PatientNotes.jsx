@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import PatientNav from "../Patient_Navbar/PatientNav";
 import AllergiesSection from "./AllergiesSection";
+<<<<<<< HEAD
 import SurgicalHistorySection from "./SurgicalHistorySection"; 
 import HabitsLifestyleSection from './HabitsLifestyleSection';
+=======
+import SurgicalHistorySection from "./SurgicalHistorySection";
+>>>>>>> main
 import "./PatientNotes.css"
 
-function PatientNotes() {
+function PatientNotes({ viewPoint = "" }) {
   const [activeSection, setActiveSection] = useState('Allergies')
 
   // Notas simuladas para secciones que todavía no tienen componentes completos
@@ -29,11 +33,16 @@ function PatientNotes() {
   const renderSectionContent = () => {
     switch(activeSection) {
       case 'Allergies':
-        return <AllergiesSection />
+        return <AllergiesSection addTrigger={viewPoint === ""} />
       case 'Surgical History':
+<<<<<<< HEAD
         return <SurgicalHistorySection />
       case 'Habits':
         return <HabitsLifestyleSection />
+=======
+        return <SurgicalHistorySection addTrigger={viewPoint === ""} />
+      case 'Habits and Lifestyle':
+>>>>>>> main
       case 'Family History':
       case 'Chronic Diseases':
         // Mantener notas simples para estas secciones
@@ -60,6 +69,7 @@ function PatientNotes() {
   return (
     <div className="notes-page">
       <PatientNav
+        viewPoint={viewPoint}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />
