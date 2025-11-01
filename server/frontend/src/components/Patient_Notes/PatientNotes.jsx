@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import PatientNav from "../Patient_Navbar/PatientNav";
 import AllergiesSection from "./AllergiesSection";
+<<<<<<< HEAD
+import SurgicalHistorySection from "./SurgicalHistorySection"; 
+import HabitsLifestyleSection from './HabitsLifestyleSection';
+=======
 import SurgicalHistorySection from "./SurgicalHistorySection";
+>>>>>>> main
 import "./PatientNotes.css"
 
 function PatientNotes({ viewPoint = "" }) {
@@ -9,7 +14,6 @@ function PatientNotes({ viewPoint = "" }) {
 
   // Notas simuladas para secciones que todavía no tienen componentes completos
   const [notes, setNotes] = useState({
-    "Habits and Lifestyle": "",
     "Family History": "",
     "Chronic Diseases": "",
   })
@@ -31,8 +35,14 @@ function PatientNotes({ viewPoint = "" }) {
       case 'Allergies':
         return <AllergiesSection addTrigger={viewPoint === ""} />
       case 'Surgical History':
+<<<<<<< HEAD
+        return <SurgicalHistorySection />
+      case 'Habits':
+        return <HabitsLifestyleSection />
+=======
         return <SurgicalHistorySection addTrigger={viewPoint === ""} />
       case 'Habits and Lifestyle':
+>>>>>>> main
       case 'Family History':
       case 'Chronic Diseases':
         // Mantener notas simples para estas secciones
@@ -40,10 +50,10 @@ function PatientNotes({ viewPoint = "" }) {
           <div className="notes-card">
             <h1>{activeSection}</h1>
 
-            <div
-              className='editable-note'
-              contentEditable={true}
-              onInput={handleChange}
+            <div 
+              className='editable-note' 
+              contentEditable={true} 
+              onInput={handleChange} 
               suppressContentEditableWarning={true}
             >
               {notes[activeSection]}
