@@ -20,7 +20,8 @@ function PatientRecord({ viewPoint = "" }){
     const dropdownRef = useRef(null)
     const [dateDropdownOpen, setDateDropdownOpen] = useState(false);
     const dateDropdownRef = useRef(null);
-
+    const [aiSummaries, setAiSummaries] = useState({}) // Almacenar resúmenes por record_id
+    const [loadingAI, setLoadingAI] = useState({})
 
     useEffect(() => {
         if (patientData) {
@@ -44,6 +45,51 @@ function PatientRecord({ viewPoint = "" }){
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
+
+    const handleAISummary = async (recordId) => {
+        // Si ya está cargando, no hacer nada
+        if (loadingAI[recordId]) return
+        
+        // Si ya tenemos el resumen, no hacer nada (solo mostrar)
+        if (aiSummaries[recordId]) return
+        
+        try {
+            setLoadingAI(prev => ({ ...prev, [recordId]: true }))
+            
+            // Primero intentar obtener resumen existente
+            const getResponse = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.AI_GET_SUMMARY}/${recordId}`)
+            )
+            const getData = await getResponse.json()
+            
+            if (getData.summary) {
+                // Ya existe, usarlo
+                setAiSummaries(prev => ({ ...prev, [recordId]: getData.summary }))
+                setLoadingAI(prev => ({ ...prev, [recordId]: false }))
+                return
+            }
+            
+            // No existe, generar nuevo
+            const generateResponse = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.AI_GENERATE_SUMMARY}/${recordId}`),
+                { method: 'POST' }
+            )
+            
+            if (!generateResponse.ok) {
+                throw new Error('Failed to generate summary')
+            }
+            
+            const generateData = await generateResponse.json()
+            
+            setAiSummaries(prev => ({ ...prev, [recordId]: generateData.summary }))
+            
+        } catch (error) {
+            console.error('Error with AI summary:', error)
+            alert('Error generating AI summary. Please try again.')
+        } finally {
+            setLoadingAI(prev => ({ ...prev, [recordId]: false }))
+        }
+    }
 
     const loadPatientData = async () => {
         try {
@@ -351,14 +397,30 @@ function PatientRecord({ viewPoint = "" }){
                                     <p>{record.type === 'document' ? 'Document' : 'Study'}</p>
                                     <p>{formatDate(record.displayDate)}</p>
                                     <div className='patient-record-buttons'>
+                                    <button
+                                        className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
+                                        onClick={() => handleViewRecord(record)}
+                                        title={record.type === 'study' ? 'View study files' : 'View consultation details'}
+                                    >
+                                        <img src='/assets/glasses.svg' alt="View"/>
+                                    </button>
+                                    
+                                    {/* Botón de IA solo para consultas (documents) */}
+                                    {record.type === 'document' && (
                                         <button
-                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
-                                            onClick={() => handleViewRecord(record)}
-                                            title={record.type === 'study' ? 'View study files' : 'View consultation details'}
+                                            className='basic-button icon-button table-button'
+                                            onClick={() => handleAISummary(record.id)}
+                                            title='Generate AI Summary'
+                                            disabled={loadingAI[record.id]}
                                         >
-                                            <img src='/assets/glasses.svg' alt="View"/>
+                                            {loadingAI[record.id] ? (
+                                                <span style={{fontSize: '0.8em'}}>...</span>
+                                            ) : (
+                                                <img src='/assets/glasses.svg' alt="AI" style={{filter: 'hue-rotate(180deg)'}} />
+                                            )}
                                         </button>
-                                    </div>
+                                    )}
+                                </div>
                                 </React.Fragment>
                             ))
                         )}
@@ -370,6 +432,30 @@ function PatientRecord({ viewPoint = "" }){
                         {selectedRecord ? (
                             selectedRecord.type === 'document' ? (
                                 <>
+                                    {/* Mostrar resumen IA si existe */}
+                                    {aiSummaries[selectedRecord.id] && (
+                                        <div style={{
+                                            marginBottom: '1.5em',
+                                            padding: '1em',
+                                            backgroundColor: '#e3f2fd',
+                                            borderRadius: '8px',
+                                            borderLeft: '4px solid #2196f3'
+                                        }}>
+                                            <h3 style={{
+                                                margin: '0 0 0.5em 0',
+                                                color: '#1976d2',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.5em'
+                                            }}>
+                                                🤖 AI Summary
+                                            </h3>
+                                            <div style={{whiteSpace: 'pre-wrap', color: '#333', lineHeight: '1.6'}}>
+                                                {aiSummaries[selectedRecord.id]}
+                                            </div>
+                                        </div>
+                                    )}
+                                    
                                     <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
                                         <h2 style={{margin: '0', color: '#00897b'}}>
                                             Consultation - {formatDate(selectedRecord.date)}

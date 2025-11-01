@@ -24,6 +24,7 @@ def create_app():
     from app.routes.medical_notes import medical_notes_bp
     from app.routes.studies import studies_bp
     from app.routes.appointments import appointments_bp
+    from app.routes.ai_reports import ai_reports_bp  # ← NUEVO
     
     
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -32,6 +33,7 @@ def create_app():
     app.register_blueprint(medical_notes_bp, url_prefix='/api/medical-notes')
     app.register_blueprint(studies_bp, url_prefix='/api/studies')
     app.register_blueprint(appointments_bp, url_prefix='/api/appointments')
+    app.register_blueprint(ai_reports_bp, url_prefix='/api/ai')  # ← NUEVO
 
     
     return app
