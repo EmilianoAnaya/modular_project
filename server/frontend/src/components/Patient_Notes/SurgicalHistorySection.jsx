@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { usePatient } from '../../hooks/usePatient';
-import { getApiUrl } from '../../config/api';
-import API_CONFIG from '../../config/api';
-import WindowContainer from '../Window_Container/WindowContainer';
-import WindowConsultDefault from '../Patient_Consult/WindowConsultDefault';
-import BasicInput from '../Basic_Input/BasicInput';
-import Section from '../Section/Section';
-import Heading from '../Heading/Heading';
-import './SurgicalHistorySection.css';
+import React, { useState, useEffect, useRef } from 'react'
+import { usePatient } from '../../hooks/usePatient'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
+import WindowContainer from '../Window_Container/WindowContainer'
+import WindowConsultDefault from '../Patient_Consult/WindowConsultDefault'
+import BasicInput from '../Basic_Input/BasicInput'
+import Section from '../Section/Section'
+import Heading from '../Heading/Heading'
+import './SurgicalHistorySection.css'
 
 function SurgicalHistorySection({ addTrigger = true }) {
     const { patientData } = usePatient();
@@ -22,7 +22,7 @@ function SurgicalHistorySection({ addTrigger = true }) {
         notes: ''
     });
 
-    const [sortOrder, setSortOrder] = useState('desc'); // 'asc' o 'desc'
+    const [sortOrder, setSortOrder] = useState('desc'); 
     const [showSortMenu, setShowSortMenu] = useState(false);
     const sortMenuRef = useRef(null);
 
@@ -106,7 +106,7 @@ function SurgicalHistorySection({ addTrigger = true }) {
 
     const handleDelete = async () => {
         if (selectedIndex === null) return;
-        if (!confirm('¿Estás seguro de eliminar esta cirugía?')) return;
+        if (!confirm('Are you sure you want to delete this surgery?')) return;
         try {
             const id = surgeries[selectedIndex].id;
             const response = await fetch(getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_NOTES}/${id}`), { method: 'DELETE' });

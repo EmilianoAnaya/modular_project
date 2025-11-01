@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { usePatient } from '../../hooks/usePatient';
-import { getApiUrl } from '../../config/api';
-import API_CONFIG from '../../config/api';
-import WindowContainer from '../Window_Container/WindowContainer';
-import WindowConsultDefault from '../Patient_Consult/WindowConsultDefault';
-import BasicInput from '../Basic_Input/BasicInput';
-import Section from '../Section/Section';
-import Heading from '../Heading/Heading';
-import './FamilyHistorySection.css';
+import React, { useState, useEffect, useRef } from 'react'
+import { usePatient } from '../../hooks/usePatient'
+import { getApiUrl } from '../../config/api'
+import API_CONFIG from '../../config/api'
+import WindowContainer from '../Window_Container/WindowContainer'
+import WindowConsultDefault from '../Patient_Consult/WindowConsultDefault'
+import BasicInput from '../Basic_Input/BasicInput'
+import Section from '../Section/Section'
+import Heading from '../Heading/Heading'
+import './FamilyHistorySection.css'
 
 function FamilyHistorySection({ addTrigger = true }) {
     const { patientData } = usePatient();
@@ -45,7 +45,7 @@ function FamilyHistorySection({ addTrigger = true }) {
                 getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_NOTES_BY_PATIENT}/${patientData.patient_id}/Family%20History`)
             );
             const data = await response.json();
-            if (response.ok) setFamilyRecords(data.notes);
+        if (response.ok) setFamilyRecords(data.notes);
         } catch (error) {
             console.error('Error fetching family history:', error);
         } finally {
@@ -98,30 +98,39 @@ function FamilyHistorySection({ addTrigger = true }) {
             console.error(error);
             alert('Error connecting to server');
         }
-    };
+    }
 
-    const handleSaveExit = async () => { await handleSaveContinue(); setShowModal(false); };
+    const handleSaveExit = async () => { 
+        await handleSaveContinue()
+        setShowModal(false)
+    }
 
     const handleDelete = async () => {
         if (selectedIndex === null) return;
-        if (!confirm('Are you sure you want to delete this record?')) return;
+        if (!confirm('Are you sure you want to delete this record?')) return
         try {
             const id = familyRecords[selectedIndex].id;
-            const response = await fetch(getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_NOTES}/${id}`), { method: 'DELETE' });
-            if (response.ok) { await loadFamilyHistory(); handleNewRecord(); }
+            const response = await fetch(getApiUrl(`${API_CONFIG.ENDPOINTS.MEDICAL_NOTES}/${id}`), { method: 'DELETE' })
+            if (response.ok) { await loadFamilyHistory(); handleNewRecord() }
         } catch (error) {
             console.error(error);
-            alert('Error connecting to server');
+            alert('Error connecting to server')
         }
-    };
+    }
 
     const sortedRecords = [...familyRecords].sort((a, b) => {
-        const dateA = new Date(a.note_data.date || '1900-01-01');
-        const dateB = new Date(b.note_data.date || '1900-01-01');
-        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-    });
+        const dateA = new Date(a.note_data.date || '1900-01-01')
+        const dateB = new Date(b.note_data.date || '1900-01-01')
+        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA
+    })
 
-    if (loading) return <div className='family-records-container'><p>Loading family history...</p></div>;
+    if (loading) {
+        return (
+            <div className='family-records-container'>
+                <p>Loading family history...</p>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -149,10 +158,16 @@ function FamilyHistorySection({ addTrigger = true }) {
                                         <div className='family-record-buttons'>
                                             <button
                                                 className='basic-button table-button view-button'
-                                                onClick={() => { handleSelectRecord(index); setShowModal(true); }}
+                                                onClick={() => { 
+                                                    handleSelectRecord(index)
+                                                    setShowModal(true)
+                                                }}
                                                 title='View details'
                                             >
-                                                <img src="/assets/glasses.svg" alt="View record" className='view-icon' />
+                                                <img 
+                                                    src="/assets/glasses.svg" 
+                                                    alt="View record" 
+                                                    className='view-icon' />
                                             </button>
                                         </div>
                                     </React.Fragment>
@@ -162,7 +177,13 @@ function FamilyHistorySection({ addTrigger = true }) {
 
                         { addTrigger && (
                           <div className="add-family-container">
-                            <button className="add-family-btn" onClick={() => { handleNewRecord(); setShowModal(true); }}>
+                            <button 
+                                className="add-family-btn" 
+                                onClick={() => { 
+                                    handleNewRecord()
+                                    setShowModal(true) 
+                                }}
+                            >
                                 <img src="/assets/plus.svg" alt="Add" className="add-icon" />
                                 Add Family Record
                             </button>
@@ -172,11 +193,17 @@ function FamilyHistorySection({ addTrigger = true }) {
                 </div>
 
                 <div className="family-illustration-container">
-                    <img src="/assets/family-history.jpg" alt="Family illustration" className="family-illustration" />
+                    <img 
+                        src="/assets/family-history.jpg" 
+                        alt="Family illustration" 
+                        className="family-illustration" 
+                    />
                 </div>
             </div>
 
-            <WindowContainer windowTitle="Family History" showWindow={[showModal, setShowModal]}
+            <WindowContainer 
+                windowTitle="Family History" 
+                showWindow={[showModal, setShowModal]}
                 styleContainer='window-notes-section'
             >
                 <WindowConsultDefault
