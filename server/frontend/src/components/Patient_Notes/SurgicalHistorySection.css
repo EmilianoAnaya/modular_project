@@ -108,7 +108,6 @@
 .surgery-illustration:hover {
     transform: scale(1.05);
     opacity: 1;
-    opacity: 1; 
     transition: none;
 }
 
