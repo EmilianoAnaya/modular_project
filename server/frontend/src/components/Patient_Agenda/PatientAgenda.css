@@ -1,10 +1,10 @@
 
 /* Window */
 .appointment-window{
-    top: 40%;
+    top: 48%;
     left: 50%;
     width: 80%;
-    height: 65%;
+    height: 80%;
 }
 
 /* Containers */
@@ -144,7 +144,7 @@
 /* Responsive */
 @media screen and (max-width : 100em){
     .appointment-window{
-        top: 35%;
+        top: 45%;
         width: 90%;
     }
 

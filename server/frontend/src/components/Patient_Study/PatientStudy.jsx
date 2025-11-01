@@ -121,7 +121,7 @@ function PatientStudy(){
 
             if (response.ok) {
                 alert(`Study saved successfully!\n${data.files.length} files uploaded`)
-                
+
                 // Limpiar formulario
                 setSelectedStudyType('')
                 setAttachedFiles([])
@@ -143,8 +143,8 @@ function PatientStudy(){
                 <div className='studies-list-cont'>
                     <div className='studies-list'>
                         <div className='studies-list-search'>
-                            <input 
-                                placeholder='Search for Study...' 
+                            <input
+                                placeholder='Search for Study...'
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -154,7 +154,7 @@ function PatientStudy(){
                             <ul>
                                 {filteredStudyTypes.map((type, index) => (
                                     <li key={index}>
-                                        <div 
+                                        <div
                                             className='study-item'
                                             onClick={() => handleSelectStudyType(type)}
                                             style={{
@@ -163,7 +163,7 @@ function PatientStudy(){
                                             }}
                                         >
                                             <span>{type}</span>
-                                            <button>Add</button>
+                                            {/* <button>Add</button>*/}
                                         </div>
                                     </li>
                                 ))}
@@ -186,7 +186,7 @@ function PatientStudy(){
                     <div className='selected-studies'>
                         {/* Mostrar cards con archivos adjuntos */}
                         {attachedFiles.map((file, index) => (
-                            <StudyCard 
+                            <StudyCard
                                 key={`file-${index}`}
                                 file={file}
                                 onFileRemove={() => handleFileRemove(index)}
@@ -195,10 +195,10 @@ function PatientStudy(){
                                 selectedStudyType={selectedStudyType}
                             />
                         ))}
-                        
+
                         {/* Mostrar card vacía solo si no se alcanzó el límite */}
                         {attachedFiles.length < 5 && (
-                            <StudyCard 
+                            <StudyCard
                                 key="empty-card"
                                 onFileAttach={handleFileAttach}
                                 hasFile={false}
@@ -207,10 +207,10 @@ function PatientStudy(){
                         )}
                     </div>
                     <div className='selected-studies-footer'>
-                        <button 
+                        <button
                             className='basic-button'
                             onClick={handleSaveStudies}
-                            disabled={isSaving || !selectedStudyType || attachedFiles.length === 0} 
+                            disabled={isSaving || !selectedStudyType || attachedFiles.length === 0}
                             style={{
                                 opacity: (isSaving || !selectedStudyType || attachedFiles.length === 0) ? 0.6 : 1,
                                 cursor: (isSaving || !selectedStudyType || attachedFiles.length === 0) ? 'not-allowed' : 'pointer'
