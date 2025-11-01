@@ -6,16 +6,11 @@ import { usePatient } from '../../hooks/usePatient'
 import { getApiUrl } from '../../config/api'
 import API_CONFIG from '../../config/api'
 
-function PatientDashboardHome() {
+function PatientDashboardHome({ setWindowVisibility, selectedDate, setSelectedDate }) {
     const { patientData } = usePatient()
     const [token, setToken] = useState(null)
     const [tokenVisible, setTokenVisible] = useState(false)
     const [isGenerating, setIsGenerating] = useState(false)
-    const [selectedDate, setSelectedDate] = useState({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-        day: null
-    })
 
     useEffect(() => {
         if (patientData?.token) {
@@ -116,7 +111,7 @@ function PatientDashboardHome() {
                     <PatientDashboardCalendar
                         selectedDate={selectedDate}
                         setSelectedDate={setSelectedDate}
-                        setWindowVisibility={() => {}}
+                        setWindowVisibility={setWindowVisibility}
                     />
                 </div>
             </div>
