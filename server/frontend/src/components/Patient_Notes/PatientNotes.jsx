@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PatientNav from "../Patient_Navbar/PatientNav";
 import AllergiesSection from "./AllergiesSection";
 import SurgicalHistorySection from "./SurgicalHistorySection"; 
+import HabitsLifestyleSection from './HabitsLifestyleSection';
 import "./PatientNotes.css"
 
 function PatientNotes() {
@@ -9,7 +10,6 @@ function PatientNotes() {
 
   // Notas simuladas para secciones que todavía no tienen componentes completos
   const [notes, setNotes] = useState({
-    "Habits and Lifestyle": "",
     "Family History": "",
     "Chronic Diseases": "",
   })
@@ -32,7 +32,8 @@ function PatientNotes() {
         return <AllergiesSection />
       case 'Surgical History':
         return <SurgicalHistorySection />
-      case 'Habits and Lifestyle':
+      case 'Habits':
+        return <HabitsLifestyleSection />
       case 'Family History':
       case 'Chronic Diseases':
         // Mantener notas simples para estas secciones
