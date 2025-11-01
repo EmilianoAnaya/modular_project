@@ -29,9 +29,9 @@ function PatientNotes({ viewPoint = "" }) {
   const renderSectionContent = () => {
     switch(activeSection) {
       case 'Allergies':
-        return <AllergiesSection />
+        return <AllergiesSection addTrigger={viewPoint === ""} />
       case 'Surgical History':
-        return <SurgicalHistorySection />
+        return <SurgicalHistorySection addTrigger={viewPoint === ""} />
       case 'Habits and Lifestyle':
       case 'Family History':
       case 'Chronic Diseases':

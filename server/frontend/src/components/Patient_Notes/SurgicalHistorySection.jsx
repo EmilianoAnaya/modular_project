@@ -9,7 +9,7 @@ import Section from '../Section/Section';
 import Heading from '../Heading/Heading';
 import './SurgicalHistorySection.css';
 
-function SurgicalHistorySection() {
+function SurgicalHistorySection({ addTrigger = true }) {
     const { patientData } = usePatient();
     const [surgeries, setSurgeries] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -169,7 +169,7 @@ function SurgicalHistorySection() {
 
                             {sortedSurgeries.length === 0 ? (
                                 <p style={{ gridColumn: '1 / -1', padding: '1em', fontStyle: 'italic', fontSize: '.9em', color: '#666' }}>
-                                    No surgeries recorded. Click "Add" to create one.
+                                    No surgeries recorded. { addTrigger && ("Click 'Add' to create one.")}
                                 </p>
                             ) : (
                                 sortedSurgeries.map((surgery, index) => (
@@ -190,12 +190,14 @@ function SurgicalHistorySection() {
                             )}
                         </div>
 
-                        <div className="add-surgery-container">
+                        { addTrigger && (
+                          <div className="add-surgery-container">
                             <button className="add-allergy-btn" onClick={() => { handleNew(); setShowModal(true); }}>
                                 <img src="/assets/plus.svg" alt="Add" className="add-icon" />
                                 Add Surgery
                             </button>
-                        </div>
+                          </div>
+                        ) }
                     </div>
                 </div>
 

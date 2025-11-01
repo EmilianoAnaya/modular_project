@@ -9,7 +9,7 @@ import Section from '../Section/Section'
 import Heading from '../Heading/Heading'
 import './AllergiesSection.css'
 
-function AllergiesSection() {
+function AllergiesSection({ addTrigger = true }) {
     const { patientData } = usePatient()
     const [allergies, setAllergies] = useState([])
     const [loading, setLoading] = useState(true)
@@ -178,7 +178,7 @@ function AllergiesSection() {
 
                             {allergies.length === 0 ? (
                                 <p style={{gridColumn: '1 / -1', padding: '1em', fontStyle: 'italic', fontSize: '.9em', color: '#666'}}>
-                                    No allergies registered. Click "Add" to create one.
+                                    No allergies registered. { addTrigger && ("Click 'Add' to create one.")}
                                 </p>
                             ) : (
                                 allergies.map((allergy, index) => (
@@ -205,18 +205,20 @@ function AllergiesSection() {
                             )}
                         </div>
 
-                        <div className="add-allergy-container">
-                            <button
-                                className="add-allergy-btn"
-                                onClick={() => {
-                                    handleNew()
-                                    setShowModal(true)
-                                }}
-                            >
-                                <img src="/assets/plus.svg" alt="Add" className="add-icon" />
-                                Add Allergy
-                            </button>
-                        </div>
+                        { addTrigger && (
+                          <div className="add-allergy-container">
+                              <button
+                                  className="add-allergy-btn"
+                                  onClick={() => {
+                                      handleNew()
+                                      setShowModal(true)
+                                  }}
+                              >
+                                  <img src="/assets/plus.svg" alt="Add" className="add-icon" />
+                                  Add Allergy
+                              </button>
+                          </div>
+                        ) }
                     </div>
                 </div>
                 <div className="allergies-illustration-container">

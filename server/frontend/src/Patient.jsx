@@ -20,8 +20,7 @@ function Patient(){
                 <PatientSidebar />
                 <div className="patient-content">
                     <Routes>
-                        <Route path="/" element={<PatientDashboardHome />} />  {/* ← CAMBIAR */}
-                        <Route path="Agenda" element={<PatientAgenda />} />    {/* ← MOVER */}
+                        <Route path="/" element={<PatientAgenda />} />
                         <Route path="Notes" element={<PatientNotes />} />
                         <Route path="Record" element={<PatientRecord />} />
                         <Route path="Tendencies" element={<PatientTendencies />} />
