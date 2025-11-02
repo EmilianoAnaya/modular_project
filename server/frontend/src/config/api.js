@@ -33,7 +33,11 @@ const API_CONFIG = {
         APPOINTMENTS_BY_PATIENT: '/api/appointments/patient',
         CANCEL_APPOINTMENT: '/api/appointments',
         SEARCH_DOCTORS: '/api/appointments/doctors/search',
-        AVAILABLE_HOURS: '/api/appointments/available-hours'
+        AVAILABLE_HOURS: '/api/appointments/available-hours',
+
+        // AI Reports
+        AI_GENERATE_SUMMARY: '/api/ai/generate-summary/record',
+        AI_GET_SUMMARY: '/api/ai/summary/record'
     }
 };
 
