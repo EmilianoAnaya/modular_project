@@ -8,7 +8,7 @@ ai_reports_bp = Blueprint('ai_reports', __name__)
 
 # Configuración de Ollama - MODELO LIGERO
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
-OLLAMA_MODEL = "llama3.2:1b"
+OLLAMA_MODEL = "phi3"
 
 def call_ollama(prompt):
     """Llamar a Ollama API local"""
@@ -18,9 +18,9 @@ def call_ollama(prompt):
             "prompt": prompt,
             "stream": False,
             "options": {
-                "temperature": 0.3,
-                "top_p": 0.8,
-                "num_predict": 250
+                "temperature": 0.1,  # Muy determinístico
+                "top_p": 0.7,
+                "num_predict": 200   # Más corto
             }
         }
         
@@ -35,23 +35,23 @@ def call_ollama(prompt):
         raise Exception(f"Error connecting to Ollama: {str(e)}")
 
 def build_consultation_prompt(record_data):
-    """Construir prompt para documentar/resumir UNA consulta específica"""
+    """Construir prompt técnico para extraer información estructurada"""
     
     patient_name = f"{record_data['first_name']} {record_data['last_name']}"
     gender = record_data['gender']
     consult_date = record_data['date']
     
-    # Iniciar con contexto claro: estamos DOCUMENTANDO, no diagnosticando
-    prompt = f"""Actúa como asistente de resumenes. Tu tarea es RESUMIR la información de la información presentes sin importar el contenido.
+    # Prompt técnico/administrativo - NO clínico
+    prompt = f"""Tarea: Extraer y organizar datos de registro médico electrónico.
 
-INFORMACIÓN DE LA CONSULTA:
-Paciente: {patient_name} ({gender})
-Fecha: {consult_date}
+REGISTRO MÉDICO ELECTRÓNICO:
+ID Paciente: {patient_name} ({gender})
+Fecha registro: {consult_date}
 
-DATOS REGISTRADOS EN LA CONSULTA:
+DATOS DEL REGISTRO:
 """
 
-    # Agregar datos de la consulta
+    # Extraer datos estructurados
     problems_list = []
     medicines_list = []
     notes_text = ""
@@ -60,72 +60,55 @@ DATOS REGISTRADOS EN LA CONSULTA:
         try:
             notes_data = json.loads(record_data['full_notes'])
             
-            # Problemas/Diagnósticos
+            # Problemas
             if 'problems' in notes_data and notes_data['problems']:
                 for problem in notes_data['problems'][:5]:
                     if isinstance(problem, dict):
                         problem_name = problem.get('problem_name', '')
                         problem_desc = problem.get('problem_description', '')
                         if problem_name:
-                            if problem_desc:
-                                problems_list.append(f"{problem_name} - {problem_desc[:80]}")
-                            else:
-                                problems_list.append(problem_name)
+                            problems_list.append(f"{problem_name}: {problem_desc[:60]}")
             
-            # Medicamentos prescritos
+            # Medicamentos
             if 'medicines' in notes_data and notes_data['medicines']:
                 for medicine in notes_data['medicines'][:5]:
                     if isinstance(medicine, dict):
                         med_name = medicine.get('medicine', '')
                         dosage = medicine.get('dosage', '')
-                        frequency = medicine.get('frequency', '')
                         if med_name:
-                            med_info = med_name
-                            if dosage:
-                                med_info += f" {dosage}"
-                            if frequency:
-                                med_info += f", {frequency}"
-                            medicines_list.append(med_info)
+                            medicines_list.append(f"{med_name} {dosage}")
             
-            # Notas adicionales
+            # Notas
             if 'notes' in notes_data and notes_data['notes']:
-                notes_text = notes_data['notes'][:250]
+                notes_text = notes_data['notes'][:200]
                 
         except json.JSONDecodeError:
-            notes_text = record_data['full_notes'][:250]
+            notes_text = record_data['full_notes'][:200]
     
-    # Construir el prompt con los datos reales
+    # Construir con datos reales
     if problems_list:
-        prompt += "\nProblemas documentados:\n"
+        prompt += "\nCondiciones registradas:\n"
         for i, problem in enumerate(problems_list, 1):
             prompt += f"{i}. {problem}\n"
     
     if medicines_list:
-        prompt += "\nMedicamentos prescritos:\n"
+        prompt += "\nMedicamentos registrados:\n"
         for i, med in enumerate(medicines_list, 1):
             prompt += f"{i}. {med}\n"
     
     if notes_text:
-        prompt += f"\nNotas del doctor:\n{notes_text}\n"
+        prompt += f"\nObservaciones: {notes_text}\n"
     
-    if record_data['summary']:
-        prompt += f"\nResumen previo: {record_data['summary'][:150]}\n"
-    
-    # Instrucción clara: REFORMULAR lo que ya existe, no crear nuevo contenido
+    # Instrucción clara: REFORMULAR datos existentes
     prompt += """
-TAREA: Reorganiza la información anterior en un formato estructurado y claro. NO agregues diagnósticos nuevos, solo RESUME lo que está documentado arriba.
+INSTRUCCIÓN: Reformula la información anterior en formato estructurado. Usa EXACTAMENTE estas secciones:
 
-Formato requerido (máximo 500 palabras):
+Condiciones: [lista las condiciones registradas]
+Medicación: [lista los medicamentos]
+Observaciones: [resume las observaciones]
+Indicaciones: [menciona seguimiento si hay]
 
-**Diagnóstico documentado:** [resume los problemas listados sin importar el nombre]
-
-**Tratamiento prescrito:** [lista los medicamentos si hay sin importar el nombre]
-
-**Observaciones:** [resume las notas del doctor sin importar el nombre]
-
-**Indicaciones:** [menciona seguimiento si se indica sin importar el nombre]
-
-IMPORTANTE: Solo organiza la información proporcionada, no agregues información nueva ni recomendaciones adicionales y si no puedes hacerlo, explica la razón."""
+Máximo 80 palabras. Solo reformula, no agregues información nueva."""
 
     return prompt
 
