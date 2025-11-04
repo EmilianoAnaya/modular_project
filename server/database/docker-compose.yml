@@ -11,6 +11,8 @@ services:
             - mariadb_data:/var/lib/mysql
         ports:
             - "3306:3306"
+        networks:
+            - ollama_net
 
     phpmyadmin:
         image: phpmyadmin:5.2.2-apache
@@ -20,6 +22,26 @@ services:
             MYSQL_ROOT_PASSWORD: rootpass
         ports:
             - "8080:80"
+        networks:
+            - ollama_net
+    
+    ollama:
+        image: ollama/ollama:latest
+        container_name: Ollama
+        ports:
+          - "11434:11434"
+        volumes:
+          - ollama_models:/root/.ollama
+        restart: unless-stopped
+        networks:
+          - ollama_net
+          
+        entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull phi3 && tail -f /dev/null"]
 
 volumes:
     mariadb_data:
+    ollama_models:
+
+networks:
+  ollama_net:
+    driver: bridge

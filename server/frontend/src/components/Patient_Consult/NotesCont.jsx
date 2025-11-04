@@ -22,7 +22,7 @@ function NotesCont({ notesData, setNotesData }){
                     </div>
 
                     <div className='notes-input-cont' onBlur={() => setExpanded(false)} onFocus={() => setExpanded(true)}>
-                        <textarea 
+                        <textarea
                             value={notesData || ''}
                             onChange={(e) => setNotesData(e.target.value)}
                             placeholder="Write additional notes here..."

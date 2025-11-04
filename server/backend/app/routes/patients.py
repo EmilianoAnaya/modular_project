@@ -165,10 +165,16 @@ def get_patient_by_id(patient_id):
 
         with open(patients_sql_path, 'r') as file:
             queries = file.read().split('\n\n')
-            # Query #4: Get patient by patient_id with user information
+            # Query #4: Get patient by patient_id with user information AND token
             get_patient_query = queries[3].split('\n')
             get_patient_query = [line for line in get_patient_query if not line.strip().startswith('--')]
             get_patient_query = '\n'.join(get_patient_query).strip()
+
+        # Modificar query para incluir token
+        get_patient_query = get_patient_query.replace(
+            "SELECT p.id as patient_id, p.user_id,",
+            "SELECT p.id as patient_id, p.user_id, p.token,"
+        )
 
         patient = db.execute_query(get_patient_query, (patient_id,), fetch_one=True)
 
@@ -187,6 +193,7 @@ def get_patient_by_id(patient_id):
             'patient': {
                 'patient_id': patient['patient_id'],
                 'user_id': patient['user_id'],
+                'token': patient['token'],  # ← AGREGAR ESTA LÍNEA
                 'first_name': patient['first_name'],
                 'last_name': patient['last_name'],
                 'full_name': f"{patient['first_name']} {patient['last_name']}",
@@ -202,4 +209,54 @@ def get_patient_by_id(patient_id):
 
     except Exception as e:
         print(f"Get patient error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@patients_bp.route('/<int:patient_id>/generate-token', methods=['POST'])
+def generate_new_token(patient_id):
+    """Generar nuevo token para un paciente"""
+    try:
+        from app.utils.token_generator import generate_patient_token
+        
+        # Generar nuevo token
+        new_token = generate_patient_token()
+        
+        # Actualizar en la base de datos
+        update_query = "UPDATE patients SET token = %s WHERE id = %s"
+        db.execute_query(update_query, (new_token, patient_id))
+        
+        return jsonify({
+            'message': 'Token generated successfully',
+            'token': new_token
+        }), 200
+        
+    except Exception as e:
+        print(f"Generate token error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Internal server error'}), 500
+    
+    
+@patients_bp.route('/', methods=['GET'])
+def get_patient_by_user_id():
+    """Obtener patient_id por user_id"""
+    try:
+        user_id = request.args.get('user_id')
+        
+        if not user_id:
+            return jsonify({'error': 'user_id is required'}), 400
+        
+        query = "SELECT id as patient_id, user_id, token FROM patients WHERE user_id = %s"
+        patient = db.execute_query(query, (user_id,), fetch_one=True)
+        
+        if not patient:
+            return jsonify({'error': 'Patient not found'}), 404
+        
+        return jsonify({
+            'message': 'Patient found',
+            'patient': dict(patient)
+        }), 200
+        
+    except Exception as e:
+        print(f"Get patient by user_id error: {e}")
         return jsonify({'error': 'Internal server error'}), 500

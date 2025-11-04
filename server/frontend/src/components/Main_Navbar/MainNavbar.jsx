@@ -3,7 +3,7 @@ import "./MainNavbar.css"
 import { useNavigate, useLocation } from 'react-router-dom'
 
 
-function MainNavbar() {
+function MainNavbar({ hideButtons = true }) {
     const navigate = useNavigate()
     
     const location = useLocation()
@@ -15,7 +15,7 @@ function MainNavbar() {
                 <div id="header-content">
                     <h1 id="header-logo" onClick={() => navigate(inDashboard ? '/Dashboard' : '/')}>MedTrackr</h1>
                     <div id="header-options">
-                        {!inDashboard && (
+                        {!hideButtons && (
                             <>
                             <p onClick={() => navigate('/Benefits')} className="header-text">Benefits</p>
                             <p onClick={() => navigate('/Functions')} className="header-text">Functions</p>

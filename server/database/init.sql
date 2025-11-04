@@ -50,7 +50,8 @@ CREATE TABLE `appointments` (
   `id` int(11) NOT NULL,
   `patient_id` int(11) DEFAULT NULL,
   `doctor_id` int(11) DEFAULT NULL,
-  `appointment_date` date NOT NULL,
+  `appointment_date` datetime NOT NULL,
+  `reason` text DEFAULT NULL,
   `status` enum('Completed','Pending','Canceled') DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -1,7 +1,7 @@
 import './PatientNav.css'
 
-function PatientNav({activeSection, setActiveSection}) {
-    
+function PatientNav({activeSection, setActiveSection, viewPoint = ""}) {
+
     const sections = [
         { id: 'Allergies', label: 'Allergies' },
         { id: 'Surgical History', label: 'Surgical History' },
@@ -16,7 +16,7 @@ function PatientNav({activeSection, setActiveSection}) {
         <div>
             <div id='patient-nav'>
                 {sections.map((section, index) => (
-                    <div key={section.id} className="patient-nav-item">
+                    <div key={section.id} className={`patient-nav-item ${viewPoint}`}>
                         <p
                             className={`patient-nav-text ${activeClass(section.id)}`}
                             onClick={() => setActiveSection(section.id)}

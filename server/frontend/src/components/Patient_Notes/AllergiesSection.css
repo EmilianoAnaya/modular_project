@@ -1,26 +1,54 @@
-/* Ajuste para el heading con botón */
 .allergies-heading-with-button {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 1em;
 }
 
 .add-allergy-btn {
-    margin-right: 1.5em;
-    padding: 0.6em 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 0.6em 1.4em;
+    background-color: #4fc3f7;
+    color: white;
+    border: none;
+    border-radius: 0.4em;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
 }
 
-/* Tabla de alergias con 3 columnas */
+.add-allergy-btn:hover {
+    background-color: #039be5;
+}
+
+.add-allergy-btn .add-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(1); 
+}
+
+.add-allergy-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-left: 0;
+    margin-left: 1em;
+}
+
 .allergies-records-table {
     display: grid;
     grid-template-columns: 30% 50% 20%;
     grid-template-rows: 5% repeat(auto-fill, 9%);
     background-color: white;
     box-sizing: border-box;
+    max-height: 420px;      
+    overflow-y: auto;      
+    border: 1px solid #ccc;
 }
 
-/* Headers */
 .allergies-records-table > p:nth-child(-n+3) {
     font-weight: bold;
     background-color: #e0e0e0;
@@ -29,11 +57,80 @@
     justify-content: center;
 }
 
-/* Celdas */
 .allergies-records-table p {
     font-family: var(--FONT-MULISH);
     text-align: center;
     border: 1px solid black;
     margin: 0;
     overflow: hidden;
+}
+
+.allergies-table-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.patient-records-item {
+    width: 100%;         
+    max-width: 100%;     
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.patient-records-container {
+    width: 100%;          
+    max-width: 100%;      
+    padding: 0;           
+    margin: 0;            
+    box-sizing: border-box;
+}
+
+.allergies-illustration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5em 0;
+}
+
+.allergies-illustration {
+    width: 70%;
+    max-width: 600px;
+    opacity: 0.8;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.allergies-illustration:hover {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+.view-button {
+    background-color: #4fc3f7;
+    border: none;
+    padding: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.view-button:hover {
+    transform: scale(1.05);
+    background-color: #039be5;
+}
+
+.view-icon {
+    width: 22px;
+    height: 22px;
+    filter: invert(30%) sepia(15%) saturate(600%) hue-rotate(180deg);
+    transition: filter 0.2s ease;
+}
+
+.view-button:hover .view-icon {
+    filter: invert(0%) sepia(100%) saturate(1000%) hue-rotate(200deg);
 }

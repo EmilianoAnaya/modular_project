@@ -9,7 +9,7 @@ import Section from '../Section/Section'
 import Heading from '../Heading/Heading'
 import './AllergiesSection.css'
 
-function AllergiesSection() {
+function AllergiesSection({ addTrigger = true }) {
     const { patientData } = usePatient()
     const [allergies, setAllergies] = useState([])
     const [loading, setLoading] = useState(true)
@@ -169,49 +169,69 @@ function AllergiesSection() {
                 <div className='patient-records-item'>
                     <div className="allergies-heading-with-button">
                         <Heading headingText={"Allergies"} />
-                        <button
-                            className="basic-button add-allergy-btn"
-                            onClick={() => {
-                                handleNew()
-                                setShowModal(true)
-                            }}
-                        >
-                            + Add
-                        </button>
                     </div>
-                    <div className='patient-record-sub-cont allergies-records-table'>
-                        <p>Allergen</p>
-                        <p>Description</p>
-                        <p>Actions</p>
+                    <div className="allergies-table-wrapper">
+                        <div className='patient-record-sub-cont allergies-records-table'>
+                            <p>Allergen</p>
+                            <p>Description</p>
+                            <p>Actions</p>
 
-                        {allergies.length === 0 ? (
-                            <p style={{gridColumn: '1 / -1', padding: '2em', fontStyle: 'italic', color: '#666'}}>
-                                No allergies registered. Click "Add" to create one.
-                            </p>
-                        ) : (
-                            allergies.map((allergy, index) => (
-                                <React.Fragment key={allergy.id}>
-                                    <p>{allergy.note_data.allergen}</p>
-                                    <p>{allergy.note_data.reaction || 'No description'}</p>
-                                    <div className='patient-record-buttons'>
-                                        <button
-                                            className='basic-button table-button'
-                                            onClick={() => {
-                                                handleSelectAllergy(index)
-                                                setShowModal(true)
-                                            }}
-                                        >
-                                            View
-                                        </button>
-                                    </div>
-                                </React.Fragment>
-                            ))
-                        )}
+                            {allergies.length === 0 ? (
+                                <p style={{gridColumn: '1 / -1', padding: '1em', fontStyle: 'italic', fontSize: '.9em', color: '#666'}}>
+                                    No allergies registered. { addTrigger && ("Click 'Add' to create one.")}
+                                </p>
+                            ) : (
+                                allergies.map((allergy, index) => (
+                                    <React.Fragment key={allergy.id}>
+                                        <p>{allergy.note_data.allergen}</p>
+                                        <p>{allergy.note_data.reaction || 'No description'}</p>
+                                        <div className='patient-record-buttons'>
+                                            <button
+                                                className='basic-button table-button view-button'
+                                                onClick={() => {
+                                                    handleSelectAllergy(index)
+                                                    setShowModal(true)
+                                                }}
+                                                title='View details'
+                                            >
+                                                <img
+                                                    src="/assets/glasses.svg"
+                                                    alt="View allergy"
+                                                    className='view-icon'/>
+                                            </button>
+                                        </div>
+                                    </React.Fragment>
+                                ))
+                            )}
+                        </div>
+
+                        { addTrigger && (
+                          <div className="add-allergy-container">
+                              <button
+                                  className="add-allergy-btn"
+                                  onClick={() => {
+                                      handleNew()
+                                      setShowModal(true)
+                                  }}
+                              >
+                                  <img src="/assets/plus.svg" alt="Add" className="add-icon" />
+                                  Add Allergy
+                              </button>
+                          </div>
+                        ) }
                     </div>
+                </div>
+                <div className="allergies-illustration-container">
+                    <img
+                        src="/assets/allergies.jpg"
+                        alt="Allergies illustration"
+                        className="allergies-illustration"
+                    />
                 </div>
             </div>
 
-            <WindowContainer windowTitle={"Allergy"} showWindow={[showModal, setShowModal]}>
+            <WindowContainer windowTitle={"Allergy"} showWindow={[showModal, setShowModal]}
+                styleContainer='window-notes-section'>
                 <WindowConsultDefault
                     title_list='Allergens List'
                     items_list={allergies.map(a => a.note_data.allergen)}

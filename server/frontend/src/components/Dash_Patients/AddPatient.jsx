@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './AddPatient.css'
+import BasicSelect from '../BasicSelect/BasicSelect'
 import BasicInput from '../Basic_Input/BasicInput'
 import { getApiUrl } from '../../config/api'
 import API_CONFIG from '../../config/api'
@@ -17,7 +18,7 @@ function AddPatient(){
         e.preventDefault()
 
         try {
-            if (!firstName.trim() || !lastName.trim() || !gender.trim() ||
+            if (!firstName.trim() || !lastName.trim() || gender == "- - - - -" ||
                 !dateOfBirth.trim() || !email.trim() || !city.trim() || !country.trim()) {
                 alert('All fields are required and cannot be empty')
                 return
@@ -56,6 +57,7 @@ function AddPatient(){
                 setEmail('')
                 setCity('')
                 setCountry('')
+                alert("For this new Patient to log into its account, it must enter using this password: 'temp_patient_password'")
             } else {
                 alert('Failed to register patient: ' + data.error)
             }
@@ -69,7 +71,7 @@ function AddPatient(){
       <>
         <div className='basic-container add-patient-cont'>
             <form onSubmit={handleSavePatient}>
-              <div className='input-container'>
+              <div className='input-container-add-patient'>
                 <BasicInput
                     label={"First Name"}
                     value={firstName}
@@ -80,10 +82,11 @@ function AddPatient(){
                     value={lastName}
                     onChange={setLastName}
                 />
-                <BasicInput
+                <BasicSelect
                     label={"Gender"}
+                    options={["Male","Female","Other"]}
                     value={gender}
-                    onChange={setGender}
+                    onChange={(e) => setGender(e.target.value)}
                 />
                 <BasicInput
                     label={"Date of Birth"}

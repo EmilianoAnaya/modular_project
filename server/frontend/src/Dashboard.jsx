@@ -203,7 +203,7 @@ function Dashboard() {
 
     return (
         <>
-            <MainNavbar/>
+            <MainNavbar />
             <div className="main-container">
                 <DashboardNav />
                 <div id="dashboard-content" className={isProfilePage ? 'dash-no-padding' : ''}>

@@ -5,7 +5,7 @@ import { usePatient } from '../../hooks/usePatient'
 import { getApiUrl } from '../../config/api'
 import API_CONFIG from '../../config/api'
 
-function PatientRecord(){
+function PatientRecord({ viewPoint = "" }){
     const { patientData } = usePatient()
     const [records, setRecords] = useState([])
     const [studies, setStudies] = useState([])
@@ -20,6 +20,9 @@ function PatientRecord(){
     const dropdownRef = useRef(null)
     const [dateDropdownOpen, setDateDropdownOpen] = useState(false);
     const dateDropdownRef = useRef(null);
+    const [aiSummaries, setAiSummaries] = useState({}) // Almacenar resúmenes por record_id
+    const [loadingAI, setLoadingAI] = useState({})
+    const [viewMode, setViewMode] = useState('consultation') // 'consultation' o 'ai'
 
 
     useEffect(() => {
@@ -44,6 +47,57 @@ function PatientRecord(){
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
+
+    const handleAISummary = async (record) => {
+        const recordId = record.id
+
+        // Seleccionar este record y cambiar a modo IA
+        setSelectedRecord(record)
+        setViewMode('ai')
+
+        // Si ya está cargando, no hacer nada
+        if (loadingAI[recordId]) return
+
+        // Si ya tenemos el resumen, no hacer nada (solo mostrar)
+        if (aiSummaries[recordId]) return
+
+        try {
+            setLoadingAI(prev => ({ ...prev, [recordId]: true }))
+
+            // Primero intentar obtener resumen existente
+            const getResponse = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.AI_GET_SUMMARY}/${recordId}`)
+            )
+            const getData = await getResponse.json()
+
+            if (getData.summary) {
+                // Ya existe, usarlo
+                setAiSummaries(prev => ({ ...prev, [recordId]: getData.summary }))
+                setLoadingAI(prev => ({ ...prev, [recordId]: false }))
+                return
+            }
+
+            // No existe, generar nuevo
+            const generateResponse = await fetch(
+                getApiUrl(`${API_CONFIG.ENDPOINTS.AI_GENERATE_SUMMARY}/${recordId}`),
+                { method: 'POST' }
+            )
+
+            if (!generateResponse.ok) {
+                throw new Error('Failed to generate summary')
+            }
+
+            const generateData = await generateResponse.json()
+
+            setAiSummaries(prev => ({ ...prev, [recordId]: generateData.summary }))
+
+        } catch (error) {
+            console.error('Error with AI summary:', error)
+            alert('Error generating AI summary. Please try again.')
+        } finally {
+            setLoadingAI(prev => ({ ...prev, [recordId]: false }))
+        }
+    }
 
     const loadPatientData = async () => {
         try {
@@ -96,7 +150,7 @@ function PatientRecord(){
             combined = [...combined, ...studiesRecords]
         }
 
-        // Filtrar por fecha 
+        // Filtrar por fecha
         if (dateFilter) {
             combined = combined.filter(record => {
                 const recordDate = new Date(record.displayDate).toISOString().split('T')[0]
@@ -130,8 +184,10 @@ function PatientRecord(){
             // Mostrar modal con archivos
             setSelectedStudy(record)
             setShowFilesModal(true)
+        } else {
+            setSelectedRecord(record)
+            setViewMode('consultation') // ← AGREGAR ESTA LÍNEA
         }
-        setSelectedRecord(record)
     }
 
     const toggleCategoryDropdown = () => {
@@ -248,7 +304,7 @@ function PatientRecord(){
                                 <p className='study-file-name'>{file.file_name}</p>
                             </div>
                         </div>
-                        <button 
+                        <button
                             className='basic-button study-file-view-btn'
                             onClick={() => handleOpenFile(file.file_path)}
                         >
@@ -273,29 +329,29 @@ function PatientRecord(){
             <div className='patient-records-container'>
                 <div className='patient-records-item'>
                     <Heading headingText={"Record"} />
-                    <div className='patient-record-sub-cont records-table'>
+                    <div className={`patient-record-sub-cont records-table ${viewPoint}`}>
                         <p>Name</p>
                         <p>Made by</p>
-                        <p 
+                        <p
                             style={{cursor: 'pointer', userSelect: 'none', position: 'relative'}}
                             onClick={toggleCategoryDropdown}
                         >
                             {categoryFilter === 'all' ? 'Category' : categoryFilter === 'document' ? 'Document' : 'Study'}
                             {categoryDropdownOpen && (
                                 <div className="category-dropdown" ref={dropdownRef}>
-                                    <div 
+                                    <div
                                         onClick={() => { setCategoryFilter('all'); setCategoryDropdownOpen(false) }}
                                         className={categoryFilter === 'all' ? 'selected-option' : ''}
                                     >
                                         All
                                     </div>
-                                    <div 
+                                    <div
                                         onClick={() => { setCategoryFilter('document'); setCategoryDropdownOpen(false) }}
                                         className={categoryFilter === 'document' ? 'selected-option' : ''}
                                     >
                                         Document
                                     </div>
-                                    <div 
+                                    <div
                                         onClick={() => { setCategoryFilter('study'); setCategoryDropdownOpen(false) }}
                                         className={categoryFilter === 'study' ? 'selected-option' : ''}
                                     >
@@ -304,14 +360,14 @@ function PatientRecord(){
                                 </div>
                             )}
                         </p>
-                        <p 
+                        <p
                             style={{cursor: 'pointer', userSelect: 'none', position: 'relative'}}
                             onClick={() => setDateDropdownOpen(!dateDropdownOpen)}
                         >
                             {dateFilter ? formatDate(dateFilter) : 'Date Created'}
                             {dateDropdownOpen && (
                                 <div className="category-dropdown" ref={dateDropdownRef}>
-                                    <div 
+                                    <div
                                         onClick={() => { setDateFilter(''); setDateDropdownOpen(false) }}
                                         className={dateFilter === '' ? 'selected-option' : ''}
                                     >
@@ -320,8 +376,8 @@ function PatientRecord(){
                                     {combinedRecords.map(record => {
                                         const recordDate = new Date(record.displayDate).toISOString().split('T')[0];
                                         return (
-                                            <div 
-                                                key={record.id + recordDate} 
+                                            <div
+                                                key={record.id + recordDate}
                                                 onClick={() => { setDateFilter(recordDate); setDateDropdownOpen(false) }}
                                                 className={dateFilter === recordDate ? 'selected-option' : ''}
                                             >
@@ -342,7 +398,7 @@ function PatientRecord(){
                             combinedRecords.map((record, index) => (
                                 <React.Fragment key={`${record.type}-${record.id || index}`}>
                                     <p>
-                                        {record.type === 'document' 
+                                        {record.type === 'document'
                                             ? `Consult - ${formatDate(record.date)}`
                                             : `Study - ${record.study_type}`
                                         }
@@ -352,12 +408,32 @@ function PatientRecord(){
                                     <p>{formatDate(record.displayDate)}</p>
                                     <div className='patient-record-buttons'>
                                         <button
-                                            className={`basic-button icon-button table-button ${selectedRecord?.id === record.id ? 'active-record' : ''}`}
+                                            className={`basic-button icon-button table-button ${
+                                                selectedRecord?.id === record.id && viewMode === 'consultation' ? 'active-record' : ''
+                                            }`}
                                             onClick={() => handleViewRecord(record)}
                                             title={record.type === 'study' ? 'View study files' : 'View consultation details'}
                                         >
                                             <img src='/assets/glasses.svg' alt="View"/>
                                         </button>
+
+                                        {/* Botón de IA solo para consultas (documents) */}
+                                        {record.type === 'document' && (
+                                            <button
+                                                className={`basic-button icon-button table-button ${
+                                                    selectedRecord?.id === record.id && viewMode === 'ai' ? 'active-record' : ''
+                                                }`}
+                                                onClick={() => handleAISummary(record)}
+                                                title='AI Summary'
+                                                disabled={loadingAI[record.id]}
+                                            >
+                                                {loadingAI[record.id] ? (
+                                                    <span style={{fontSize: '0.8em'}}>...</span>
+                                                ) : (
+                                                    <img src='/assets/bot-message-square.svg' alt="AI" style={{filter: 'hue-rotate(180deg)'}} />
+                                                )}
+                                            </button>
+                                        )}
                                     </div>
                                 </React.Fragment>
                             ))
@@ -366,9 +442,46 @@ function PatientRecord(){
                 </div>
                 <div className='patient-records-item'>
                     <Heading headingText={"Summary"} />
-                    <div className='patient-record-sub-cont records-summary'>
+                    <div className={`patient-record-sub-cont records-summary ${viewPoint}`}>
                         {selectedRecord ? (
-                            selectedRecord.type === 'document' ? (
+                            viewMode === 'ai' ? (
+                                // ========== VISTA DE IA ==========
+                                <div style={{padding: '1em'}}>
+                                    <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #2196f3'}}>
+                                        <h2 style={{margin: '0', color: '#1976d2', display: 'flex', alignItems: 'center', gap: '0.5em'}}>
+                                            🤖 AI Summary - {selectedRecord.type === 'document' ? formatDate(selectedRecord.date) : selectedRecord.study_type}
+                                        </h2>
+                                    </div>
+
+                                    {loadingAI[selectedRecord.id] ? (
+                                        <div style={{
+                                            padding: '2em',
+                                            textAlign: 'center',
+                                            fontStyle: 'italic',
+                                            color: '#666'
+                                        }}>
+                                            <p>Generating AI summary...</p>
+                                            <p style={{fontSize: '0.9em'}}>This may take 1-3 minutes</p>
+                                        </div>
+                                    ) : aiSummaries[selectedRecord.id] ? (
+                                        <div style={{
+                                            padding: '1.5em',
+                                            backgroundColor: '#f5f5f5',
+                                            borderRadius: '8px',
+                                            whiteSpace: 'pre-wrap',
+                                            lineHeight: '1.8',
+                                            color: '#333'
+                                        }}>
+                                            {aiSummaries[selectedRecord.id]}
+                                        </div>
+                                    ) : (
+                                        <p style={{fontStyle: 'italic', color: '#666', padding: '1em'}}>
+                                            Click the AI button to generate a summary
+                                        </p>
+                                    )}
+                                </div>
+                            ) : selectedRecord.type === 'document' ? (
+                                // ========== VISTA DE CONSULTA (ORIGINAL) ==========
                                 <>
                                     <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
                                         <h2 style={{margin: '0', color: '#00897b'}}>
@@ -381,6 +494,7 @@ function PatientRecord(){
                                     {renderConsultationData(selectedRecord.consultation_data)}
                                 </>
                             ) : (
+                                // ========== VISTA DE ESTUDIO (ORIGINAL) ==========
                                 <>
                                     <div style={{marginBottom: '1em', paddingBottom: '0.5em', borderBottom: '2px solid #4fc3f7'}}>
                                         <h2 style={{margin: '0', color: '#00897b'}}>
