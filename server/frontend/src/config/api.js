@@ -37,7 +37,8 @@ const API_CONFIG = {
 
         // AI Reports
         AI_GENERATE_SUMMARY: '/api/ai/generate-summary/record',
-        AI_GET_SUMMARY: '/api/ai/summary/record'
+        AI_GET_SUMMARY: '/api/ai/summary/record',
+        AI_CHAT: '/api/ai/chat'
     }
 };
 

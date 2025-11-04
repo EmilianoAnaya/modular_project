@@ -6,7 +6,7 @@ from app.utils.database import db
 
 ai_reports_bp = Blueprint('ai_reports', __name__)
 
-# Configuración de Ollama - MODELO LIGERO
+# Configuración de Ollama
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "phi3"
 
@@ -18,9 +18,9 @@ def call_ollama(prompt):
             "prompt": prompt,
             "stream": False,
             "options": {
-                "temperature": 0.1,  # Muy determinístico
-                "top_p": 0.7,
-                "num_predict": 200   # Más corto
+                "temperature": 0.7,
+                "top_p": 0.9,
+                "num_predict": 300
             }
         }
         
@@ -41,7 +41,6 @@ def build_consultation_prompt(record_data):
     gender = record_data['gender']
     consult_date = record_data['date']
     
-    # Prompt técnico/administrativo - NO clínico
     prompt = f"""Tarea: Extraer y organizar datos de registro médico electrónico.
 
 REGISTRO MÉDICO ELECTRÓNICO:
@@ -51,7 +50,6 @@ Fecha registro: {consult_date}
 DATOS DEL REGISTRO:
 """
 
-    # Extraer datos estructurados
     problems_list = []
     medicines_list = []
     notes_text = ""
@@ -60,7 +58,6 @@ DATOS DEL REGISTRO:
         try:
             notes_data = json.loads(record_data['full_notes'])
             
-            # Problemas
             if 'problems' in notes_data and notes_data['problems']:
                 for problem in notes_data['problems'][:5]:
                     if isinstance(problem, dict):
@@ -69,7 +66,6 @@ DATOS DEL REGISTRO:
                         if problem_name:
                             problems_list.append(f"{problem_name}: {problem_desc[:60]}")
             
-            # Medicamentos
             if 'medicines' in notes_data and notes_data['medicines']:
                 for medicine in notes_data['medicines'][:5]:
                     if isinstance(medicine, dict):
@@ -78,14 +74,12 @@ DATOS DEL REGISTRO:
                         if med_name:
                             medicines_list.append(f"{med_name} {dosage}")
             
-            # Notas
             if 'notes' in notes_data and notes_data['notes']:
                 notes_text = notes_data['notes'][:200]
                 
         except json.JSONDecodeError:
             notes_text = record_data['full_notes'][:200]
     
-    # Construir con datos reales
     if problems_list:
         prompt += "\nCondiciones registradas:\n"
         for i, problem in enumerate(problems_list, 1):
@@ -99,7 +93,6 @@ DATOS DEL REGISTRO:
     if notes_text:
         prompt += f"\nObservaciones: {notes_text}\n"
     
-    # Instrucción clara: REFORMULAR datos existentes
     prompt += """
 INSTRUCCIÓN: Reformula la información anterior en formato estructurado. Usa EXACTAMENTE estas secciones:
 
@@ -112,6 +105,187 @@ Máximo 80 palabras. Solo reformula, no agregues información nueva."""
 
     return prompt
 
+def get_patient_context(patient_id):
+    """Obtener todo el contexto del paciente para el chatbot"""
+    try:
+        base_path = Path(__file__).parent.parent.parent.parent
+        sql_path = base_path / 'database' / 'queries' / 'chatbot_queries.sql'
+        
+        with open(sql_path, 'r') as file:
+            queries = file.read().split('\n\n')
+        
+        # Query #1: Patient basic info
+        patient_query = queries[0].split('\n')
+        patient_query = [line for line in patient_query if not line.strip().startswith('--')]
+        patient_query = '\n'.join(patient_query).strip()
+        patient_data = db.execute_query(patient_query, (patient_id,), fetch_one=True)
+        
+        if not patient_data:
+            return None
+        
+        # Query #2: Allergies
+        allergies_query = queries[1].split('\n')
+        allergies_query = [line for line in allergies_query if not line.strip().startswith('--')]
+        allergies_query = '\n'.join(allergies_query).strip()
+        allergies = db.execute_query(allergies_query, (patient_id,), fetch_all=True)
+        
+        # Query #3: Chronic diseases
+        chronic_query = queries[2].split('\n')
+        chronic_query = [line for line in chronic_query if not line.strip().startswith('--')]
+        chronic_query = '\n'.join(chronic_query).strip()
+        chronic_diseases = db.execute_query(chronic_query, (patient_id,), fetch_all=True)
+        
+        # Query #4: Recent medical records
+        records_query = queries[3].split('\n')
+        records_query = [line for line in records_query if not line.strip().startswith('--')]
+        records_query = '\n'.join(records_query).strip()
+        medical_records = db.execute_query(records_query, (patient_id,), fetch_all=True)
+        
+        # Query #5: Recent studies
+        studies_query = queries[4].split('\n')
+        studies_query = [line for line in studies_query if not line.strip().startswith('--')]
+        studies_query = '\n'.join(studies_query).strip()
+        studies = db.execute_query(studies_query, (patient_id,), fetch_all=True)
+        
+        return {
+            'patient': patient_data,
+            'allergies': allergies,
+            'chronic_diseases': chronic_diseases,
+            'medical_records': medical_records,
+            'studies': studies
+        }
+        
+    except Exception as e:
+        print(f"Error getting patient context: {e}")
+        return None
+
+def build_chatbot_prompt(patient_context, conversation_history, user_message):
+    """Construir prompt para el chatbot con contexto del paciente - SIN etiquetas en output"""
+    
+    patient = patient_context['patient']
+    
+    prompt = f"""Eres un asistente médico. Tienes acceso al historial médico del paciente.
+
+INFORMACIÓN DEL PACIENTE:
+- Nombre: {patient['first_name']} {patient['last_name']}
+- Edad: {patient['age']} años
+- Género: {patient['gender']}
+
+"""
+    
+    # Agregar alergias
+    if patient_context['allergies']:
+        prompt += "ALERGIAS:\n"
+        for allergy in patient_context['allergies']:
+            try:
+                allergy_data = json.loads(allergy['description'])
+                if isinstance(allergy_data, list):
+                    for item in allergy_data:
+                        if isinstance(item, dict) and 'allergen' in item:
+                            prompt += f"- {item['allergen']}: {item.get('reaction', 'N/A')}\n"
+            except:
+                pass
+    
+    # Agregar enfermedades crónicas
+    if patient_context['chronic_diseases']:
+        prompt += "\nENFERMEDADES CRÓNICAS:\n"
+        for disease in patient_context['chronic_diseases']:
+            try:
+                disease_data = json.loads(disease['description'])
+                if isinstance(disease_data, list):
+                    for item in disease_data:
+                        if isinstance(item, dict) and 'disease_name' in item:
+                            prompt += f"- {item['disease_name']}\n"
+            except:
+                pass
+    
+    # Agregar consultas recientes (resumidas)
+    if patient_context['medical_records']:
+        prompt += "\nCONSULTAS RECIENTES:\n"
+        for record in patient_context['medical_records'][:2]:
+            prompt += f"- {record['date']}: {record['summary'][:100]}\n"
+    
+    # Agregar estudios recientes
+    if patient_context['studies']:
+        prompt += "\nESTUDIOS RECIENTES:\n"
+        for study in patient_context['studies']:
+            prompt += f"- {study['study_type']} ({study['performed_at']})\n"
+    
+    # Agregar historial de conversación (sin etiquetas USER/ASSISTANT)
+    if conversation_history:
+        prompt += "\nCONVERSACIÓN PREVIA:\n"
+        for msg in conversation_history[-4:]:
+            if msg['role'] == 'user':
+                prompt += f"Paciente preguntó: {msg['content']}\n"
+            else:
+                prompt += f"Tú respondiste: {msg['content']}\n"
+    
+    # Agregar pregunta actual
+    prompt += f"\nPaciente pregunta ahora: {user_message}\n"
+    
+    # Instrucción SIN formato de etiquetas
+    prompt += """
+Responde en español de forma clara y concisa. Usa la información médica del paciente cuando sea relevante. Si preguntan algo que no está en los registros, indica que no tienes esa información. Máximo 100 palabras.
+
+Tu respuesta (solo el texto, sin etiquetas ni formato especial):"""
+
+    return prompt
+
+@ai_reports_bp.route('/chat', methods=['POST'])
+def chat_with_patient_context():
+    """Chatbot con contexto del paciente"""
+    try:
+        data = request.get_json()
+        
+        patient_id = data.get('patient_id')
+        user_message = data.get('message')
+        conversation_history = data.get('history', [])
+        
+        if not patient_id or not user_message:
+            return jsonify({'error': 'patient_id and message are required'}), 400
+        
+        # Obtener contexto del paciente
+        patient_context = get_patient_context(patient_id)
+        
+        if not patient_context:
+            return jsonify({'error': 'Patient not found'}), 404
+        
+        # Construir prompt con contexto
+        prompt = build_chatbot_prompt(patient_context, conversation_history, user_message)
+        
+        print(f"Chatbot prompt length: {len(prompt)} characters")
+        
+        # Llamar a Ollama
+        ai_response = call_ollama(prompt)
+        
+        if not ai_response:
+            return jsonify({'error': 'Failed to generate response'}), 500
+        
+        # Limpiar respuesta (remover posibles etiquetas residuales)
+        ai_response = ai_response.strip()
+        
+        # Remover etiquetas comunes si aparecen
+        prefixes_to_remove = [
+            'ASSISTANT:', 'Assistant:', 'AI:', 
+            'USER:', 'User:',
+            'Tu respuesta:', 'Respuesta:'
+        ]
+        
+        for prefix in prefixes_to_remove:
+            if ai_response.startswith(prefix):
+                ai_response = ai_response[len(prefix):].strip()
+        
+        return jsonify({
+            'message': 'Response generated successfully',
+            'response': ai_response
+        }), 200
+        
+    except Exception as e:
+        print(f"Chat error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
 @ai_reports_bp.route('/generate-summary/record/<int:medical_record_id>', methods=['POST'])
 def generate_summary_for_record(medical_record_id):
     """Generar resumen de IA para UN medical record específico (consulta)"""
@@ -122,14 +296,13 @@ def generate_summary_for_record(medical_record_id):
         with open(sql_path, 'r') as file:
             queries = file.read().split('\n\n')
         
-        # Query #2: Verificar si ya existe un resumen para este record
+        # Query #2: Verificar si ya existe un resumen
         check_existing_query = queries[1].split('\n')
         check_existing_query = [line for line in check_existing_query if not line.strip().startswith('--')]
         check_existing_query = '\n'.join(check_existing_query).strip()
         
         existing_report = db.execute_query(check_existing_query, (medical_record_id,), fetch_one=True)
         
-        # Si ya existe, devolverlo sin regenerar
         if existing_report:
             return jsonify({
                 'message': 'Summary already exists',
@@ -148,28 +321,17 @@ def generate_summary_for_record(medical_record_id):
         if not record_data:
             return jsonify({'error': 'Medical record not found'}), 404
         
-        # Verificar que tenga datos para analizar
         if not record_data['full_notes'] and not record_data['summary']:
             return jsonify({'error': 'No data available to generate summary'}), 400
         
-        # Construir prompt para la consulta
         prompt = build_consultation_prompt(record_data)
         
         print(f"Generating summary for medical_record_id: {medical_record_id}")
-        print(f"Prompt length: {len(prompt)} characters")
-        print("--- PROMPT START ---")
-        print(prompt)
-        print("--- PROMPT END ---")
         
-        # Llamar a Ollama
-        print("Calling Ollama... (1-3 minutos)")
         ai_summary = call_ollama(prompt)
         
         if not ai_summary or len(ai_summary.strip()) < 20:
             return jsonify({'error': 'Failed to generate valid summary'}), 500
-        
-        print("AI Summary generated successfully!")
-        print(f"Summary: {ai_summary}")
         
         # Query #1: Insert AI report
         insert_report_query = queries[0].split('\n')
