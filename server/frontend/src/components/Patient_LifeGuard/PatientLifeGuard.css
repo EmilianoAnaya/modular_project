@@ -1,0 +1,110 @@
+
+.patient-lifeguard-cont{
+    display: grid;
+    grid-template-rows: auto 10%;
+    row-gap: .2em;
+    margin: 0 auto;
+    width: 80%;
+    height: 99%;
+    padding: 1em;
+    border-radius: 2em;
+    box-shadow: 0 0 .4em .7em rgb(0,  0,  0,  .4);
+    box-sizing: border-box;
+    transition: grid-template-rows 0.4s ease;
+}
+
+.patient-lifeguard-cont.expanded{
+    grid-template-rows: auto 20%;
+}
+
+.lifeguard-text-cont{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 1em;
+    border-radius: 2em;
+    flex: 1;
+    overflow: hidden;
+    overflow-y: auto;
+    row-gap: 1em;
+    scroll-behavior: smooth;
+}
+
+.lifeguard-presentation{
+    justify-content: center;
+    align-items: center;
+}
+
+.lifeguard-presentation-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%;
+}
+
+.lifeguard-ballon{
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: .7em;
+    word-wrap: break-word;
+    max-width: 55%;
+    font-family: var(--FONT-MULISH);
+}
+
+.ballon-left{
+    background-color: #1CF28E;
+    align-self: flex-start;
+}
+
+.ballon-right{
+    background-color: #1CF1DA;
+    align-self: flex-end;
+}
+
+.lifeguard-input-cont{
+    width: 100%;
+    border-radius: 2em;
+    display: grid;
+    grid-template-columns: 90% auto;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 10;
+}
+
+ /* Text */
+.lifeguard-input-cont textarea{
+    resize: none;
+    width: 100%;
+    height: 60%;
+    margin: 0;
+    border-radius: 1em;
+    border: transparent;
+    font-family: var(--FONT-MULISH);
+    font-size: .8em;
+    padding: 0 .5em;
+}
+
+.lifeguard-presentation-content p{
+    font-family: var(--FONT-MULISH);
+    font-size: 1.3em;
+}
+
+/* Buttons */
+.lifeguard-input-cont img{
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: .3em;
+    cursor: pointer;
+}
+
+.lifeguard-input-cont img:hover{
+    background-color: cyan;
+}
+
+
+/* images */
+.lifeguard-presentation-content img{
+    width: 40%;
+}

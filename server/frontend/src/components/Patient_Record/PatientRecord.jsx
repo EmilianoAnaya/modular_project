@@ -57,40 +57,40 @@ function PatientRecord({ viewPoint = "" }){
 
         // Si ya está cargando, no hacer nada
         if (loadingAI[recordId]) return
-        
+
         // Si ya tenemos el resumen, no hacer nada (solo mostrar)
         if (aiSummaries[recordId]) return
-        
+
         try {
             setLoadingAI(prev => ({ ...prev, [recordId]: true }))
-            
+
             // Primero intentar obtener resumen existente
             const getResponse = await fetch(
                 getApiUrl(`${API_CONFIG.ENDPOINTS.AI_GET_SUMMARY}/${recordId}`)
             )
             const getData = await getResponse.json()
-            
+
             if (getData.summary) {
                 // Ya existe, usarlo
                 setAiSummaries(prev => ({ ...prev, [recordId]: getData.summary }))
                 setLoadingAI(prev => ({ ...prev, [recordId]: false }))
                 return
             }
-            
+
             // No existe, generar nuevo
             const generateResponse = await fetch(
                 getApiUrl(`${API_CONFIG.ENDPOINTS.AI_GENERATE_SUMMARY}/${recordId}`),
                 { method: 'POST' }
             )
-            
+
             if (!generateResponse.ok) {
                 throw new Error('Failed to generate summary')
             }
-            
+
             const generateData = await generateResponse.json()
-            
+
             setAiSummaries(prev => ({ ...prev, [recordId]: generateData.summary }))
-            
+
         } catch (error) {
             console.error('Error with AI summary:', error)
             alert('Error generating AI summary. Please try again.')
@@ -416,7 +416,7 @@ function PatientRecord({ viewPoint = "" }){
                                         >
                                             <img src='/assets/glasses.svg' alt="View"/>
                                         </button>
-                                        
+
                                         {/* Botón de IA solo para consultas (documents) */}
                                         {record.type === 'document' && (
                                             <button
@@ -430,7 +430,7 @@ function PatientRecord({ viewPoint = "" }){
                                                 {loadingAI[record.id] ? (
                                                     <span style={{fontSize: '0.8em'}}>...</span>
                                                 ) : (
-                                                    <img src='/assets/glasses.svg' alt="AI" style={{filter: 'hue-rotate(180deg)'}} />
+                                                    <img src='/assets/bot-message-square.svg' alt="AI" style={{filter: 'hue-rotate(180deg)'}} />
                                                 )}
                                             </button>
                                         )}
@@ -452,7 +452,7 @@ function PatientRecord({ viewPoint = "" }){
                                             🤖 AI Summary - {selectedRecord.type === 'document' ? formatDate(selectedRecord.date) : selectedRecord.study_type}
                                         </h2>
                                     </div>
-                                    
+
                                     {loadingAI[selectedRecord.id] ? (
                                         <div style={{
                                             padding: '2em',
