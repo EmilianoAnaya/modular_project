@@ -14,7 +14,7 @@ import Contact from './components/Landing_Content/Contact'
 function Landing() {
   return (
     <>
-      <MainNavbar />
+      <MainNavbar hideButtons={false} />
       <div id="landing-container">
         <Routes>
           <Route path="/" element={<HomeContent />} />
