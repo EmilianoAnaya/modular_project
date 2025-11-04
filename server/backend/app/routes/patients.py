@@ -110,11 +110,28 @@ def search_patients():
             get_all_patients_query = [line for line in get_all_patients_query if not line.strip().startswith('--')]
             get_all_patients_query = '\n'.join(get_all_patients_query).strip()
 
-        # Modificar la query para agregar filtro de búsqueda
-        search_query = get_all_patients_query.replace(
-            "WHERE u.status = 'Active'",
-            "WHERE u.status = 'Active' AND (u.first_name LIKE %s OR u.last_name LIKE %s OR CONCAT(u.first_name, ' ', u.last_name) LIKE %s)"
-        )
+        # Modificar la query para agregar filtro de búsqueda Y el último acceso
+        search_query = """
+            SELECT 
+                p.id as patient_id, 
+                p.user_id, 
+                u.first_name, 
+                u.last_name, 
+                u.email, 
+                u.gender, 
+                u.date_of_birth, 
+                u.city, 
+                u.country, 
+                u.created_at,
+                MAX(al.accessed_at) as last_accessed
+            FROM patients p
+            JOIN users u ON p.user_id = u.id
+            LEFT JOIN access_logs al ON al.user_id = p.user_id
+            WHERE u.status = 'Active' 
+            AND (u.first_name LIKE %s OR u.last_name LIKE %s OR CONCAT(u.first_name, ' ', u.last_name) LIKE %s)
+            GROUP BY p.id, p.user_id, u.first_name, u.last_name, u.email, u.gender, u.date_of_birth, u.city, u.country, u.created_at
+            ORDER BY u.first_name, u.last_name
+        """
 
         # Preparar término de búsqueda con wildcards
         search_pattern = f"%{search_term}%"
@@ -144,7 +161,8 @@ def search_patients():
                 'date_of_birth': patient['date_of_birth'].isoformat() if patient['date_of_birth'] else None,
                 'city': patient['city'],
                 'country': patient['country'],
-                'created_at': patient['created_at'].isoformat() if patient['created_at'] else None
+                'created_at': patient['created_at'].isoformat() if patient['created_at'] else None,
+                'last_accessed': patient['last_accessed'].isoformat() if patient['last_accessed'] else None
             })
 
         return jsonify({
@@ -154,6 +172,8 @@ def search_patients():
 
     except Exception as e:
         print(f"Search patients error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': 'Internal server error'}), 500
     
 
@@ -193,7 +213,7 @@ def get_patient_by_id(patient_id):
             'patient': {
                 'patient_id': patient['patient_id'],
                 'user_id': patient['user_id'],
-                'token': patient['token'],  # ← AGREGAR ESTA LÍNEA
+                'token': patient['token'],
                 'first_name': patient['first_name'],
                 'last_name': patient['last_name'],
                 'full_name': f"{patient['first_name']} {patient['last_name']}",

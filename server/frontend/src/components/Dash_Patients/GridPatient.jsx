@@ -7,7 +7,7 @@ function GridPatient({ searchResults = [] }){
             <div className='basic-container patients-cont'>
                 <div className='patients-grid'>
                     <div className='grid-item patients-grid-header'>Patient Name</div>
-                    <div className='grid-item patients-grid-header'>Last time opened by you</div>
+                    <div className='grid-item patients-grid-header'>Last time opened</div>
                     <div className='grid-item patients-grid-header'>Last time updated</div>
                     <div className='grid-item patients-grid-header'>Actions</div>
 

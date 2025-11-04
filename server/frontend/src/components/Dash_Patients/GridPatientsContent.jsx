@@ -18,6 +18,24 @@ function GridPatientsContent({ patient }){
         return date.toLocaleDateString()
     }
 
+    // Función para registrar acceso al paciente
+    const logPatientAccess = async (patientUserId) => {
+        try {
+            await fetch(getApiUrl(API_CONFIG.ENDPOINTS.ACCESS_LOGS), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    patient_user_id: patientUserId
+                })
+            })
+        } catch (error) {
+            console.error('Error logging patient access:', error)
+            // No mostramos error al usuario para no interrumpir el flujo
+        }
+    }
+
     // Función para verificar token
     const verifyToken = async () => {
         if (!tokenInput.trim()) {
@@ -33,7 +51,10 @@ function GridPatientsContent({ patient }){
             const data = await response.json()
 
             if (response.ok && data.patient.token === tokenInput.trim()) {
-                // Token correcto
+                // Token correcto - Registrar acceso
+                await logPatientAccess(patient.user_id)
+                
+                // Guardar datos y navegar
                 sessionStorage.setItem('selectedPatientId', patient.patient_id)
                 setShowTokenModal(false)
                 setTokenInput('')
@@ -103,7 +124,7 @@ function GridPatientsContent({ patient }){
                 <span>{`${patient.first_name} ${patient.last_name}`}</span>
             </div>
             <div className='grid-item patients-grid-content'>
-                <span>N/A</span>
+                <span>{formatDate(patient.last_accessed)}</span>
             </div>
             <div className='grid-item patients-grid-content patients-column-3'>
                 <span>{formatDate(patient.created_at)}</span>
