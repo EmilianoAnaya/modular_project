@@ -122,7 +122,7 @@ function DashboardProfile({ doctorView = true }){
         <>
             <div className='dash-profile head' >
                 <div className='dash-profile-data'>
-                    <img src='/assets/example.jpg'/>
+            <img style={{ backgroundColor : 'white' }} src='/assets/user.svg'/>
                     <div>
                         <p id='dash-profile-name'>{doctorName}</p>
                         <p id='dash-profile-description'>{ doctorView ? "Doctors Description" : "Patient Description" }</p>
